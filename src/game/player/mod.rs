@@ -34,8 +34,8 @@ impl Plugin for PlayerPlugin {
                 (
                     player_movement.in_set(MovementSystemSet),
                     player_animate.in_set(MovementSystemSet),
-                                        move_camera.in_set(MovementSystemSet),
-                   // confine_player_movement.in_set(ConfinementSystemSet),
+                    move_camera.in_set(MovementSystemSet),
+                    // confine_player_movement.in_set(ConfinementSystemSet),
                 )
                     .in_set(OnUpdate(AppState::Game))
                     .in_set(OnUpdate(SimulationState::Running)),

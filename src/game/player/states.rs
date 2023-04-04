@@ -20,4 +20,3 @@ pub enum PlayerOrientationState {
     Left,
     Right,
 }
-

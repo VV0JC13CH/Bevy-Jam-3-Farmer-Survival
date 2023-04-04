@@ -129,11 +129,10 @@ pub fn player_movement(
             player_animation_next_state.set(PlayerAnimationState::Running);
             // println!("Player is moving!");
         } else if player_animation.0 == PlayerAnimationState::Running && direction.length() == 0.0 {
-                player_animation_next_state.set(PlayerAnimationState::Idle);
-                // println!("Player is idle!");
-            }
-       
-}
+            player_animation_next_state.set(PlayerAnimationState::Idle);
+            // println!("Player is idle!");
+        }
+    }
 }
 
 pub fn confine_player_movement(

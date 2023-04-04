@@ -9,7 +9,6 @@ use crate::DebugState;
 
 use crate::TextDebug;
 
-
 pub fn change_state(
     keyboard_input: Res<Input<KeyCode>>,
     app_state: Res<State<AppState>>,
@@ -169,10 +168,7 @@ pub fn debug_run(
     }
 }
 
-pub fn debug_hide(
-    mut commands: Commands,
-    mut query: Query<Entity, With<TextDebug>>,
-) {
+pub fn debug_hide(mut commands: Commands, mut query: Query<Entity, With<TextDebug>>) {
     for text in &mut query {
         commands.entity(text).despawn();
     }

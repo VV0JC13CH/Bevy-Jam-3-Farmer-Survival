@@ -27,8 +27,7 @@ pub fn toggle_simulation(
     debug_state: Res<State<DebugState>>,
     mut simulation_state_next_state: ResMut<NextState<SimulationState>>,
 ) {
-    if keyboard_input.just_pressed(KeyCode::F2)
-            && debug_state.0 == DebugState::Develop {
+    if keyboard_input.just_pressed(KeyCode::F2) && debug_state.0 == DebugState::Develop {
         if simulation_state.0 == SimulationState::Running {
             simulation_state_next_state.set(SimulationState::Paused);
             println!("Simulation Paused.");

@@ -1,10 +1,10 @@
 use bevy::prelude::*;
 
-mod systems;
 mod player;
+mod systems;
 
-use systems::*;
 use player::PlayerPlugin;
+use systems::*;
 
 use crate::AppState;
 
@@ -12,8 +12,7 @@ pub struct GamePlugin;
 
 impl Plugin for GamePlugin {
     fn build(&self, app: &mut App) {
-        app
-             .insert_resource(ClearColor(Color::rgba(0.29, 0.6, 0.32, 1.0)))
+        app.insert_resource(ClearColor(Color::rgba(0.29, 0.6, 0.32, 1.0)))
             .add_state::<SimulationState>()
             // OnEnter Systems
             .add_startup_system(spawn_camera)
