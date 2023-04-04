@@ -121,7 +121,7 @@ pub fn debug_show(mut commands: Commands, asset_server: Res<AssetServer>) {
             TextSection::new(
                 " ms/frame",
                 TextStyle {
-                    font: font.clone(),
+                    font: font,
                     font_size: 30.0,
                     color: Color::BLUE,
                 },
