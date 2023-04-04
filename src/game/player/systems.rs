@@ -1,5 +1,10 @@
-use bevy::prelude::*;
 use bevy::window::PrimaryWindow;
+use bevy::{
+    input::{mouse::MouseWheel, Input},
+    math::Vec3,
+    prelude::*,
+    render::camera::Camera,
+};
 
 use super::states::PlayerAnimationState;
 use super::states::PlayerCharacter;
@@ -14,8 +19,11 @@ pub fn player_spawn(
     mut commands: Commands,
     player_char: Res<State<PlayerCharacter>>,
     asset_server: Res<AssetServer>,
+    window_query: Query<&Window, With<PrimaryWindow>>,
     mut texture_atlases: ResMut<Assets<TextureAtlas>>,
 ) {
+    let window = window_query.get_single().unwrap();
+
     let texture_handle = match player_char.0 {
         PlayerCharacter::Male => asset_server.load("sprites/farmer_male.png"),
         PlayerCharacter::Female => asset_server.load("sprites/farmer_female.png"),
@@ -29,7 +37,8 @@ pub fn player_spawn(
         SpriteSheetBundle {
             texture_atlas: texture_atlas_handle,
             sprite: TextureAtlasSprite::new(animation_indices.first),
-            transform: Transform::from_scale(Vec3::splat(1.0)),
+            // transform: Transform::from_scale(Vec3::splat(1.0)),
+            transform: Transform::from_xyz(window.width() / 2.0, window.height() / 2.0, 0.0),
             ..default()
         },
         animation_indices,
@@ -66,8 +75,10 @@ pub fn player_animate(
             timer.tick(time.delta());
             if timer.just_finished() {
                 if player_orientation.0 == PlayerOrientationState::Right {
-                sprite.flip_x = false
-                } else {sprite.flip_x = true}
+                    sprite.flip_x = false
+                } else {
+                    sprite.flip_x = true
+                }
                 sprite.index = if sprite.index == indices.last {
                     indices.first
                 } else {
@@ -155,5 +166,43 @@ pub fn confine_player_movement(
         }
 
         player_transform.translation = translation;
+    }
+}
+
+pub fn move_camera(
+    time: Res<Time>,
+    keyboard_input: Res<Input<KeyCode>>,
+    mut scroll_evr: EventReader<MouseWheel>,
+    mut camera_query: Query<(&mut Transform, &mut OrthographicProjection), With<Camera>>,
+) {
+    for (mut transform, mut ortho) in camera_query.iter_mut() {
+        let mut direction = Vec3::ZERO;
+
+        if keyboard_input.pressed(KeyCode::Left) || keyboard_input.pressed(KeyCode::A) {
+            direction += Vec3::new(-1.0, 0.0, 0.0);
+        }
+        if keyboard_input.pressed(KeyCode::Right) || keyboard_input.pressed(KeyCode::D) {
+            direction += Vec3::new(1.0, 0.0, 0.0);
+        }
+        if keyboard_input.pressed(KeyCode::Up) || keyboard_input.pressed(KeyCode::W) {
+            direction += Vec3::new(0.0, 1.0, 0.0);
+        }
+        if keyboard_input.pressed(KeyCode::Down) || keyboard_input.pressed(KeyCode::S) {
+            direction += Vec3::new(0.0, -1.0, 0.0);
+        }
+        if direction.length() > 0.0 {
+            direction = direction.normalize();
+        }
+
+        for event in scroll_evr.iter() {
+            if event.y < 0.0 {
+                ortho.scale += 0.2
+            }
+            if event.y > 0.0 {
+                ortho.scale -= 0.2
+            }
+        }
+
+        transform.translation += direction * PLAYER_SPEED * time.delta_seconds();
     }
 }
