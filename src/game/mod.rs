@@ -13,7 +13,7 @@ pub struct GamePlugin;
 impl Plugin for GamePlugin {
     fn build(&self, app: &mut App) {
         app
-            // Events
+             .insert_resource(ClearColor(Color::rgba(0.29, 0.6, 0.32, 1.0)))
             .add_state::<SimulationState>()
             // OnEnter Systems
             .add_startup_system(spawn_camera)
