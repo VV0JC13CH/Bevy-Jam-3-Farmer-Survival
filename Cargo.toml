@@ -1,8 +1,11 @@
 [package]
-name = "bevy_github_ci_template"
+name = "farmer_survival"
 version = "0.1.0"
 edition = "2021"
-license = "MIT OR Apache-2.0"
+license = "MIT"
 
 [dependencies]
 bevy = "0.10"
+rand = "0.8.5"
+bevy_rapier2d = { version = "0.21.0", features = [ "simd-stable", "debug-render-2d" ] }
+bevy_ecs_tilemap = "0.10.0"
