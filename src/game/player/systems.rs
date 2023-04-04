@@ -13,7 +13,7 @@ use super::states::PlayerOrientationState;
 use super::components::*;
 
 pub const PLAYER_SPEED: f32 = 150.0;
-//pub const PLAYER_SIZE: f32 = 64.0; // This is the player sprite size.
+pub const PLAYER_SIZE: f32 = 64.0; // This is the player sprite size.
 
 pub fn player_spawn(
     mut commands: Commands,
