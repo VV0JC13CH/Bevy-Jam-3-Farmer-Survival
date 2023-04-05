@@ -1,10 +1,12 @@
 use bevy::math::Vec3Swizzles;
 use bevy::prelude::*;
 use bevy_ecs_tilemap::prelude::*;
-
+use rand::{thread_rng, Rng};
 
 use super::resources::ChunkManager;
+use super::components::RandomizedTile;
 
+pub const TILEMAP_SIZE: TilemapTileSize = TilemapTileSize { x: 128.0, y: 128.0 };
 pub const TILE_SIZE: TilemapTileSize = TilemapTileSize { x: 16.0, y: 16.0 };
 pub const CHUNK_SIZE: UVec2 = UVec2 { x: 16, y: 16 };
 pub const RENDER_CHUNK_SIZE: UVec2 = UVec2 {
@@ -20,11 +22,14 @@ fn terrain_spawn(commands: &mut Commands, asset_server: &AssetServer, chunk_pos:
         for y in 0..CHUNK_SIZE.y {
             let tile_pos = TilePos { x, y };
             let tile_entity = commands
-                .spawn(TileBundle {
-                    position: tile_pos,
-                    tilemap_id: TilemapId(tilemap_entity),
-                    ..Default::default()
-                })
+                .spawn((
+                    TileBundle {
+                        position: tile_pos,
+                        tilemap_id: TilemapId(tilemap_entity),
+                        ..Default::default()
+                    },
+                    RandomizedTile::default(),
+                ))
                 .id();
             commands.entity(tilemap_entity).add_child(tile_entity);
             tile_storage.set(&tile_pos, tile_entity);
@@ -34,11 +39,14 @@ fn terrain_spawn(commands: &mut Commands, asset_server: &AssetServer, chunk_pos:
     let transform = Transform::from_translation(Vec3::new(
         chunk_pos.x as f32 * CHUNK_SIZE.x as f32 * TILE_SIZE.x,
         chunk_pos.y as f32 * CHUNK_SIZE.y as f32 * TILE_SIZE.y,
-        -1.0,
+        -0.1,
     ));
-    let texture_handle: Handle<Image> = asset_server.load("sprites/terrain_tilemap.png");
+    //let texture_handle: Handle<Image> = asset_server.load("sprites/terrain_tilemap.png");
+    let texture_handle: Handle<Image> = asset_server.load("tiles.png");
+    let map_type = TilemapType::default();
     commands.entity(tilemap_entity).insert(TilemapBundle {
         grid_size: TILE_SIZE.into(),
+        map_type,
         size: CHUNK_SIZE.into(),
         storage: tile_storage,
         texture: TilemapTexture::Single(texture_handle),
@@ -55,6 +63,16 @@ fn camera_pos_to_chunk_pos(camera_pos: &Vec2) -> IVec2 {
     camera_pos / (chunk_size * tile_size)
 }
 
+pub fn terrain_random_around_camera(mut query: Query<(&mut TileTextureIndex, &mut RandomizedTile)>) {
+    let mut random = thread_rng();
+    for (mut tile, mut randomized_tile) in query.iter_mut() {
+        if randomized_tile.value != true {
+            tile.0 = random.gen_range(0..6);
+            randomized_tile.value = true;
+        }
+    }
+}
+
 pub fn terrain_spawn_around_camera(
     mut commands: Commands,
     asset_server: Res<AssetServer>,
@@ -68,7 +86,6 @@ pub fn terrain_spawn_around_camera(
                 if !chunk_manager.spawned_chunks.contains(&IVec2::new(x, y)) {
                     chunk_manager.spawned_chunks.insert(IVec2::new(x, y));
                     terrain_spawn(&mut commands, &asset_server, IVec2::new(x, y));
-                    println!("Terrain spawn works")
                 }
             }
         }

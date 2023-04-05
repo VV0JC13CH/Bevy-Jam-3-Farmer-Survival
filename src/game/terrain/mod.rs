@@ -1,4 +1,5 @@
 mod resources;
+mod components;
 mod systems;
 
 use bevy_ecs_tilemap::prelude::*;
@@ -28,6 +29,7 @@ impl Plugin for TerrainPlugin {
             .add_systems(
                 (
                     terrain_spawn_around_camera,
+                    terrain_random_around_camera,
                     //terrain_despawn_around_camera,
                 )
                     .in_set(OnUpdate(AppState::Game))
