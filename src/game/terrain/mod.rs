@@ -30,7 +30,7 @@ impl Plugin for TerrainPlugin {
                 (
                     terrain_spawn_around_camera,
                     terrain_random_around_camera,
-                    //terrain_despawn_around_camera,
+                    terrain_despawn_around_camera,
                 )
                     .in_set(OnUpdate(AppState::Game))
                     .in_set(OnUpdate(SimulationState::Running)),

@@ -3,12 +3,11 @@ use bevy::prelude::*;
 use bevy_ecs_tilemap::prelude::*;
 use rand::{thread_rng, Rng};
 
-use super::resources::ChunkManager;
 use super::components::RandomizedTile;
+use super::resources::ChunkManager;
 
-pub const TILEMAP_SIZE: TilemapTileSize = TilemapTileSize { x: 128.0, y: 128.0 };
-pub const TILE_SIZE: TilemapTileSize = TilemapTileSize { x: 16.0, y: 16.0 };
-pub const CHUNK_SIZE: UVec2 = UVec2 { x: 16, y: 16 };
+pub const TILE_SIZE: TilemapTileSize = TilemapTileSize { x: 64.0, y: 64.0 };
+pub const CHUNK_SIZE: UVec2 = UVec2 { x: 12, y: 12 };
 pub const RENDER_CHUNK_SIZE: UVec2 = UVec2 {
     x: CHUNK_SIZE.x * 2,
     y: CHUNK_SIZE.y * 2,
@@ -41,8 +40,8 @@ fn terrain_spawn(commands: &mut Commands, asset_server: &AssetServer, chunk_pos:
         chunk_pos.y as f32 * CHUNK_SIZE.y as f32 * TILE_SIZE.y,
         -0.1,
     ));
-    //let texture_handle: Handle<Image> = asset_server.load("sprites/terrain_tilemap.png");
-    let texture_handle: Handle<Image> = asset_server.load("tiles.png");
+    let texture_handle: Handle<Image> = asset_server.load("sprites/terrain_tilemap.png");
+    //let texture_handle: Handle<Image> = asset_server.load("tiles.png");
     let map_type = TilemapType::default();
     commands.entity(tilemap_entity).insert(TilemapBundle {
         grid_size: TILE_SIZE.into(),
@@ -63,11 +62,15 @@ fn camera_pos_to_chunk_pos(camera_pos: &Vec2) -> IVec2 {
     camera_pos / (chunk_size * tile_size)
 }
 
-pub fn terrain_random_around_camera(mut query: Query<(&mut TileTextureIndex, &mut RandomizedTile)>) {
+pub fn terrain_random_around_camera(
+    mut query: Query<(&mut TileTextureIndex, &mut RandomizedTile)>,
+) {
     let mut random = thread_rng();
     for (mut tile, mut randomized_tile) in query.iter_mut() {
         if randomized_tile.value != true {
-            tile.0 = random.gen_range(0..6);
+            if random.gen_range(0..4) < 1 {
+                tile.0 = random.gen_range(0..63);
+            }
             randomized_tile.value = true;
         }
     }
@@ -102,7 +105,7 @@ pub fn terrain_despawn_around_camera(
         for (entity, chunk_transform) in chunks_query.iter() {
             let chunk_pos = chunk_transform.translation.xy();
             let distance = camera_transform.translation.xy().distance(chunk_pos);
-            if distance > 1020.0 {
+            if distance > 2800.0 {
                 let x = (chunk_pos.x / (CHUNK_SIZE.x as f32 * TILE_SIZE.x)).floor() as i32;
                 let y = (chunk_pos.y / (CHUNK_SIZE.y as f32 * TILE_SIZE.y)).floor() as i32;
                 chunk_manager.spawned_chunks.remove(&IVec2::new(x, y));
