@@ -63,13 +63,16 @@ fn camera_pos_to_chunk_pos(camera_pos: &Vec2) -> IVec2 {
 }
 
 pub fn terrain_random_around_camera(
-    mut query: Query<(&mut TileTextureIndex, &mut RandomizedTile)>,
+    mut commands: Commands,
+    mut query: Query<(Entity, &mut TileTextureIndex, &mut RandomizedTile)>,
 ) {
     let mut random = thread_rng();
-    for (mut tile, mut randomized_tile) in query.iter_mut() {
+    for (entity, mut tile, mut randomized_tile) in query.iter_mut() {
         if randomized_tile.value != true {
             if random.gen_range(0..8) < 1 {
                 tile.0 = random.gen_range(0..63);
+            } else {
+            commands.entity(entity).despawn_recursive();
             }
             randomized_tile.value = true;
         }
@@ -105,7 +108,7 @@ pub fn terrain_despawn_around_camera(
         for (entity, chunk_transform, _chunk_texture) in chunks_query.iter() {
             let chunk_pos = chunk_transform.translation.xy();
             let distance = camera_transform.translation.xy().distance(chunk_pos);
-            if distance > 2800.0 {
+            if distance > 3200.0 {
                 let x = (chunk_pos.x / (CHUNK_SIZE.x as f32 * TILE_SIZE.x)).floor() as i32;
                 let y = (chunk_pos.y / (CHUNK_SIZE.y as f32 * TILE_SIZE.y)).floor() as i32;
                 chunk_manager.spawned_chunks.remove(&IVec2::new(x, y));
