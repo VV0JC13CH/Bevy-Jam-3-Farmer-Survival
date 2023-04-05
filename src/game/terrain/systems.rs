@@ -38,7 +38,7 @@ fn terrain_spawn(commands: &mut Commands, asset_server: &AssetServer, chunk_pos:
     let transform = Transform::from_translation(Vec3::new(
         chunk_pos.x as f32 * CHUNK_SIZE.x as f32 * TILE_SIZE.x,
         chunk_pos.y as f32 * CHUNK_SIZE.y as f32 * TILE_SIZE.y,
-        -0.1,
+        -20.0,
     ));
     let texture_handle: Handle<Image> = asset_server.load("sprites/terrain_tilemap.png");
     //let texture_handle: Handle<Image> = asset_server.load("tiles.png");
@@ -68,7 +68,7 @@ pub fn terrain_random_around_camera(
     let mut random = thread_rng();
     for (mut tile, mut randomized_tile) in query.iter_mut() {
         if randomized_tile.value != true {
-            if random.gen_range(0..4) < 1 {
+            if random.gen_range(0..8) < 1 {
                 tile.0 = random.gen_range(0..63);
             }
             randomized_tile.value = true;
@@ -98,11 +98,11 @@ pub fn terrain_spawn_around_camera(
 pub fn terrain_despawn_around_camera(
     mut commands: Commands,
     camera_query: Query<&Transform, With<Camera>>,
-    chunks_query: Query<(Entity, &Transform)>,
+    chunks_query: Query<(Entity, &Transform, &TilemapTexture)>,
     mut chunk_manager: ResMut<ChunkManager>,
 ) {
     for camera_transform in camera_query.iter() {
-        for (entity, chunk_transform) in chunks_query.iter() {
+        for (entity, chunk_transform, _chunk_texture) in chunks_query.iter() {
             let chunk_pos = chunk_transform.translation.xy();
             let distance = camera_transform.translation.xy().distance(chunk_pos);
             if distance > 2800.0 {
@@ -118,14 +118,14 @@ pub fn terrain_despawn_around_camera(
 pub fn terrain_despawn_all(
     mut commands: Commands,
     camera_query: Query<&Transform, With<Camera>>,
-    chunks_query: Query<(Entity, &Transform)>,
+    chunks_query: Query<(Entity, &Transform, &TilemapTexture)>,
     mut chunk_manager: ResMut<ChunkManager>,
 ) {
     for camera_transform in camera_query.iter() {
-        for (entity, chunk_transform) in chunks_query.iter() {
+        for (entity, chunk_transform, _chunk_texture) in chunks_query.iter() {
             let chunk_pos = chunk_transform.translation.xy();
             let distance = camera_transform.translation.xy().distance(chunk_pos);
-            if distance > 0.0 {
+            if distance >= 0.0 {
                 let x = (chunk_pos.x / (CHUNK_SIZE.x as f32 * TILE_SIZE.x)).floor() as i32;
                 let y = (chunk_pos.y / (CHUNK_SIZE.y as f32 * TILE_SIZE.y)).floor() as i32;
                 chunk_manager.spawned_chunks.remove(&IVec2::new(x, y));

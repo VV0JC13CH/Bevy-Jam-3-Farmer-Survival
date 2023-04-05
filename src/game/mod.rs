@@ -1,12 +1,12 @@
 use bevy::prelude::*;
 
 mod player;
-mod terrain;
 mod systems;
+mod terrain;
 
 use player::PlayerPlugin;
-use terrain::TerrainPlugin;
 use systems::*;
+use terrain::TerrainPlugin;
 
 use crate::AppState;
 
@@ -19,8 +19,8 @@ impl Plugin for GamePlugin {
             .add_state::<SimulationState>()
             // OnEnter Systems
             .add_startup_system(spawn_camera)
-            .add_plugin(TerrainPlugin)
             .add_plugin(PlayerPlugin)
+            .add_plugin(TerrainPlugin)
             .add_system(pause_simulation.in_schedule(OnEnter(AppState::Game)))
             .add_system(toggle_simulation.in_set(OnUpdate(AppState::Game)))
             .add_system(resume_simulation.in_schedule(OnExit(AppState::Game)));

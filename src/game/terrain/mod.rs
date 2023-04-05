@@ -34,8 +34,7 @@ impl Plugin for TerrainPlugin {
                 )
                     .in_set(OnUpdate(AppState::Game))
                     .in_set(OnUpdate(SimulationState::Running)),
-            );
-            // On Exit State
- //           .add_system(terrain_despawn_all.in_schedule(OnExit(AppState::Game)));
+            )
+            .add_system(terrain_despawn_all.in_schedule(OnExit(AppState::Game)));
     }
 }
