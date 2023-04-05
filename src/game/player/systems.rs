@@ -19,10 +19,11 @@ pub fn player_spawn(
     mut commands: Commands,
     player_char: Res<State<PlayerCharacter>>,
     asset_server: Res<AssetServer>,
-    window_query: Query<&Window, With<PrimaryWindow>>,
     mut texture_atlases: ResMut<Assets<TextureAtlas>>,
+    camera_query: Query<&Transform, With<Camera>>,
+
 ) {
-    let window = window_query.get_single().unwrap();
+    let camera = camera_query.get_single().unwrap();
 
     let texture_handle = match player_char.0 {
         PlayerCharacter::Male => asset_server.load("sprites/farmer_male.png"),
@@ -38,7 +39,7 @@ pub fn player_spawn(
             texture_atlas: texture_atlas_handle,
             sprite: TextureAtlasSprite::new(animation_indices.first),
             // transform: Transform::from_scale(Vec3::splat(1.0)),
-            transform: Transform::from_xyz(window.width() / 2.0, window.height() / 2.0, 0.0),
+            transform: Transform::from_xyz(camera.translation.x, camera.translation.y, 0.0),
             ..default()
         },
         animation_indices,
@@ -164,6 +165,17 @@ pub fn confine_player_movement(
         }
 
         player_transform.translation = translation;
+    }
+}
+pub fn link_camera_with_player(
+    mut commands: Commands,
+    mut player_query: Query<Entity, With<Player>>,
+    mut camera_query: Query<Entity, With<Camera>>,
+) {
+    for cam_entity in camera_query.iter_mut() {
+        for player_entity in player_query.iter_mut() {
+            commands.entity(cam_entity).push_children(&[player_entity]);
+        }
     }
 }
 

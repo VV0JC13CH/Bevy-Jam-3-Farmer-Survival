@@ -29,6 +29,7 @@ impl Plugin for PlayerPlugin {
             .configure_set(MovementSystemSet.before(ConfinementSystemSet))
             // On Enter State
             .add_system(player_spawn.in_schedule(OnEnter(AppState::Game)))
+            .add_system(link_camera_with_player.in_schedule(OnEnter(AppState::Game)))
             // Systems
             .add_systems(
                 (
