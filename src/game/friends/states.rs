@@ -3,9 +3,9 @@ use bevy::prelude::*;
 #[derive(States, Debug, Clone, Copy, Eq, PartialEq, Hash, Default)]
 pub enum UnlockedMouse {
     #[default]
-    Blocked,
     Spawn,
     Aggro,
+    Blocked,
 }
 
 #[derive(States, Debug, Clone, Copy, Eq, PartialEq, Hash, Default)]

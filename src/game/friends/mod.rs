@@ -11,10 +11,10 @@ use crate::AppState;
 use bevy::prelude::*;
 
 #[derive(SystemSet, Debug, Hash, PartialEq, Eq, Clone)]
-pub struct MovementSystemSet;
+pub struct FriendsMovementSystemSet;
 
 #[derive(SystemSet, Debug, Hash, PartialEq, Eq, Clone)]
-pub struct TargetingSystemSet;
+pub struct FriendsSpawnSystemSet;
 
 pub struct FriendsPlugin;
 
@@ -38,15 +38,65 @@ impl Plugin for FriendsPlugin {
             .add_state::<UnlockedWorm>()
             .add_state::<UnlockedSheep>()
             // Configure System Sets
-            .configure_set(MovementSystemSet.before(TargetingSystemSet))
+            .configure_set(FriendsSpawnSystemSet.before(FriendsMovementSystemSet))
             // On Enter State
             .add_system(adjust_states_to_character.in_schedule(OnEnter(AppState::Game)))
             // Systems
             .add_systems(
                 (
-                    friends_spawn.in_set(OnUpdate(AppState::Game)),
-                    friends_movement.in_set(MovementSystemSet),
-                    friends_animate.in_set(MovementSystemSet),
+                    mouse_spawn
+                        .in_set(FriendsSpawnSystemSet)
+                        .in_set(OnUpdate(UnlockedMouse::Spawn)),
+                    cat_spawn
+                        .in_set(FriendsSpawnSystemSet)
+                        .in_set(OnUpdate(UnlockedCat::Spawn)),
+                    dog_spawn
+                        .in_set(FriendsSpawnSystemSet)
+                        .in_set(OnUpdate(UnlockedDog::Spawn)),
+                    cow_spawn
+                        .in_set(FriendsSpawnSystemSet)
+                        .in_set(OnUpdate(UnlockedCow::Spawn)),
+                    flower_spawn
+                        .in_set(FriendsSpawnSystemSet)
+                        .in_set(OnUpdate(UnlockedFlower::Spawn)),
+                )
+                    .in_set(OnUpdate(AppState::Game))
+                    .in_set(OnUpdate(SimulationState::Running)),
+            )
+            .add_systems(
+                (
+                    bee_spawn
+                        .in_set(FriendsSpawnSystemSet)
+                        .in_set(OnUpdate(UnlockedBee::Spawn)),
+                    butterfly_spawn
+                        .in_set(FriendsSpawnSystemSet)
+                        .in_set(OnUpdate(UnlockedButterfly::Spawn)),
+                    spider_spawn
+                        .in_set(FriendsSpawnSystemSet)
+                        .in_set(OnUpdate(UnlockedSpider::Spawn)),
+                    beaver_spawn
+                        .in_set(FriendsSpawnSystemSet)
+                        .in_set(OnUpdate(UnlockedBeaver::Spawn)),
+                    fish_spawn
+                        .in_set(FriendsSpawnSystemSet)
+                        .in_set(OnUpdate(UnlockedFish::Spawn)),
+                    bear_spawn
+                        .in_set(FriendsSpawnSystemSet)
+                        .in_set(OnUpdate(UnlockedBear::Spawn)),
+                    tree_spawn
+                        .in_set(FriendsSpawnSystemSet)
+                        .in_set(OnUpdate(UnlockedTree::Spawn)),
+                    donkey_spawn
+                        .in_set(FriendsSpawnSystemSet)
+                        .in_set(OnUpdate(UnlockedDonkey::Spawn)),
+                    worm_spawn
+                        .in_set(FriendsSpawnSystemSet)
+                        .in_set(OnUpdate(UnlockedWorm::Spawn)),
+                    sheep_spawn
+                        .in_set(FriendsSpawnSystemSet)
+                        .in_set(OnUpdate(UnlockedSheep::Spawn)),
+                    friends_movement.in_set(FriendsMovementSystemSet),
+                    friends_animate.in_set(FriendsMovementSystemSet),
                 )
                     .in_set(OnUpdate(AppState::Game))
                     .in_set(OnUpdate(SimulationState::Running)),

@@ -27,7 +27,7 @@ pub fn player_spawn(
         PlayerCharacter::Female => asset_server.load("sprites/farmer_female.png"),
     };
     let texture_atlas =
-        TextureAtlas::from_grid(texture_handle, Vec2::new(64.0, 128.0), 7, 1, None, None);
+        TextureAtlas::from_grid(texture_handle, Vec2::new(64.0, 128.0), 2, 1, None, None);
     let texture_atlas_handle = texture_atlases.add(texture_atlas);
     // Use only the subset of sprites in the sheet that make up the run animation
     let animation_indices = AnimationIndices { first: 0, last: 1 };
