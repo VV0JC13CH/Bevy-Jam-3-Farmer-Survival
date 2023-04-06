@@ -21,7 +21,6 @@ pub fn player_spawn(
     asset_server: Res<AssetServer>,
     mut texture_atlases: ResMut<Assets<TextureAtlas>>,
     camera_query: Query<&Transform, With<Camera>>,
-
 ) {
     let camera = camera_query.get_single().unwrap();
 
@@ -55,9 +54,18 @@ pub fn player_spawn(
     }
 }
 
-pub fn player_despawn(mut commands: Commands, player_query: Query<Entity, With<Player>>) {
-    if let Ok(player_entity) = player_query.get_single() {
-        commands.entity(player_entity).despawn();
+pub fn player_despawn(
+    mut commands: Commands,
+    player_query: Query<Entity, With<Player>>,
+    camera_query: Query<Entity, With<Camera>>,
+) {
+    for camera in camera_query.iter() {
+        if let Ok(player_entity) = player_query.get_single() {
+            commands
+                .entity(camera)
+                .remove_children(&[player_entity]);
+            commands.entity(player_entity).despawn();
+        }
     }
 }
 
