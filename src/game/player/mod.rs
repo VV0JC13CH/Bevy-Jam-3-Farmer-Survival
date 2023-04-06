@@ -14,7 +14,7 @@ use bevy::prelude::*;
 pub struct MovementSystemSet;
 
 #[derive(SystemSet, Debug, Hash, PartialEq, Eq, Clone)]
-pub struct ConfinementSystemSet;
+pub struct PhysicsSystemSet;
 
 pub struct PlayerPlugin;
 
@@ -26,7 +26,7 @@ impl Plugin for PlayerPlugin {
             .add_state::<PlayerAnimationState>()
             .add_state::<PlayerOrientationState>()
             // Configure System Sets
-            .configure_set(MovementSystemSet.before(ConfinementSystemSet))
+            .configure_set(MovementSystemSet.before(PhysicsSystemSet))
             // On Enter State
             .add_system(player_spawn.in_schedule(OnEnter(AppState::Game)))
             .add_system(link_camera_with_player.in_schedule(OnEnter(AppState::Game)))
@@ -36,7 +36,6 @@ impl Plugin for PlayerPlugin {
                     player_movement.in_set(MovementSystemSet),
                     player_animate.in_set(MovementSystemSet),
                     move_camera.in_set(MovementSystemSet),
-                    // confine_player_movement.in_set(ConfinementSystemSet),
                 )
                     .in_set(OnUpdate(AppState::Game))
                     .in_set(OnUpdate(SimulationState::Running)),
