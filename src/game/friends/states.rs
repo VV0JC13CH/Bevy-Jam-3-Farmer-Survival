@@ -11,9 +11,9 @@ pub enum UnlockedMouse {
 #[derive(States, Debug, Clone, Copy, Eq, PartialEq, Hash, Default)]
 pub enum UnlockedCat {
     #[default]
-    Blocked,
     Spawn,
     Aggro,
+    Blocked,
 }
 
 #[derive(States, Debug, Clone, Copy, Eq, PartialEq, Hash, Default)]
