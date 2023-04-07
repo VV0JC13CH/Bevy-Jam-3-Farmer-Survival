@@ -1,4 +1,6 @@
 use bevy::prelude::*;
+use crate::game::player::{components::Player, states::PlayerOrientationState};
+
 
 #[derive(PartialEq)]
 pub enum FriendType {
@@ -27,8 +29,13 @@ pub enum ItemType {
     Apple,
     Water,
     Milk,
+    Rod,
+    Hoe,
+    BugNet,
     Bone,
     CatItem,
+    Worm,
+    BeeNest,
     DogItem,
     Cheese,
     Wood,
@@ -67,8 +74,7 @@ pub struct Item {
     pub kind: ItemType,
     pub targeting_friend: FriendType,
     pub current_animation: AnimationType,
-    pub size_x: f32,
-    pub sizy_y: f32,
+    pub direction: PlayerOrientationState,
 }
 
 #[derive(Default, Component)]

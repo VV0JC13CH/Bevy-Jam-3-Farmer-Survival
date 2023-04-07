@@ -1,5 +1,5 @@
 pub mod components;
-mod states;
+pub mod states;
 mod systems;
 
 use states::*;

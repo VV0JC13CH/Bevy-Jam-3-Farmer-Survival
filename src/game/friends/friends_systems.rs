@@ -84,7 +84,8 @@ pub fn mouse_spawn(
                 // transform: Transform::from_scale(Vec3::splat(1.0)),
                 transform: Transform::from_xyz(
                     camera.translation.x + rand_x,
-                    camera.translation.y + rand_y,                     0.0,
+                    camera.translation.y + rand_y,
+                    0.0,
                 ),
                 ..default()
             },
@@ -94,14 +95,15 @@ pub fn mouse_spawn(
             SpawnTimeStamp {
                 value: current_time,
             },
+            Health { value: 1.0 },
             Friend {
                 kind: FriendType::Mouse,
                 targeting_friend: FriendType::Player,
                 targeting_item: ItemType::Cheese,
                 current_animation: AnimationType::Idle,
                 last_position_x: camera.translation.x + rand_x,
-                last_position_y: camera.translation.y + rand_y, speed: 75.0,
-                
+                last_position_y: camera.translation.y + rand_y,
+                speed: 75.0,
             },
         ));
     }
@@ -172,7 +174,8 @@ pub fn cat_spawn(
                 // transform: Transform::from_scale(Vec3::splat(1.0)),
                 transform: Transform::from_xyz(
                     camera.translation.x + rand_x,
-                    camera.translation.y + rand_y,                    0.0,
+                    camera.translation.y + rand_y,
+                    0.0,
                 ),
                 ..default()
             },
@@ -182,13 +185,15 @@ pub fn cat_spawn(
             SpawnTimeStamp {
                 value: current_time,
             },
+            Health { value: 1.0 },
             Friend {
                 kind: FriendType::Cat,
                 targeting_friend: FriendType::Mouse,
                 targeting_item: ItemType::Milk,
                 current_animation: AnimationType::Idle,
                 last_position_x: camera.translation.x + rand_x,
-                last_position_y: camera.translation.y + rand_y, speed: 55.0,
+                last_position_y: camera.translation.y + rand_y,
+                speed: 55.0,
             },
         ));
     }
@@ -259,7 +264,7 @@ pub fn dog_spawn(
                 // transform: Transform::from_scale(Vec3::splat(1.0)),
                 transform: Transform::from_xyz(
                     camera.translation.x + rand_x,
-                    camera.translation.y + rand_y, 
+                    camera.translation.y + rand_y,
                     0.0,
                 ),
                 ..default()
@@ -270,13 +275,15 @@ pub fn dog_spawn(
             SpawnTimeStamp {
                 value: current_time,
             },
+            Health { value: 1.0 },
             Friend {
                 kind: FriendType::Dog,
                 targeting_friend: FriendType::Cat,
                 targeting_item: ItemType::Bone,
                 current_animation: AnimationType::Idle,
                 last_position_x: camera.translation.x + rand_x,
-                last_position_y: camera.translation.y + rand_y, speed: 65.0,
+                last_position_y: camera.translation.y + rand_y,
+                speed: 65.0,
             },
         ));
     }
@@ -347,7 +354,8 @@ pub fn cow_spawn(
                 // transform: Transform::from_scale(Vec3::splat(1.0)),
                 transform: Transform::from_xyz(
                     camera.translation.x + rand_x,
-                    camera.translation.y + rand_y,                    0.0,
+                    camera.translation.y + rand_y,
+                    0.0,
                 ),
                 ..default()
             },
@@ -357,13 +365,15 @@ pub fn cow_spawn(
             SpawnTimeStamp {
                 value: current_time,
             },
+            Health { value: 1.0 },
             Friend {
                 kind: FriendType::Cow,
                 targeting_friend: FriendType::Flower,
                 targeting_item: ItemType::Milk,
                 current_animation: AnimationType::Idle,
                 last_position_x: camera.translation.x + rand_x,
-                last_position_y: camera.translation.y + rand_y, speed: 45.0,
+                last_position_y: camera.translation.y + rand_y,
+                speed: 45.0,
             },
         ));
     }
@@ -434,7 +444,8 @@ pub fn flower_spawn(
                 // transform: Transform::from_scale(Vec3::splat(1.0)),
                 transform: Transform::from_xyz(
                     camera.translation.x + rand_x,
-                    camera.translation.y + rand_y,                    0.0,
+                    camera.translation.y + rand_y,
+                    0.0,
                 ),
                 ..default()
             },
@@ -444,13 +455,15 @@ pub fn flower_spawn(
             SpawnTimeStamp {
                 value: current_time,
             },
+            Health { value: 1.0 },
             Friend {
                 kind: FriendType::Flower,
                 targeting_friend: FriendType::None,
                 targeting_item: ItemType::None,
                 current_animation: AnimationType::Idle,
                 last_position_x: camera.translation.x + rand_x,
-                last_position_y: camera.translation.y + rand_y, speed: 0.0,
+                last_position_y: camera.translation.y + rand_y,
+                speed: 0.0,
             },
         ));
     }
@@ -521,7 +534,8 @@ pub fn bee_spawn(
                 // transform: Transform::from_scale(Vec3::splat(1.0)),
                 transform: Transform::from_xyz(
                     camera.translation.x + rand_x,
-                    camera.translation.y + rand_y,                     0.0,
+                    camera.translation.y + rand_y,
+                    0.0,
                 ),
                 ..default()
             },
@@ -531,13 +545,15 @@ pub fn bee_spawn(
             SpawnTimeStamp {
                 value: current_time,
             },
+            Health { value: 1.0 },
             Friend {
                 kind: FriendType::Bee,
                 targeting_friend: FriendType::Flower,
                 targeting_item: ItemType::None,
                 current_animation: AnimationType::Idle,
                 last_position_x: camera.translation.x + rand_x,
-                last_position_y: camera.translation.y + rand_y, speed: 55.0,
+                last_position_y: camera.translation.y + rand_y,
+                speed: 55.0,
             },
         ));
     }
@@ -608,7 +624,8 @@ pub fn butterfly_spawn(
                 // transform: Transform::from_scale(Vec3::splat(1.0)),
                 transform: Transform::from_xyz(
                     camera.translation.x + rand_x,
-                    camera.translation.y + rand_y,                    0.0,
+                    camera.translation.y + rand_y,
+                    0.0,
                 ),
                 ..default()
             },
@@ -618,13 +635,15 @@ pub fn butterfly_spawn(
             SpawnTimeStamp {
                 value: current_time,
             },
+            Health { value: 1.0 },
             Friend {
                 kind: FriendType::Butterfly,
                 targeting_friend: FriendType::Flower,
                 targeting_item: ItemType::None,
                 current_animation: AnimationType::Idle,
                 last_position_x: camera.translation.x + rand_x,
-                last_position_y: camera.translation.y + rand_y, speed: 35.0,
+                last_position_y: camera.translation.y + rand_y,
+                speed: 35.0,
             },
         ));
     }
@@ -694,7 +713,8 @@ pub fn spider_spawn(
                 // transform: Transform::from_scale(Vec3::splat(1.0)),
                 transform: Transform::from_xyz(
                     camera.translation.x + rand_x,
-                    camera.translation.y + rand_y,                    0.0,
+                    camera.translation.y + rand_y,
+                    0.0,
                 ),
                 ..default()
             },
@@ -704,13 +724,15 @@ pub fn spider_spawn(
             SpawnTimeStamp {
                 value: current_time,
             },
+            Health { value: 1.0 },
             Friend {
                 kind: FriendType::Spider,
                 targeting_friend: FriendType::Butterfly,
                 targeting_item: ItemType::None,
                 current_animation: AnimationType::Idle,
                 last_position_x: camera.translation.x + rand_x,
-                last_position_y: camera.translation.y + rand_y, speed: 45.0,
+                last_position_y: camera.translation.y + rand_y,
+                speed: 45.0,
             },
         ));
     }
@@ -780,7 +802,8 @@ pub fn beaver_spawn(
                 // transform: Transform::from_scale(Vec3::splat(1.0)),
                 transform: Transform::from_xyz(
                     camera.translation.x + rand_x,
-                    camera.translation.y + rand_y,                    0.0,
+                    camera.translation.y + rand_y,
+                    0.0,
                 ),
                 ..default()
             },
@@ -790,13 +813,15 @@ pub fn beaver_spawn(
             SpawnTimeStamp {
                 value: current_time,
             },
+            Health { value: 1.0 },
             Friend {
                 kind: FriendType::Beaver,
                 targeting_friend: FriendType::Player,
                 targeting_item: ItemType::Wood,
                 current_animation: AnimationType::Idle,
                 last_position_x: camera.translation.x + rand_x,
-                last_position_y: camera.translation.y + rand_y, speed: 65.0,
+                last_position_y: camera.translation.y + rand_y,
+                speed: 65.0,
             },
         ));
     }
@@ -867,7 +892,8 @@ pub fn fish_spawn(
                 // transform: Transform::from_scale(Vec3::splat(1.0)),
                 transform: Transform::from_xyz(
                     camera.translation.x + rand_x,
-                    camera.translation.y + rand_y,                     0.0,
+                    camera.translation.y + rand_y,
+                    0.0,
                 ),
                 ..default()
             },
@@ -877,13 +903,15 @@ pub fn fish_spawn(
             SpawnTimeStamp {
                 value: current_time,
             },
+            Health { value: 1.0 },
             Friend {
                 kind: FriendType::Fish,
                 targeting_friend: FriendType::Player,
                 targeting_item: ItemType::Water,
                 current_animation: AnimationType::Idle,
                 last_position_x: camera.translation.x + rand_x,
-                last_position_y: camera.translation.y + rand_y, speed: 85.0,
+                last_position_y: camera.translation.y + rand_y,
+                speed: 85.0,
             },
         ));
     }
@@ -953,7 +981,8 @@ pub fn bear_spawn(
                 // transform: Transform::from_scale(Vec3::splat(1.0)),
                 transform: Transform::from_xyz(
                     camera.translation.x + rand_x,
-                    camera.translation.y + rand_y,                    0.0,
+                    camera.translation.y + rand_y,
+                    0.0,
                 ),
                 ..default()
             },
@@ -963,13 +992,15 @@ pub fn bear_spawn(
             SpawnTimeStamp {
                 value: current_time,
             },
+            Health { value: 1.0 },
             Friend {
                 kind: FriendType::Bear,
                 targeting_friend: FriendType::Player,
                 targeting_item: ItemType::Honey,
                 current_animation: AnimationType::Idle,
                 last_position_x: camera.translation.x + rand_x,
-                last_position_y: camera.translation.y + rand_y, speed: 45.0,
+                last_position_y: camera.translation.y + rand_y,
+                speed: 45.0,
             },
         ));
     }
@@ -1050,13 +1081,15 @@ pub fn tree_spawn(
             SpawnTimeStamp {
                 value: current_time,
             },
+            Health { value: 1.0 },
             Friend {
                 kind: FriendType::Tree,
                 targeting_friend: FriendType::None,
                 targeting_item: ItemType::None,
                 current_animation: AnimationType::Idle,
                 last_position_x: camera.translation.x + rand_x,
-                last_position_y: camera.translation.y + rand_y, speed: 0.0,
+                last_position_y: camera.translation.y + rand_y,
+                speed: 0.0,
             },
         ));
     }
@@ -1126,7 +1159,8 @@ pub fn donkey_spawn(
                 // transform: Transform::from_scale(Vec3::splat(1.0)),
                 transform: Transform::from_xyz(
                     camera.translation.x + rand_x,
-                    camera.translation.y + rand_y,                    0.0,
+                    camera.translation.y + rand_y,
+                    0.0,
                 ),
                 ..default()
             },
@@ -1136,13 +1170,16 @@ pub fn donkey_spawn(
             SpawnTimeStamp {
                 value: current_time,
             },
+            Health { value: 1.0 },
             Friend {
                 kind: FriendType::Donkey,
                 targeting_friend: FriendType::None,
                 targeting_item: ItemType::Apple,
                 current_animation: AnimationType::Idle,
                 last_position_x: camera.translation.x + rand_x,
-                last_position_y: camera.translation.y + rand_y,   speed: 35.0          },
+                last_position_y: camera.translation.y + rand_y,
+                speed: 35.0,
+            },
         ));
     }
 }
@@ -1211,7 +1248,8 @@ pub fn worm_spawn(
                 // transform: Transform::from_scale(Vec3::splat(1.0)),
                 transform: Transform::from_xyz(
                     camera.translation.x + rand_x,
-                    camera.translation.y + rand_y,                     0.0,
+                    camera.translation.y + rand_y,
+                    0.0,
                 ),
                 ..default()
             },
@@ -1221,13 +1259,15 @@ pub fn worm_spawn(
             SpawnTimeStamp {
                 value: current_time,
             },
+            Health { value: 1.0 },
             Friend {
                 kind: FriendType::Worm,
                 targeting_friend: FriendType::None,
                 targeting_item: ItemType::Apple,
                 current_animation: AnimationType::Idle,
                 last_position_x: camera.translation.x + rand_x,
-                last_position_y: camera.translation.y + rand_y, speed: 100.0,
+                last_position_y: camera.translation.y + rand_y,
+                speed: 100.0,
             },
         ));
     }
@@ -1297,7 +1337,7 @@ pub fn sheep_spawn(
                 // transform: Transform::from_scale(Vec3::splat(1.0)),
                 transform: Transform::from_xyz(
                     camera.translation.x + rand_x,
-                    camera.translation.y + rand_y, 
+                    camera.translation.y + rand_y,
                     0.0,
                 ),
                 ..default()
@@ -1308,13 +1348,15 @@ pub fn sheep_spawn(
             SpawnTimeStamp {
                 value: current_time,
             },
+            Health { value: 1.0 },
             Friend {
                 kind: FriendType::Sheep,
                 targeting_friend: FriendType::None,
                 targeting_item: ItemType::DogItem,
                 current_animation: AnimationType::Idle,
                 last_position_x: camera.translation.x + rand_x,
-                last_position_y: camera.translation.y + rand_y, speed: 45.0,
+                last_position_y: camera.translation.y + rand_y,
+                speed: 45.0,
             },
         ));
     }
