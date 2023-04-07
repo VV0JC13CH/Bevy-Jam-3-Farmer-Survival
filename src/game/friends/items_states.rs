@@ -20,7 +20,6 @@ pub enum UnlockedHoe {
 pub enum UnlockedAxe {
     #[default]
     Enabled,
-
     Blocked,
 }
 

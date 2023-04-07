@@ -129,7 +129,7 @@ pub fn cat_spawn(
         let camera = camera_query.get_single().unwrap();
         let texture_handle = asset_server.load("sprites/entities_tilemap.png");
         let texture_atlas =
-            TextureAtlas::from_grid(texture_handle, Vec2::new(128.0, 128.0), 15, 4, None, None);
+            TextureAtlas::from_grid(texture_handle, Vec2::new(128.0, 128.0), MAX_SPECIES_OF_FRIENDS, 4, None, None);
         let texture_atlas_handle = texture_atlases.add(texture_atlas);
         let animation_indices_idle = AnimationIndicesIdle {
             first: index_of_friend,
@@ -211,7 +211,7 @@ pub fn dog_spawn(
         let camera = camera_query.get_single().unwrap();
         let texture_handle = asset_server.load("sprites/entities_tilemap.png");
         let texture_atlas =
-            TextureAtlas::from_grid(texture_handle, Vec2::new(128.0, 128.0), 15, 4, None, None);
+            TextureAtlas::from_grid(texture_handle, Vec2::new(128.0, 128.0), MAX_SPECIES_OF_FRIENDS, 4, None, None);
         let texture_atlas_handle = texture_atlases.add(texture_atlas);
         let animation_indices_idle = AnimationIndicesIdle {
             first: index_of_friend,
@@ -293,7 +293,7 @@ pub fn cow_spawn(
         let camera = camera_query.get_single().unwrap();
         let texture_handle = asset_server.load("sprites/entities_tilemap.png");
         let texture_atlas =
-            TextureAtlas::from_grid(texture_handle, Vec2::new(128.0, 128.0), 15, 4, None, None);
+            TextureAtlas::from_grid(texture_handle, Vec2::new(128.0, 128.0), MAX_SPECIES_OF_FRIENDS, 4, None, None);
         let texture_atlas_handle = texture_atlases.add(texture_atlas);
         let animation_indices_idle = AnimationIndicesIdle {
             first: index_of_friend,
@@ -375,7 +375,7 @@ pub fn flower_spawn(
         let camera = camera_query.get_single().unwrap();
         let texture_handle = asset_server.load("sprites/entities_tilemap.png");
         let texture_atlas =
-            TextureAtlas::from_grid(texture_handle, Vec2::new(128.0, 128.0), 15, 4, None, None);
+            TextureAtlas::from_grid(texture_handle, Vec2::new(128.0, 128.0), MAX_SPECIES_OF_FRIENDS, 4, None, None);
         let texture_atlas_handle = texture_atlases.add(texture_atlas);
         let animation_indices_idle = AnimationIndicesIdle {
             first: index_of_friend,
@@ -457,7 +457,7 @@ pub fn bee_spawn(
         let camera = camera_query.get_single().unwrap();
         let texture_handle = asset_server.load("sprites/entities_tilemap.png");
         let texture_atlas =
-            TextureAtlas::from_grid(texture_handle, Vec2::new(128.0, 128.0), 15, 4, None, None);
+            TextureAtlas::from_grid(texture_handle, Vec2::new(128.0, 128.0), MAX_SPECIES_OF_FRIENDS, 4, None, None);
         let texture_atlas_handle = texture_atlases.add(texture_atlas);
         let animation_indices_idle = AnimationIndicesIdle {
             first: index_of_friend,
@@ -539,7 +539,7 @@ pub fn butterfly_spawn(
         let camera = camera_query.get_single().unwrap();
         let texture_handle = asset_server.load("sprites/entities_tilemap.png");
         let texture_atlas =
-            TextureAtlas::from_grid(texture_handle, Vec2::new(128.0, 128.0), 15, 4, None, None);
+            TextureAtlas::from_grid(texture_handle, Vec2::new(128.0, 128.0), MAX_SPECIES_OF_FRIENDS, 4, None, None);
         let texture_atlas_handle = texture_atlases.add(texture_atlas);
         let animation_indices_idle = AnimationIndicesIdle {
             first: index_of_friend,
@@ -620,7 +620,7 @@ pub fn spider_spawn(
         let camera = camera_query.get_single().unwrap();
         let texture_handle = asset_server.load("sprites/entities_tilemap.png");
         let texture_atlas =
-            TextureAtlas::from_grid(texture_handle, Vec2::new(128.0, 128.0), 15, 4, None, None);
+            TextureAtlas::from_grid(texture_handle, Vec2::new(128.0, 128.0), MAX_SPECIES_OF_FRIENDS, 4, None, None);
         let texture_atlas_handle = texture_atlases.add(texture_atlas);
         let animation_indices_idle = AnimationIndicesIdle {
             first: index_of_friend,
@@ -701,7 +701,7 @@ pub fn beaver_spawn(
         let camera = camera_query.get_single().unwrap();
         let texture_handle = asset_server.load("sprites/entities_tilemap.png");
         let texture_atlas =
-            TextureAtlas::from_grid(texture_handle, Vec2::new(128.0, 128.0), 15, 4, None, None);
+            TextureAtlas::from_grid(texture_handle, Vec2::new(128.0, 128.0), MAX_SPECIES_OF_FRIENDS, 4, None, None);
         let texture_atlas_handle = texture_atlases.add(texture_atlas);
         let animation_indices_idle = AnimationIndicesIdle {
             first: index_of_friend,
@@ -783,7 +783,7 @@ pub fn fish_spawn(
         let camera = camera_query.get_single().unwrap();
         let texture_handle = asset_server.load("sprites/entities_tilemap.png");
         let texture_atlas =
-            TextureAtlas::from_grid(texture_handle, Vec2::new(128.0, 128.0), 15, 4, None, None);
+            TextureAtlas::from_grid(texture_handle, Vec2::new(128.0, 128.0), MAX_SPECIES_OF_FRIENDS, 4, None, None);
         let texture_atlas_handle = texture_atlases.add(texture_atlas);
         let animation_indices_idle = AnimationIndicesIdle {
             first: index_of_friend,
@@ -864,7 +864,7 @@ pub fn bear_spawn(
         let camera = camera_query.get_single().unwrap();
         let texture_handle = asset_server.load("sprites/entities_tilemap.png");
         let texture_atlas =
-            TextureAtlas::from_grid(texture_handle, Vec2::new(128.0, 128.0), 15, 4, None, None);
+            TextureAtlas::from_grid(texture_handle, Vec2::new(128.0, 128.0), MAX_SPECIES_OF_FRIENDS, 4, None, None);
         let texture_atlas_handle = texture_atlases.add(texture_atlas);
         let animation_indices_idle = AnimationIndicesIdle {
             first: index_of_friend,
@@ -945,7 +945,7 @@ pub fn tree_spawn(
         let camera = camera_query.get_single().unwrap();
         let texture_handle = asset_server.load("sprites/entities_tilemap.png");
         let texture_atlas =
-            TextureAtlas::from_grid(texture_handle, Vec2::new(128.0, 128.0), 15, 4, None, None);
+            TextureAtlas::from_grid(texture_handle, Vec2::new(128.0, 128.0), MAX_SPECIES_OF_FRIENDS, 4, None, None);
         let texture_atlas_handle = texture_atlases.add(texture_atlas);
         let animation_indices_idle = AnimationIndicesIdle {
             first: index_of_friend,
@@ -1026,7 +1026,7 @@ pub fn donkey_spawn(
         let camera = camera_query.get_single().unwrap();
         let texture_handle = asset_server.load("sprites/entities_tilemap.png");
         let texture_atlas =
-            TextureAtlas::from_grid(texture_handle, Vec2::new(128.0, 128.0), 15, 4, None, None);
+            TextureAtlas::from_grid(texture_handle, Vec2::new(128.0, 128.0), MAX_SPECIES_OF_FRIENDS, 4, None, None);
         let texture_atlas_handle = texture_atlases.add(texture_atlas);
         let animation_indices_idle = AnimationIndicesIdle {
             first: index_of_friend,
@@ -1107,7 +1107,7 @@ pub fn worm_spawn(
         let camera = camera_query.get_single().unwrap();
         let texture_handle = asset_server.load("sprites/entities_tilemap.png");
         let texture_atlas =
-            TextureAtlas::from_grid(texture_handle, Vec2::new(128.0, 128.0), 15, 4, None, None);
+            TextureAtlas::from_grid(texture_handle, Vec2::new(128.0, 128.0), MAX_SPECIES_OF_FRIENDS, 4, None, None);
         let texture_atlas_handle = texture_atlases.add(texture_atlas);
         let animation_indices_idle = AnimationIndicesIdle {
             first: index_of_friend,
@@ -1188,7 +1188,7 @@ pub fn sheep_spawn(
         let camera = camera_query.get_single().unwrap();
         let texture_handle = asset_server.load("sprites/entities_tilemap.png");
         let texture_atlas =
-            TextureAtlas::from_grid(texture_handle, Vec2::new(128.0, 128.0), 15, 4, None, None);
+            TextureAtlas::from_grid(texture_handle, Vec2::new(128.0, 128.0), MAX_SPECIES_OF_FRIENDS, 4, None, None);
         let texture_atlas_handle = texture_atlases.add(texture_atlas);
         let animation_indices_idle = AnimationIndicesIdle {
             first: index_of_friend,
@@ -1307,7 +1307,7 @@ pub fn friends_animate(
                         indices_idle.second
                     };
                 }
-                AnimationType::Running => {
+                _ => {
                     sprite.index = if sprite.index == indices_running.second {
                         indices_running.first
                     } else {

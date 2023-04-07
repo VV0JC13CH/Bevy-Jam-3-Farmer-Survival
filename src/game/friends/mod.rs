@@ -174,6 +174,7 @@ impl Plugin for FriendsPlugin {
                         .in_set(OnUpdate(UnlockedBugNet::Enabled)),
                     friends_movement.in_set(FriendsMovementSystemSet),
                     friends_animate.in_set(FriendsMovementSystemSet),
+                    items_animate
                 )
                     .in_set(OnUpdate(AppState::Game))
                     .in_set(OnUpdate(SimulationState::Running)),

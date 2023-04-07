@@ -22,6 +22,7 @@ pub enum FriendType {
 
 pub enum ItemType {
     Honey,
+    Axe,
     Apple,
     Water,
     Milk,
@@ -36,6 +37,7 @@ pub enum ItemType {
 pub enum AnimationType {
     Idle,
     Running,
+    OneTime,
 }
 
 #[derive(Component)]
@@ -46,6 +48,15 @@ pub struct Friend {
     pub current_animation: AnimationType,
     pub last_position_x: f32,
     pub last_position_y: f32,
+}
+
+#[derive(Component)]
+pub struct Item {
+    pub kind: ItemType,
+    pub targeting_friend: FriendType,
+    pub current_animation: AnimationType,
+    pub size_x: f32,
+    pub sizy_y: f32,
 }
 
 #[derive(Default, Component)]
@@ -63,6 +74,14 @@ pub struct AnimationIndicesIdle {
 pub struct AnimationIndicesRunning {
     pub first: usize,
     pub second: usize,
+}
+
+#[derive(Component)]
+pub struct AnimationIndicesItem {
+    pub icon: usize,
+    pub first: usize,
+    pub second: usize,
+    pub third: usize,
 }
 
 #[derive(Component, Deref, DerefMut)]
