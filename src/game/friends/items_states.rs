@@ -1,108 +1,82 @@
 use bevy::prelude::*;
 
 #[derive(States, Debug, Clone, Copy, Eq, PartialEq, Hash, Default)]
-pub enum UnlockedMouse {
+pub enum UnlockedWaterCan {
     #[default]
-    Spawn,
-    Aggro,
+    Enabled,
+
     Blocked,
 }
 
 #[derive(States, Debug, Clone, Copy, Eq, PartialEq, Hash, Default)]
-pub enum UnlockedCat {
+pub enum UnlockedHoe {
     #[default]
-    Spawn,
-    Aggro,
+    Enabled,
+
     Blocked,
 }
 
 #[derive(States, Debug, Clone, Copy, Eq, PartialEq, Hash, Default)]
-pub enum UnlockedDog {
+pub enum UnlockedAxe {
     #[default]
-    Spawn,
+    Enabled,
+
     Blocked,
-    Aggro,
 }
 
 #[derive(States, Debug, Clone, Copy, Eq, PartialEq, Hash, Default)]
-pub enum UnlockedCow {
+pub enum UnlockedCatItem {
     #[default]
-    Spawn,
+    Enabled,
+
     Blocked,
-    Aggro,
 }
 #[derive(States, Debug, Clone, Copy, Eq, PartialEq, Hash, Default)]
-pub enum UnlockedFlower {
+pub enum UnlockedHoney {
     #[default]
-    Spawn,
+    Enabled,
+
     Blocked,
-    Aggro,
 }
 #[derive(States, Debug, Clone, Copy, Eq, PartialEq, Hash, Default)]
-pub enum UnlockedBee {
+pub enum UnlockedMilk {
     #[default]
-    Spawn,
+    Enabled,
+
     Blocked,
-    Aggro,
 }
 #[derive(States, Debug, Clone, Copy, Eq, PartialEq, Hash, Default)]
-pub enum UnlockedButterfly {
+pub enum UnlockedBugNet {
     #[default]
-    Spawn,
+    Enabled,
+
     Blocked,
-    Aggro,
 }
 #[derive(States, Debug, Clone, Copy, Eq, PartialEq, Hash, Default)]
-pub enum UnlockedSpider {
+pub enum UnlockedRod {
     #[default]
-    Spawn,
+    Enabled,
+
     Blocked,
-    Aggro,
 }
 #[derive(States, Debug, Clone, Copy, Eq, PartialEq, Hash, Default)]
-pub enum UnlockedBeaver {
+pub enum UnlockedApple {
     #[default]
-    Spawn,
+    Enabled,
+
     Blocked,
-    Aggro,
 }
 #[derive(States, Debug, Clone, Copy, Eq, PartialEq, Hash, Default)]
-pub enum UnlockedFish {
+pub enum UnlockedBone {
     #[default]
-    Spawn,
-    Aggro,
-}
-#[derive(States, Debug, Clone, Copy, Eq, PartialEq, Hash, Default)]
-pub enum UnlockedBear {
-    #[default]
-    Spawn,
+    Enabled,
+
     Blocked,
-    Aggro,
 }
 #[derive(States, Debug, Clone, Copy, Eq, PartialEq, Hash, Default)]
-pub enum UnlockedTree {
+pub enum UnlockedDogItem {
     #[default]
-    Spawn,
-    Aggro,
-}
-#[derive(States, Debug, Clone, Copy, Eq, PartialEq, Hash, Default)]
-pub enum UnlockedDonkey {
-    #[default]
-    Spawn,
+    Enabled,
+
     Blocked,
-    Aggro,
-}
-#[derive(States, Debug, Clone, Copy, Eq, PartialEq, Hash, Default)]
-pub enum UnlockedWorm {
-    #[default]
-    Spawn,
-    Blocked,
-    Aggro,
-}
-#[derive(States, Debug, Clone, Copy, Eq, PartialEq, Hash, Default)]
-pub enum UnlockedSheep {
-    #[default]
-    Spawn,
-    Blocked,
-    Aggro,
 }

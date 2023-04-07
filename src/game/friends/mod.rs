@@ -1,9 +1,13 @@
 mod components;
-mod states;
-mod systems;
+mod friends_states;
+mod friends_systems;
+mod items_states;
+mod items_systems;
 
-use states::*;
-use systems::*;
+use friends_states::*;
+use friends_systems::*;
+use items_states::*;
+use items_systems::*;
 
 use super::SimulationState;
 use crate::AppState;
@@ -36,7 +40,17 @@ impl Plugin for FriendsPlugin {
             .add_state::<UnlockedTree>()
             .add_state::<UnlockedDonkey>()
             .add_state::<UnlockedWorm>()
-            .add_state::<UnlockedSheep>()
+            .add_state::<UnlockedWaterCan>()
+            .add_state::<UnlockedHoe>()
+            .add_state::<UnlockedAxe>()
+            .add_state::<UnlockedCatItem>()
+            .add_state::<UnlockedHoney>()
+            .add_state::<UnlockedMilk>()
+            .add_state::<UnlockedBugNet>()
+            .add_state::<UnlockedRod>()
+            .add_state::<UnlockedApple>()
+            .add_state::<UnlockedBone>()
+            .add_state::<UnlockedDogItem>()
             // Configure System Sets
             .configure_set(FriendsSpawnSystemSet.before(FriendsMovementSystemSet))
             // On Enter State
@@ -80,6 +94,12 @@ impl Plugin for FriendsPlugin {
                     fish_spawn
                         .in_set(FriendsSpawnSystemSet)
                         .in_set(OnUpdate(UnlockedFish::Spawn)),
+                )
+                    .in_set(OnUpdate(AppState::Game))
+                    .in_set(OnUpdate(SimulationState::Running)),
+            )
+            .add_systems(
+                (
                     bear_spawn
                         .in_set(FriendsSpawnSystemSet)
                         .in_set(OnUpdate(UnlockedBear::Spawn)),
@@ -95,6 +115,63 @@ impl Plugin for FriendsPlugin {
                     sheep_spawn
                         .in_set(FriendsSpawnSystemSet)
                         .in_set(OnUpdate(UnlockedSheep::Spawn)),
+                    friends_movement.in_set(FriendsMovementSystemSet),
+                    friends_animate.in_set(FriendsMovementSystemSet),
+                )
+                    .in_set(OnUpdate(AppState::Game))
+                    .in_set(OnUpdate(SimulationState::Running)),
+            )
+            .add_systems(
+                (
+                    action_water_can
+                        .in_set(FriendsSpawnSystemSet)
+                        .in_set(OnUpdate(UnlockedWaterCan::Enabled)),
+                    action_hoe
+                        .in_set(FriendsSpawnSystemSet)
+                        .in_set(OnUpdate(UnlockedHoe::Enabled)),
+                    action_axe
+                        .in_set(FriendsSpawnSystemSet)
+                        .in_set(OnUpdate(UnlockedAxe::Enabled)),
+                    action_honey
+                        .in_set(FriendsSpawnSystemSet)
+                        .in_set(OnUpdate(UnlockedHoney::Enabled)),
+                    friends_movement.in_set(FriendsMovementSystemSet),
+                    friends_animate.in_set(FriendsMovementSystemSet),
+                )
+                    .in_set(OnUpdate(AppState::Game))
+                    .in_set(OnUpdate(SimulationState::Running)),
+            )
+            .add_systems(
+                (
+                    action_milk
+                        .in_set(FriendsSpawnSystemSet)
+                        .in_set(OnUpdate(UnlockedMilk::Enabled)),
+                    action_bug_net
+                        .in_set(FriendsSpawnSystemSet)
+                        .in_set(OnUpdate(UnlockedBugNet::Enabled)),
+                    action_rod
+                        .in_set(FriendsSpawnSystemSet)
+                        .in_set(OnUpdate(UnlockedRod::Enabled)),
+                    action_apple
+                        .in_set(FriendsSpawnSystemSet)
+                        .in_set(OnUpdate(UnlockedApple::Enabled)),
+                    action_bone
+                        .in_set(FriendsSpawnSystemSet)
+                        .in_set(OnUpdate(UnlockedBone::Enabled)),
+                    friends_movement.in_set(FriendsMovementSystemSet),
+                    friends_animate.in_set(FriendsMovementSystemSet),
+                )
+                    .in_set(OnUpdate(AppState::Game))
+                    .in_set(OnUpdate(SimulationState::Running)),
+            )
+            .add_systems(
+                (
+                    action_dog_item
+                        .in_set(FriendsSpawnSystemSet)
+                        .in_set(OnUpdate(UnlockedMilk::Enabled)),
+                    action_cat_item
+                        .in_set(FriendsSpawnSystemSet)
+                        .in_set(OnUpdate(UnlockedBugNet::Enabled)),
                     friends_movement.in_set(FriendsMovementSystemSet),
                     friends_animate.in_set(FriendsMovementSystemSet),
                 )
