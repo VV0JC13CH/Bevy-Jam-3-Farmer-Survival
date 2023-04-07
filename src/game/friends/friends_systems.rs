@@ -84,8 +84,7 @@ pub fn mouse_spawn(
                 // transform: Transform::from_scale(Vec3::splat(1.0)),
                 transform: Transform::from_xyz(
                     camera.translation.x + rand_x,
-                    camera.translation.y + rand_y,
-                    0.0,
+                    camera.translation.y + rand_y,                     0.0,
                 ),
                 ..default()
             },
@@ -101,7 +100,8 @@ pub fn mouse_spawn(
                 targeting_item: ItemType::Cheese,
                 current_animation: AnimationType::Idle,
                 last_position_x: camera.translation.x + rand_x,
-                last_position_y: camera.translation.y + rand_y,
+                last_position_y: camera.translation.y + rand_y, speed: 75.0,
+                
             },
         ));
     }
@@ -128,8 +128,14 @@ pub fn cat_spawn(
     if spawn_friend {
         let camera = camera_query.get_single().unwrap();
         let texture_handle = asset_server.load("sprites/entities_tilemap.png");
-        let texture_atlas =
-            TextureAtlas::from_grid(texture_handle, Vec2::new(128.0, 128.0), MAX_SPECIES_OF_FRIENDS, 4, None, None);
+        let texture_atlas = TextureAtlas::from_grid(
+            texture_handle,
+            Vec2::new(128.0, 128.0),
+            MAX_SPECIES_OF_FRIENDS,
+            4,
+            None,
+            None,
+        );
         let texture_atlas_handle = texture_atlases.add(texture_atlas);
         let animation_indices_idle = AnimationIndicesIdle {
             first: index_of_friend,
@@ -166,8 +172,7 @@ pub fn cat_spawn(
                 // transform: Transform::from_scale(Vec3::splat(1.0)),
                 transform: Transform::from_xyz(
                     camera.translation.x + rand_x,
-                    camera.translation.y + rand_y,
-                    0.0,
+                    camera.translation.y + rand_y,                    0.0,
                 ),
                 ..default()
             },
@@ -183,7 +188,7 @@ pub fn cat_spawn(
                 targeting_item: ItemType::Milk,
                 current_animation: AnimationType::Idle,
                 last_position_x: camera.translation.x + rand_x,
-                last_position_y: camera.translation.y + rand_y,
+                last_position_y: camera.translation.y + rand_y, speed: 55.0,
             },
         ));
     }
@@ -210,8 +215,14 @@ pub fn dog_spawn(
     if spawn_friend {
         let camera = camera_query.get_single().unwrap();
         let texture_handle = asset_server.load("sprites/entities_tilemap.png");
-        let texture_atlas =
-            TextureAtlas::from_grid(texture_handle, Vec2::new(128.0, 128.0), MAX_SPECIES_OF_FRIENDS, 4, None, None);
+        let texture_atlas = TextureAtlas::from_grid(
+            texture_handle,
+            Vec2::new(128.0, 128.0),
+            MAX_SPECIES_OF_FRIENDS,
+            4,
+            None,
+            None,
+        );
         let texture_atlas_handle = texture_atlases.add(texture_atlas);
         let animation_indices_idle = AnimationIndicesIdle {
             first: index_of_friend,
@@ -248,7 +259,7 @@ pub fn dog_spawn(
                 // transform: Transform::from_scale(Vec3::splat(1.0)),
                 transform: Transform::from_xyz(
                     camera.translation.x + rand_x,
-                    camera.translation.y + rand_y,
+                    camera.translation.y + rand_y, 
                     0.0,
                 ),
                 ..default()
@@ -265,7 +276,7 @@ pub fn dog_spawn(
                 targeting_item: ItemType::Bone,
                 current_animation: AnimationType::Idle,
                 last_position_x: camera.translation.x + rand_x,
-                last_position_y: camera.translation.y + rand_y,
+                last_position_y: camera.translation.y + rand_y, speed: 65.0,
             },
         ));
     }
@@ -292,8 +303,14 @@ pub fn cow_spawn(
     if spawn_friend {
         let camera = camera_query.get_single().unwrap();
         let texture_handle = asset_server.load("sprites/entities_tilemap.png");
-        let texture_atlas =
-            TextureAtlas::from_grid(texture_handle, Vec2::new(128.0, 128.0), MAX_SPECIES_OF_FRIENDS, 4, None, None);
+        let texture_atlas = TextureAtlas::from_grid(
+            texture_handle,
+            Vec2::new(128.0, 128.0),
+            MAX_SPECIES_OF_FRIENDS,
+            4,
+            None,
+            None,
+        );
         let texture_atlas_handle = texture_atlases.add(texture_atlas);
         let animation_indices_idle = AnimationIndicesIdle {
             first: index_of_friend,
@@ -330,8 +347,7 @@ pub fn cow_spawn(
                 // transform: Transform::from_scale(Vec3::splat(1.0)),
                 transform: Transform::from_xyz(
                     camera.translation.x + rand_x,
-                    camera.translation.y + rand_y,
-                    0.0,
+                    camera.translation.y + rand_y,                    0.0,
                 ),
                 ..default()
             },
@@ -347,7 +363,7 @@ pub fn cow_spawn(
                 targeting_item: ItemType::Milk,
                 current_animation: AnimationType::Idle,
                 last_position_x: camera.translation.x + rand_x,
-                last_position_y: camera.translation.y + rand_y,
+                last_position_y: camera.translation.y + rand_y, speed: 45.0,
             },
         ));
     }
@@ -374,8 +390,14 @@ pub fn flower_spawn(
     if spawn_friend {
         let camera = camera_query.get_single().unwrap();
         let texture_handle = asset_server.load("sprites/entities_tilemap.png");
-        let texture_atlas =
-            TextureAtlas::from_grid(texture_handle, Vec2::new(128.0, 128.0), MAX_SPECIES_OF_FRIENDS, 4, None, None);
+        let texture_atlas = TextureAtlas::from_grid(
+            texture_handle,
+            Vec2::new(128.0, 128.0),
+            MAX_SPECIES_OF_FRIENDS,
+            4,
+            None,
+            None,
+        );
         let texture_atlas_handle = texture_atlases.add(texture_atlas);
         let animation_indices_idle = AnimationIndicesIdle {
             first: index_of_friend,
@@ -412,8 +434,7 @@ pub fn flower_spawn(
                 // transform: Transform::from_scale(Vec3::splat(1.0)),
                 transform: Transform::from_xyz(
                     camera.translation.x + rand_x,
-                    camera.translation.y + rand_y,
-                    0.0,
+                    camera.translation.y + rand_y,                    0.0,
                 ),
                 ..default()
             },
@@ -429,7 +450,7 @@ pub fn flower_spawn(
                 targeting_item: ItemType::None,
                 current_animation: AnimationType::Idle,
                 last_position_x: camera.translation.x + rand_x,
-                last_position_y: camera.translation.y + rand_y,
+                last_position_y: camera.translation.y + rand_y, speed: 0.0,
             },
         ));
     }
@@ -456,8 +477,14 @@ pub fn bee_spawn(
     if spawn_friend {
         let camera = camera_query.get_single().unwrap();
         let texture_handle = asset_server.load("sprites/entities_tilemap.png");
-        let texture_atlas =
-            TextureAtlas::from_grid(texture_handle, Vec2::new(128.0, 128.0), MAX_SPECIES_OF_FRIENDS, 4, None, None);
+        let texture_atlas = TextureAtlas::from_grid(
+            texture_handle,
+            Vec2::new(128.0, 128.0),
+            MAX_SPECIES_OF_FRIENDS,
+            4,
+            None,
+            None,
+        );
         let texture_atlas_handle = texture_atlases.add(texture_atlas);
         let animation_indices_idle = AnimationIndicesIdle {
             first: index_of_friend,
@@ -494,8 +521,7 @@ pub fn bee_spawn(
                 // transform: Transform::from_scale(Vec3::splat(1.0)),
                 transform: Transform::from_xyz(
                     camera.translation.x + rand_x,
-                    camera.translation.y + rand_y,
-                    0.0,
+                    camera.translation.y + rand_y,                     0.0,
                 ),
                 ..default()
             },
@@ -511,7 +537,7 @@ pub fn bee_spawn(
                 targeting_item: ItemType::None,
                 current_animation: AnimationType::Idle,
                 last_position_x: camera.translation.x + rand_x,
-                last_position_y: camera.translation.y + rand_y,
+                last_position_y: camera.translation.y + rand_y, speed: 55.0,
             },
         ));
     }
@@ -538,8 +564,14 @@ pub fn butterfly_spawn(
     if spawn_friend {
         let camera = camera_query.get_single().unwrap();
         let texture_handle = asset_server.load("sprites/entities_tilemap.png");
-        let texture_atlas =
-            TextureAtlas::from_grid(texture_handle, Vec2::new(128.0, 128.0), MAX_SPECIES_OF_FRIENDS, 4, None, None);
+        let texture_atlas = TextureAtlas::from_grid(
+            texture_handle,
+            Vec2::new(128.0, 128.0),
+            MAX_SPECIES_OF_FRIENDS,
+            4,
+            None,
+            None,
+        );
         let texture_atlas_handle = texture_atlases.add(texture_atlas);
         let animation_indices_idle = AnimationIndicesIdle {
             first: index_of_friend,
@@ -576,8 +608,7 @@ pub fn butterfly_spawn(
                 // transform: Transform::from_scale(Vec3::splat(1.0)),
                 transform: Transform::from_xyz(
                     camera.translation.x + rand_x,
-                    camera.translation.y + rand_y,
-                    0.0,
+                    camera.translation.y + rand_y,                    0.0,
                 ),
                 ..default()
             },
@@ -593,7 +624,7 @@ pub fn butterfly_spawn(
                 targeting_item: ItemType::None,
                 current_animation: AnimationType::Idle,
                 last_position_x: camera.translation.x + rand_x,
-                last_position_y: camera.translation.y + rand_y,
+                last_position_y: camera.translation.y + rand_y, speed: 35.0,
             },
         ));
     }
@@ -619,8 +650,14 @@ pub fn spider_spawn(
     if spawn_friend {
         let camera = camera_query.get_single().unwrap();
         let texture_handle = asset_server.load("sprites/entities_tilemap.png");
-        let texture_atlas =
-            TextureAtlas::from_grid(texture_handle, Vec2::new(128.0, 128.0), MAX_SPECIES_OF_FRIENDS, 4, None, None);
+        let texture_atlas = TextureAtlas::from_grid(
+            texture_handle,
+            Vec2::new(128.0, 128.0),
+            MAX_SPECIES_OF_FRIENDS,
+            4,
+            None,
+            None,
+        );
         let texture_atlas_handle = texture_atlases.add(texture_atlas);
         let animation_indices_idle = AnimationIndicesIdle {
             first: index_of_friend,
@@ -657,8 +694,7 @@ pub fn spider_spawn(
                 // transform: Transform::from_scale(Vec3::splat(1.0)),
                 transform: Transform::from_xyz(
                     camera.translation.x + rand_x,
-                    camera.translation.y + rand_y,
-                    0.0,
+                    camera.translation.y + rand_y,                    0.0,
                 ),
                 ..default()
             },
@@ -674,7 +710,7 @@ pub fn spider_spawn(
                 targeting_item: ItemType::None,
                 current_animation: AnimationType::Idle,
                 last_position_x: camera.translation.x + rand_x,
-                last_position_y: camera.translation.y + rand_y,
+                last_position_y: camera.translation.y + rand_y, speed: 45.0,
             },
         ));
     }
@@ -700,8 +736,14 @@ pub fn beaver_spawn(
     if spawn_friend {
         let camera = camera_query.get_single().unwrap();
         let texture_handle = asset_server.load("sprites/entities_tilemap.png");
-        let texture_atlas =
-            TextureAtlas::from_grid(texture_handle, Vec2::new(128.0, 128.0), MAX_SPECIES_OF_FRIENDS, 4, None, None);
+        let texture_atlas = TextureAtlas::from_grid(
+            texture_handle,
+            Vec2::new(128.0, 128.0),
+            MAX_SPECIES_OF_FRIENDS,
+            4,
+            None,
+            None,
+        );
         let texture_atlas_handle = texture_atlases.add(texture_atlas);
         let animation_indices_idle = AnimationIndicesIdle {
             first: index_of_friend,
@@ -738,8 +780,7 @@ pub fn beaver_spawn(
                 // transform: Transform::from_scale(Vec3::splat(1.0)),
                 transform: Transform::from_xyz(
                     camera.translation.x + rand_x,
-                    camera.translation.y + rand_y,
-                    0.0,
+                    camera.translation.y + rand_y,                    0.0,
                 ),
                 ..default()
             },
@@ -755,7 +796,7 @@ pub fn beaver_spawn(
                 targeting_item: ItemType::Wood,
                 current_animation: AnimationType::Idle,
                 last_position_x: camera.translation.x + rand_x,
-                last_position_y: camera.translation.y + rand_y,
+                last_position_y: camera.translation.y + rand_y, speed: 65.0,
             },
         ));
     }
@@ -782,8 +823,14 @@ pub fn fish_spawn(
     if spawn_friend {
         let camera = camera_query.get_single().unwrap();
         let texture_handle = asset_server.load("sprites/entities_tilemap.png");
-        let texture_atlas =
-            TextureAtlas::from_grid(texture_handle, Vec2::new(128.0, 128.0), MAX_SPECIES_OF_FRIENDS, 4, None, None);
+        let texture_atlas = TextureAtlas::from_grid(
+            texture_handle,
+            Vec2::new(128.0, 128.0),
+            MAX_SPECIES_OF_FRIENDS,
+            4,
+            None,
+            None,
+        );
         let texture_atlas_handle = texture_atlases.add(texture_atlas);
         let animation_indices_idle = AnimationIndicesIdle {
             first: index_of_friend,
@@ -820,8 +867,7 @@ pub fn fish_spawn(
                 // transform: Transform::from_scale(Vec3::splat(1.0)),
                 transform: Transform::from_xyz(
                     camera.translation.x + rand_x,
-                    camera.translation.y + rand_y,
-                    0.0,
+                    camera.translation.y + rand_y,                     0.0,
                 ),
                 ..default()
             },
@@ -837,7 +883,7 @@ pub fn fish_spawn(
                 targeting_item: ItemType::Water,
                 current_animation: AnimationType::Idle,
                 last_position_x: camera.translation.x + rand_x,
-                last_position_y: camera.translation.y + rand_y,
+                last_position_y: camera.translation.y + rand_y, speed: 85.0,
             },
         ));
     }
@@ -863,8 +909,14 @@ pub fn bear_spawn(
     if spawn_friend {
         let camera = camera_query.get_single().unwrap();
         let texture_handle = asset_server.load("sprites/entities_tilemap.png");
-        let texture_atlas =
-            TextureAtlas::from_grid(texture_handle, Vec2::new(128.0, 128.0), MAX_SPECIES_OF_FRIENDS, 4, None, None);
+        let texture_atlas = TextureAtlas::from_grid(
+            texture_handle,
+            Vec2::new(128.0, 128.0),
+            MAX_SPECIES_OF_FRIENDS,
+            4,
+            None,
+            None,
+        );
         let texture_atlas_handle = texture_atlases.add(texture_atlas);
         let animation_indices_idle = AnimationIndicesIdle {
             first: index_of_friend,
@@ -901,8 +953,7 @@ pub fn bear_spawn(
                 // transform: Transform::from_scale(Vec3::splat(1.0)),
                 transform: Transform::from_xyz(
                     camera.translation.x + rand_x,
-                    camera.translation.y + rand_y,
-                    0.0,
+                    camera.translation.y + rand_y,                    0.0,
                 ),
                 ..default()
             },
@@ -918,7 +969,7 @@ pub fn bear_spawn(
                 targeting_item: ItemType::Honey,
                 current_animation: AnimationType::Idle,
                 last_position_x: camera.translation.x + rand_x,
-                last_position_y: camera.translation.y + rand_y,
+                last_position_y: camera.translation.y + rand_y, speed: 45.0,
             },
         ));
     }
@@ -944,8 +995,14 @@ pub fn tree_spawn(
     if spawn_friend {
         let camera = camera_query.get_single().unwrap();
         let texture_handle = asset_server.load("sprites/entities_tilemap.png");
-        let texture_atlas =
-            TextureAtlas::from_grid(texture_handle, Vec2::new(128.0, 128.0), MAX_SPECIES_OF_FRIENDS, 4, None, None);
+        let texture_atlas = TextureAtlas::from_grid(
+            texture_handle,
+            Vec2::new(128.0, 128.0),
+            MAX_SPECIES_OF_FRIENDS,
+            4,
+            None,
+            None,
+        );
         let texture_atlas_handle = texture_atlases.add(texture_atlas);
         let animation_indices_idle = AnimationIndicesIdle {
             first: index_of_friend,
@@ -999,7 +1056,7 @@ pub fn tree_spawn(
                 targeting_item: ItemType::None,
                 current_animation: AnimationType::Idle,
                 last_position_x: camera.translation.x + rand_x,
-                last_position_y: camera.translation.y + rand_y,
+                last_position_y: camera.translation.y + rand_y, speed: 0.0,
             },
         ));
     }
@@ -1025,8 +1082,14 @@ pub fn donkey_spawn(
     if spawn_friend {
         let camera = camera_query.get_single().unwrap();
         let texture_handle = asset_server.load("sprites/entities_tilemap.png");
-        let texture_atlas =
-            TextureAtlas::from_grid(texture_handle, Vec2::new(128.0, 128.0), MAX_SPECIES_OF_FRIENDS, 4, None, None);
+        let texture_atlas = TextureAtlas::from_grid(
+            texture_handle,
+            Vec2::new(128.0, 128.0),
+            MAX_SPECIES_OF_FRIENDS,
+            4,
+            None,
+            None,
+        );
         let texture_atlas_handle = texture_atlases.add(texture_atlas);
         let animation_indices_idle = AnimationIndicesIdle {
             first: index_of_friend,
@@ -1063,8 +1126,7 @@ pub fn donkey_spawn(
                 // transform: Transform::from_scale(Vec3::splat(1.0)),
                 transform: Transform::from_xyz(
                     camera.translation.x + rand_x,
-                    camera.translation.y + rand_y,
-                    0.0,
+                    camera.translation.y + rand_y,                    0.0,
                 ),
                 ..default()
             },
@@ -1080,8 +1142,7 @@ pub fn donkey_spawn(
                 targeting_item: ItemType::Apple,
                 current_animation: AnimationType::Idle,
                 last_position_x: camera.translation.x + rand_x,
-                last_position_y: camera.translation.y + rand_y,
-            },
+                last_position_y: camera.translation.y + rand_y,   speed: 35.0          },
         ));
     }
 }
@@ -1097,7 +1158,7 @@ pub fn worm_spawn(
     let mut spawn_friend: bool = true;
     let current_time = time.elapsed_seconds_f64();
     for timer in spawn_timers.iter() {
-        if (current_time - timer.value) > 1.0 {
+        if (current_time - timer.value) > 5.0 {
             spawn_friend = true
         } else {
             spawn_friend = false
@@ -1106,8 +1167,14 @@ pub fn worm_spawn(
     if spawn_friend {
         let camera = camera_query.get_single().unwrap();
         let texture_handle = asset_server.load("sprites/entities_tilemap.png");
-        let texture_atlas =
-            TextureAtlas::from_grid(texture_handle, Vec2::new(128.0, 128.0), MAX_SPECIES_OF_FRIENDS, 4, None, None);
+        let texture_atlas = TextureAtlas::from_grid(
+            texture_handle,
+            Vec2::new(128.0, 128.0),
+            MAX_SPECIES_OF_FRIENDS,
+            4,
+            None,
+            None,
+        );
         let texture_atlas_handle = texture_atlases.add(texture_atlas);
         let animation_indices_idle = AnimationIndicesIdle {
             first: index_of_friend,
@@ -1144,8 +1211,7 @@ pub fn worm_spawn(
                 // transform: Transform::from_scale(Vec3::splat(1.0)),
                 transform: Transform::from_xyz(
                     camera.translation.x + rand_x,
-                    camera.translation.y + rand_y,
-                    0.0,
+                    camera.translation.y + rand_y,                     0.0,
                 ),
                 ..default()
             },
@@ -1161,7 +1227,7 @@ pub fn worm_spawn(
                 targeting_item: ItemType::Apple,
                 current_animation: AnimationType::Idle,
                 last_position_x: camera.translation.x + rand_x,
-                last_position_y: camera.translation.y + rand_y,
+                last_position_y: camera.translation.y + rand_y, speed: 100.0,
             },
         ));
     }
@@ -1187,8 +1253,14 @@ pub fn sheep_spawn(
     if spawn_friend {
         let camera = camera_query.get_single().unwrap();
         let texture_handle = asset_server.load("sprites/entities_tilemap.png");
-        let texture_atlas =
-            TextureAtlas::from_grid(texture_handle, Vec2::new(128.0, 128.0), MAX_SPECIES_OF_FRIENDS, 4, None, None);
+        let texture_atlas = TextureAtlas::from_grid(
+            texture_handle,
+            Vec2::new(128.0, 128.0),
+            MAX_SPECIES_OF_FRIENDS,
+            4,
+            None,
+            None,
+        );
         let texture_atlas_handle = texture_atlases.add(texture_atlas);
         let animation_indices_idle = AnimationIndicesIdle {
             first: index_of_friend,
@@ -1225,7 +1297,7 @@ pub fn sheep_spawn(
                 // transform: Transform::from_scale(Vec3::splat(1.0)),
                 transform: Transform::from_xyz(
                     camera.translation.x + rand_x,
-                    camera.translation.y + rand_y,
+                    camera.translation.y + rand_y, 
                     0.0,
                 ),
                 ..default()
@@ -1242,7 +1314,7 @@ pub fn sheep_spawn(
                 targeting_item: ItemType::DogItem,
                 current_animation: AnimationType::Idle,
                 last_position_x: camera.translation.x + rand_x,
-                last_position_y: camera.translation.y + rand_y,
+                last_position_y: camera.translation.y + rand_y, speed: 45.0,
             },
         ));
     }
@@ -1316,5 +1388,41 @@ pub fn friends_animate(
                 }
             }
         };
+    }
+}
+
+pub fn friends_target_target(
+    time: Res<Time>,
+
+    camera_query: Query<&Transform, (With<Camera>, Without<Friend>)>,
+    mut friend_query: Query<
+        (&mut Transform, &Friend),
+        (With<Friend>, Without<Camera>, Without<Item>),
+    >,
+) {
+    let camera = camera_query.get_single().unwrap();
+
+    for (mut transform, friend) in &mut friend_query {
+        let mut direction = Vec3::ZERO;
+        if transform.translation.x > camera.translation.x {
+            direction += Vec3::new(-1.0, 0.0, 0.0)
+        } else if transform.translation.x < camera.translation.x {
+            direction += Vec3::new(1.0, 0.0, 0.0)
+        } else {
+            direction += Vec3::new(0.0, 0.0, 0.0)
+        }
+        if transform.translation.y < camera.translation.y {
+            direction += Vec3::new(0.0, 1.0, 0.0);
+        } else if transform.translation.y > camera.translation.y {
+            direction += Vec3::new(0.0, -1.0, 0.0);
+        } else {
+            direction += Vec3::new(0.0, 0.0, 0.0);
+        }
+
+        if direction.length() > 0.0 {
+            direction = direction.normalize();
+        }
+
+        transform.translation += direction * friend.speed * time.delta_seconds();
     }
 }

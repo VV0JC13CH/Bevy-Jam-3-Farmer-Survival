@@ -1,5 +1,6 @@
 use bevy::prelude::*;
 
+#[derive(PartialEq)]
 pub enum FriendType {
     Mouse,
     Cat,
@@ -41,6 +42,16 @@ pub enum AnimationType {
 }
 
 #[derive(Component)]
+pub struct Health {
+    pub value: f32
+}
+
+#[derive(Component)]
+pub struct Damage {
+    pub value: f32
+}
+
+#[derive(Component)]
 pub struct Friend {
     pub kind: FriendType,
     pub targeting_friend: FriendType,
@@ -48,6 +59,7 @@ pub struct Friend {
     pub current_animation: AnimationType,
     pub last_position_x: f32,
     pub last_position_y: f32,
+    pub speed: f32
 }
 
 #[derive(Component)]

@@ -51,10 +51,9 @@ impl Plugin for FriendsPlugin {
             .add_state::<UnlockedApple>()
             .add_state::<UnlockedBone>()
             .add_state::<UnlockedDogItem>()
-            // Configure System Sets
-            .configure_set(FriendsSpawnSystemSet.before(FriendsMovementSystemSet))
             // On Enter State
             .add_system(adjust_states_to_character.in_schedule(OnEnter(AppState::Game)))
+            .add_system(friends_target_target)
             // Systems
             .add_systems(
                 (
@@ -115,8 +114,6 @@ impl Plugin for FriendsPlugin {
                     sheep_spawn
                         .in_set(FriendsSpawnSystemSet)
                         .in_set(OnUpdate(UnlockedSheep::Spawn)),
-                    friends_movement.in_set(FriendsMovementSystemSet),
-                    friends_animate.in_set(FriendsMovementSystemSet),
                 )
                     .in_set(OnUpdate(AppState::Game))
                     .in_set(OnUpdate(SimulationState::Running)),
@@ -135,8 +132,8 @@ impl Plugin for FriendsPlugin {
                     action_honey
                         .in_set(FriendsSpawnSystemSet)
                         .in_set(OnUpdate(UnlockedHoney::Enabled)),
-                    friends_movement.in_set(FriendsMovementSystemSet),
-                    friends_animate.in_set(FriendsMovementSystemSet),
+                    friends_movement,
+                    friends_animate,
                 )
                     .in_set(OnUpdate(AppState::Game))
                     .in_set(OnUpdate(SimulationState::Running)),
@@ -158,8 +155,6 @@ impl Plugin for FriendsPlugin {
                     action_bone
                         .in_set(FriendsSpawnSystemSet)
                         .in_set(OnUpdate(UnlockedBone::Enabled)),
-                    friends_movement.in_set(FriendsMovementSystemSet),
-                    friends_animate.in_set(FriendsMovementSystemSet),
                 )
                     .in_set(OnUpdate(AppState::Game))
                     .in_set(OnUpdate(SimulationState::Running)),
@@ -172,9 +167,7 @@ impl Plugin for FriendsPlugin {
                     action_cat_item
                         .in_set(FriendsSpawnSystemSet)
                         .in_set(OnUpdate(UnlockedBugNet::Enabled)),
-                    friends_movement.in_set(FriendsMovementSystemSet),
-                    friends_animate.in_set(FriendsMovementSystemSet),
-                    items_animate
+                    items_animate,
                 )
                     .in_set(OnUpdate(AppState::Game))
                     .in_set(OnUpdate(SimulationState::Running)),
