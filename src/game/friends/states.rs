@@ -19,51 +19,51 @@ pub enum UnlockedCat {
 #[derive(States, Debug, Clone, Copy, Eq, PartialEq, Hash, Default)]
 pub enum UnlockedDog {
     #[default]
-    Blocked,
     Spawn,
+    Blocked,
     Aggro,
 }
 
 #[derive(States, Debug, Clone, Copy, Eq, PartialEq, Hash, Default)]
 pub enum UnlockedCow {
     #[default]
-    Blocked,
     Spawn,
+    Blocked,
     Aggro,
 }
 #[derive(States, Debug, Clone, Copy, Eq, PartialEq, Hash, Default)]
 pub enum UnlockedFlower {
     #[default]
-    Blocked,
     Spawn,
+    Blocked,
     Aggro,
 }
 #[derive(States, Debug, Clone, Copy, Eq, PartialEq, Hash, Default)]
 pub enum UnlockedBee {
     #[default]
-    Blocked,
     Spawn,
+    Blocked,
     Aggro,
 }
 #[derive(States, Debug, Clone, Copy, Eq, PartialEq, Hash, Default)]
 pub enum UnlockedButterfly {
     #[default]
-    Blocked,
     Spawn,
+    Blocked,
     Aggro,
 }
 #[derive(States, Debug, Clone, Copy, Eq, PartialEq, Hash, Default)]
 pub enum UnlockedSpider {
     #[default]
-    Blocked,
     Spawn,
+    Blocked,
     Aggro,
 }
 #[derive(States, Debug, Clone, Copy, Eq, PartialEq, Hash, Default)]
 pub enum UnlockedBeaver {
     #[default]
-    Blocked,
     Spawn,
+    Blocked,
     Aggro,
 }
 #[derive(States, Debug, Clone, Copy, Eq, PartialEq, Hash, Default)]
@@ -75,8 +75,8 @@ pub enum UnlockedFish {
 #[derive(States, Debug, Clone, Copy, Eq, PartialEq, Hash, Default)]
 pub enum UnlockedBear {
     #[default]
-    Blocked,
     Spawn,
+    Blocked,
     Aggro,
 }
 #[derive(States, Debug, Clone, Copy, Eq, PartialEq, Hash, Default)]
@@ -88,21 +88,21 @@ pub enum UnlockedTree {
 #[derive(States, Debug, Clone, Copy, Eq, PartialEq, Hash, Default)]
 pub enum UnlockedDonkey {
     #[default]
-    Blocked,
     Spawn,
+    Blocked,
     Aggro,
 }
 #[derive(States, Debug, Clone, Copy, Eq, PartialEq, Hash, Default)]
 pub enum UnlockedWorm {
     #[default]
-    Blocked,
     Spawn,
+    Blocked,
     Aggro,
 }
 #[derive(States, Debug, Clone, Copy, Eq, PartialEq, Hash, Default)]
 pub enum UnlockedSheep {
     #[default]
-    Blocked,
     Spawn,
+    Blocked,
     Aggro,
 }
