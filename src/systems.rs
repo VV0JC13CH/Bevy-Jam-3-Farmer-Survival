@@ -2,6 +2,7 @@ use bevy::app::AppExit;
 use bevy::{
     diagnostic::{Diagnostics, FrameTimeDiagnosticsPlugin},
     prelude::*,
+
 };
 
 use crate::AppState;
@@ -60,6 +61,7 @@ pub fn change_debug(
 ) {
     if keyboard_input.just_pressed(KeyCode::F1) && debug_state.0 != DebugState::Develop {
         debug_state_next_state.set(DebugState::Develop);
+
         println!("Debug level: develop");
     }
     if keyboard_input.just_pressed(KeyCode::F1) && debug_state.0 != DebugState::Release {

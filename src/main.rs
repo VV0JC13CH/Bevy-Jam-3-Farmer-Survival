@@ -39,6 +39,7 @@ fn main() {
         )
         .add_state::<AppState>()
         .add_state::<DebugState>()
+        .insert_resource(ClearColor(Color::rgba(0.29, 0.6, 0.32, 1.0)))
         .add_system(change_state)
         .add_system(change_debug)
         .add_plugin(FrameTimeDiagnosticsPlugin)
