@@ -39,7 +39,6 @@ impl Plugin for MenuPlugin {
                     choose_item
                 )
                     .in_set(OnUpdate(AppState::LevelUp))
-                    .in_set(OnUpdate(SimulationState::Paused)),
             )
             // On Exit State
             .add_system(intro_despawn.in_schedule(OnExit(AppState::Intro)))

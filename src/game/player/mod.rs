@@ -40,6 +40,7 @@ impl Plugin for PlayerPlugin {
                     .in_set(OnUpdate(AppState::Game))
                     .in_set(OnUpdate(SimulationState::Running)),
             )
+            .add_system(level_up)
             // On Exit State
             .add_system(player_despawn.in_schedule(OnExit(AppState::Game)));
     }

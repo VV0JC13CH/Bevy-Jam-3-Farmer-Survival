@@ -33,8 +33,8 @@ impl Plugin for TerrainPlugin {
                     terrain_despawn_around_camera,
                 )
             //        .in_set(OnUpdate(AppState::Game))
-              //      .in_set(OnUpdate(SimulationState::Running)),
-            )
-            .add_system(terrain_despawn_all.in_schedule(OnExit(AppState::Game)));
+              //      .in_set(OnUpdate(SimulationState::Running));
+            );
+        //    .add_system(terrain_despawn_all.in_schedule(OnExit(AppState::Game)));
     }
 }

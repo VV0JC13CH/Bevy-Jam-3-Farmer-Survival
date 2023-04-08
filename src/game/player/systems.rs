@@ -41,7 +41,7 @@ pub fn player_spawn(
         },
         animation_indices,
         AnimationTimer(Timer::from_seconds(0.1, TimerMode::Repeating)),
-        Player {},
+        Player { level: 1 },
     ));
 
     if player_char.0 == PlayerCharacter::Male {
@@ -190,5 +190,25 @@ pub fn move_camera(
         }
 
         transform.translation += direction * PLAYER_SPEED * time.delta_seconds();
+    }
+}
+
+use crate::DebugState;
+
+use crate::AppState;
+
+pub fn level_up(
+    mut player_query: Query<&mut Player, With<Player>>,
+    keyboard_input: Res<Input<KeyCode>>,
+    debug_state: Res<State<DebugState>>,
+    app_state: Res<State<AppState>>,
+    mut app_state_next_state: ResMut<NextState<AppState>>,
+) {
+    if keyboard_input.just_pressed(KeyCode::F3)
+        && app_state.0 == AppState::Game
+        && debug_state.0 == DebugState::Develop
+    {
+        app_state_next_state.set(AppState::LevelUp);
+        println!("State changed: LevelUp");
     }
 }

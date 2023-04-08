@@ -11,8 +11,6 @@ use crate::game::player::PlayerCharacter;
 use crate::game::AppState;
 use crate::game::SimulationState;
 
-pub fn choose_item() {}
-pub fn item_despawn() {}
 
 pub fn intro_spawn(
     audio: Res<Audio>,
@@ -72,7 +70,66 @@ pub fn menu_spawn(
         MenuElement {},
     ));
 }
-pub fn item_spawn() {}
+pub fn item_spawn(
+    mut commands: Commands,
+    asset_server: Res<AssetServer>,
+    mut texture_atlases: ResMut<Assets<TextureAtlas>>,
+    mut simulation_state_next_state: ResMut<NextState<SimulationState>>,
+    camera_query: Query<&Transform, With<Camera>>,
+) {
+    println!("Im levelup");
+    let camera = camera_query.get_single().unwrap();
+
+    let texture_handle = asset_server.load("sprites/choose_item.png");
+    let texture_atlas =
+        TextureAtlas::from_grid(texture_handle, Vec2::new(400.0, 400.0), 2, 1, None, None);
+    let texture_atlas_handle = texture_atlases.add(texture_atlas);
+    // Use only the subset of sprites in the sheet that make up the run animation
+    let animation_indices = AnimationIndices { index: 0 };
+    commands.spawn((
+        SpriteSheetBundle {
+            texture_atlas: texture_atlas_handle,
+            sprite: TextureAtlasSprite::new(animation_indices.index),
+            // transform: Transform::from_scale(Vec3::splat(1.0)),
+            transform: Transform::from_xyz(camera.translation.x, camera.translation.y, -0.5),
+            ..default()
+        },
+        LevelUpElement {},
+    ));
+}
+pub fn choose_item(
+    keyboard_input: Res<Input<KeyCode>>,
+    app_state: Res<State<AppState>>,
+    mut app_state_next_state: ResMut<NextState<AppState>>,
+    mut choosen_character: ResMut<NextState<PlayerCharacter>>,
+    mut simulation_next_state: ResMut<NextState<SimulationState>>,
+
+    mut query: Query<&mut TextureAtlasSprite, With<LevelUpElement>>,
+) {
+    for mut sprite in &mut query {
+        if keyboard_input.any_just_pressed([KeyCode::Left, KeyCode::Right, KeyCode::D, KeyCode::A])
+        {
+            if sprite.index == 1 {
+                sprite.index = 0;
+                choosen_character.set(PlayerCharacter::Female);
+                println!("Item_1");
+            } else {
+                sprite.index = 1;
+                choosen_character.set(PlayerCharacter::Male);
+                println!("Item_2");
+            }
+        };
+        if keyboard_input.any_just_pressed([KeyCode::Space, KeyCode::Return])
+            && app_state.0 == AppState::LevelUp
+        {
+            simulation_next_state.set(SimulationState::Running);
+            app_state_next_state.set(AppState::Game);
+            println!("Going to game from levelup.");
+        }
+    }
+}
+
+
 
 pub fn play_intro(
     time: Res<Time>,
@@ -145,6 +202,11 @@ pub fn intro_despawn(mut commands: Commands, intro_query: Query<Entity, With<Int
     }
 }
 pub fn menu_despawn(mut commands: Commands, intro_query: Query<Entity, With<MenuElement>>) {
+    for menu_element in intro_query.iter() {
+        commands.entity(menu_element).despawn();
+    }
+}
+pub fn item_despawn(mut commands: Commands, intro_query: Query<Entity, With<LevelUpElement>>) {
     for menu_element in intro_query.iter() {
         commands.entity(menu_element).despawn();
     }
