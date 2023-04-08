@@ -1,7 +1,7 @@
 mod components;
-mod friends_states;
+pub mod friends_states;
 mod friends_systems;
-mod items_states;
+pub mod items_states;
 mod items_systems;
 
 use friends_states::*;

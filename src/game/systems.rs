@@ -4,6 +4,10 @@ use bevy::window::PrimaryWindow;
 use crate::game::SimulationState;
 use crate::DebugState;
 
+use super::states::CurrentMission;
+use crate::game::friends::friends_states::*;
+
+use crate::game::friends::items_states::*;
 pub fn spawn_camera(mut commands: Commands, window_query: Query<&Window, With<PrimaryWindow>>) {
     let window = window_query.get_single().unwrap();
 
@@ -38,3 +42,17 @@ pub fn toggle_simulation(
         }
     }
 }
+
+pub fn detect_waterflowers(current_mission: Res<State<CurrentMission>>) {}
+pub fn detect_getworms(current_mission: Res<State<CurrentMission>>) {}
+pub fn detect_catchmouses(current_mission: Res<State<CurrentMission>>) {}
+pub fn detect_catchfishes(current_mission: Res<State<CurrentMission>>) {}
+pub fn detect_feedfishes(current_mission: Res<State<CurrentMission>>) {}
+pub fn detect_feedthebears(current_mission: Res<State<CurrentMission>>) {}
+pub fn detect_choptrees(current_mission: Res<State<CurrentMission>>) {}
+pub fn detect_catchbutterflies(current_mission: Res<State<CurrentMission>>) {}
+pub fn detect_feeddonkeys(current_mission: Res<State<CurrentMission>>) {}
+pub fn detect_givebonestodogs(current_mission: Res<State<CurrentMission>>) {}
+pub fn detect_takesheepsback(current_mission: Res<State<CurrentMission>>) {}
+pub fn detect_takehoney(current_mission: Res<State<CurrentMission>>) {}
+pub fn detect_milkthecow(current_mission: Res<State<CurrentMission>>) {}

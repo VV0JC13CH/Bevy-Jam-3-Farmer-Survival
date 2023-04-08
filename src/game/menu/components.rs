@@ -5,7 +5,9 @@ pub struct MenuElement {}
 
 
 #[derive(Component)]
-pub struct LevelUpElement {}
+pub struct LevelUpElement {
+pub _id : usize
+}
 
 #[derive(Component)]
 pub struct IntroElement {}

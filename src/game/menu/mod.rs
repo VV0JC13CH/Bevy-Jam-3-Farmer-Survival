@@ -1,5 +1,5 @@
-pub mod components;
-pub mod states;
+mod components;
+mod states;
 mod systems;
 
 use states::*;
@@ -15,6 +15,7 @@ pub struct MenuPlugin;
 impl Plugin for MenuPlugin {
     fn build(&self, app: &mut App) {
         app
+            .add_state::<ItemChoice>()
             // Configure System Sets
             // On Enter State
             .add_system(intro_spawn.in_schedule(OnEnter(AppState::Intro)))
