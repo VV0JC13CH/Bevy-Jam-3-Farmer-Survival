@@ -1,7 +1,9 @@
 use bevy::prelude::*;
+use bevy_rapier2d::parry::transformation::utils::transform;
 use rand::{thread_rng, Rng};
 
 use super::components::*;
+use crate::game::player;
 use crate::game::player::components::Player;
 
 use crate::game::player::states::PlayerOrientationState;
@@ -49,7 +51,11 @@ pub fn action_water_can(
                 texture_atlas: texture_atlas_handle,
                 sprite: TextureAtlasSprite::new(animation_indices_item.first),
                 // transform: Transform::from_scale(Vec3::splat(1.0)),
-                transform: Transform::from_xyz(camera.translation.x, camera.translation.y, 0.0),
+                transform: Transform::from_xyz(
+                    camera.translation.x,
+                    camera.translation.y - 32.0,
+                    0.0,
+                ),
                 ..default()
             },
             animation_indices_item,
@@ -59,13 +65,15 @@ pub fn action_water_can(
             },
             Damage { value: 1.0 },
             Item {
-                kind: ItemType::Axe,
+                kind: ItemType::Water,
                 targeting_friend: FriendType::Flower,
                 current_animation: AnimationType::OneTime,
                 direction: match player_orientation.0 {
                     PlayerOrientationState::Right => PlayerOrientationState::Right,
                     PlayerOrientationState::Left => PlayerOrientationState::Left,
                 },
+                spawn_position_x: camera.translation.x,
+                spawn_position_y: camera.translation.y,
             },
         ));
     }
@@ -108,12 +116,18 @@ pub fn action_hoe(
             second: MAX_TYPES_OF_ITEMS * 2 + index_of_item,
             third: MAX_TYPES_OF_ITEMS * 3 + index_of_item,
         };
+        let mut random = thread_rng();
+
         commands.spawn((
             SpriteSheetBundle {
                 texture_atlas: texture_atlas_handle,
                 sprite: TextureAtlasSprite::new(animation_indices_item.first),
                 // transform: Transform::from_scale(Vec3::splat(1.0)),
-                transform: Transform::from_xyz(camera.translation.x, camera.translation.y, 0.0),
+                transform: Transform::from_xyz(
+                    camera.translation.x + random.gen_range(-400.0..400.0),
+                    camera.translation.y + 300.0,
+                    0.0,
+                ),
                 ..default()
             },
             animation_indices_item,
@@ -130,6 +144,8 @@ pub fn action_hoe(
                     PlayerOrientationState::Right => PlayerOrientationState::Right,
                     PlayerOrientationState::Left => PlayerOrientationState::Left,
                 },
+                spawn_position_x: camera.translation.x,
+                spawn_position_y: camera.translation.y,
             },
         ));
     }
@@ -187,13 +203,15 @@ pub fn action_axe(
             },
             Damage { value: 1.0 },
             Item {
-                kind: ItemType::CatItem,
-                targeting_friend: FriendType::Mouse,
+                kind: ItemType::Axe,
+                targeting_friend: FriendType::Tree,
                 current_animation: AnimationType::Running,
                 direction: match player_orientation.0 {
                     PlayerOrientationState::Right => PlayerOrientationState::Right,
                     PlayerOrientationState::Left => PlayerOrientationState::Left,
                 },
+                spawn_position_x: camera.translation.x,
+                spawn_position_y: camera.translation.y,
             },
         ));
     }
@@ -236,12 +254,18 @@ pub fn action_cat_item(
             second: MAX_TYPES_OF_ITEMS * 2 + index_of_item,
             third: MAX_TYPES_OF_ITEMS * 3 + index_of_item,
         };
+        let mut random = thread_rng();
+
         commands.spawn((
             SpriteSheetBundle {
                 texture_atlas: texture_atlas_handle,
                 sprite: TextureAtlasSprite::new(animation_indices_item.first),
                 // transform: Transform::from_scale(Vec3::splat(1.0)),
-                transform: Transform::from_xyz(camera.translation.x, camera.translation.y, 0.0),
+                transform: Transform::from_xyz(
+                    camera.translation.x + random.gen_range(-1000.0..-800.0),
+                    camera.translation.y + random.gen_range(-600.0..600.0),
+                    0.0,
+                ),
                 ..default()
             },
             animation_indices_item,
@@ -258,11 +282,12 @@ pub fn action_cat_item(
                     PlayerOrientationState::Right => PlayerOrientationState::Right,
                     PlayerOrientationState::Left => PlayerOrientationState::Left,
                 },
+                spawn_position_x: camera.translation.x,
+                spawn_position_y: camera.translation.y,
             },
         ));
     }
 }
-
 
 pub fn action_honey(
     mut commands: Commands,
@@ -301,16 +326,25 @@ pub fn action_honey(
             second: MAX_TYPES_OF_ITEMS * 2 + index_of_item,
             third: MAX_TYPES_OF_ITEMS * 3 + index_of_item,
         };
+        let dir = match player_orientation.0 {
+            PlayerOrientationState::Right => 1.0,
+            PlayerOrientationState::Left => -1.0,
+        };
+
         commands.spawn((
             SpriteSheetBundle {
                 texture_atlas: texture_atlas_handle,
                 sprite: TextureAtlasSprite::new(animation_indices_item.first),
                 // transform: Transform::from_scale(Vec3::splat(1.0)),
-                transform: Transform::from_xyz(camera.translation.x, camera.translation.y, 0.0),
+                transform: Transform::from_xyz(
+                    camera.translation.x + 10.0 * dir,
+                    camera.translation.y,
+                    0.0,
+                ),
                 ..default()
             },
             animation_indices_item,
-            AnimationTimer(Timer::from_seconds(0.3, TimerMode::Repeating)),
+            AnimationTimer(Timer::from_seconds(1.0, TimerMode::Repeating)),
             SpawnTimeStamp {
                 value: current_time,
             },
@@ -323,6 +357,8 @@ pub fn action_honey(
                     PlayerOrientationState::Right => PlayerOrientationState::Right,
                     PlayerOrientationState::Left => PlayerOrientationState::Left,
                 },
+                spawn_position_x: camera.translation.x,
+                spawn_position_y: camera.translation.y,
             },
         ));
     }
@@ -387,6 +423,8 @@ pub fn action_milk(
                     PlayerOrientationState::Right => PlayerOrientationState::Right,
                     PlayerOrientationState::Left => PlayerOrientationState::Left,
                 },
+                spawn_position_x: camera.translation.x,
+                spawn_position_y: camera.translation.y,
             },
         ));
     }
@@ -451,6 +489,8 @@ pub fn action_bug_net(
                     PlayerOrientationState::Right => PlayerOrientationState::Right,
                     PlayerOrientationState::Left => PlayerOrientationState::Left,
                 },
+                spawn_position_x: camera.translation.x,
+                spawn_position_y: camera.translation.y,
             },
         ));
     }
@@ -515,6 +555,8 @@ pub fn action_rod(
                     PlayerOrientationState::Right => PlayerOrientationState::Right,
                     PlayerOrientationState::Left => PlayerOrientationState::Left,
                 },
+                spawn_position_x: camera.translation.x,
+                spawn_position_y: camera.translation.y,
             },
         ));
     }
@@ -579,6 +621,8 @@ pub fn action_apple(
                     PlayerOrientationState::Right => PlayerOrientationState::Right,
                     PlayerOrientationState::Left => PlayerOrientationState::Left,
                 },
+                spawn_position_x: camera.translation.x,
+                spawn_position_y: camera.translation.y,
             },
         ));
     }
@@ -643,6 +687,8 @@ pub fn action_bone(
                     PlayerOrientationState::Right => PlayerOrientationState::Right,
                     PlayerOrientationState::Left => PlayerOrientationState::Left,
                 },
+                spawn_position_x: camera.translation.x,
+                spawn_position_y: camera.translation.y,
             },
         ));
     }
@@ -707,6 +753,8 @@ pub fn action_dog_item(
                     PlayerOrientationState::Right => PlayerOrientationState::Right,
                     PlayerOrientationState::Left => PlayerOrientationState::Left,
                 },
+                spawn_position_x: camera.translation.x,
+                spawn_position_y: camera.translation.y,
             },
         ));
     }
@@ -771,6 +819,8 @@ pub fn action_worms_item(
                     PlayerOrientationState::Right => PlayerOrientationState::Right,
                     PlayerOrientationState::Left => PlayerOrientationState::Left,
                 },
+                spawn_position_x: camera.translation.x,
+                spawn_position_y: camera.translation.y,
             },
         ));
     }
@@ -834,18 +884,16 @@ pub fn action_bee_nest_item(
                     PlayerOrientationState::Right => PlayerOrientationState::Right,
                     PlayerOrientationState::Left => PlayerOrientationState::Left,
                 },
+                spawn_position_x: camera.translation.x,
+                spawn_position_y: camera.translation.y,
             },
         ));
     }
 }
 
-
-
 pub fn items_animate(
     time: Res<Time>,
     camera_query: Query<&Transform, (With<Camera>, Without<Item>)>,
-    player_orientation: Res<State<PlayerOrientationState>>,
-
     mut query: Query<
         (
             &mut Transform,
@@ -861,18 +909,59 @@ pub fn items_animate(
 
     for (mut transform, indices_item, mut timer, mut sprite, item) in &mut query {
         timer.tick(time.delta());
-        if camera.translation.x > transform.translation.x {
-            sprite.flip_x = false
-        } else {
-            sprite.flip_x = true
+        match item.kind {
+            ItemType::CatItem => sprite.flip_x = true,
+            _ => {
+                if camera.translation.x > transform.translation.x {
+                    sprite.flip_x = false
+                } else {
+                    sprite.flip_x = true
+                }
+            }
         }
         let dir = match item.direction {
             PlayerOrientationState::Right => 1.0,
             PlayerOrientationState::Left => -1.0,
         };
+        let mut random = thread_rng();
+
         match item.kind {
-            ItemType::Axe => transform.translation.x += 10.0 * dir,
-            _ => transform.translation.x += 10.0 * dir,
+            ItemType::Water => {
+                transform.translation.z = -1.0;
+            }
+            ItemType::Hoe => {
+                if transform.translation.y > (camera.translation.y + random.gen_range(-10.0..10.0))
+                {
+                    // has to be quicker than player
+                    transform.translation.y -= 10.0
+                } else {
+                    transform.translation.y += 0.0
+                }
+            }
+            ItemType::Axe => {
+                transform.translation.x += 5.0 * dir;
+                transform.rotate(Quat::from_rotation_z((-dir * 10.0_f32).to_radians()))
+            }
+            ItemType::CatItem => {
+                transform.translation.x += 15.0;
+            }
+            ItemType::Honey => match item.direction {
+                PlayerOrientationState::Left => {
+                    if transform.translation.x - item.spawn_position_x > -60.0 {
+                        transform.translation.x -= 5.0;
+                        transform.translation.y += 5.0;
+                    } else if transform.translation.x - item.spawn_position_x > -120.0 {
+                        transform.translation.y -= 5.0;
+                    } else {
+                    }
+                }
+
+                PlayerOrientationState::Right => {
+                    transform.translation.x += 5.0;
+                    transform.translation.y += 5.0;
+                }
+            },
+            _ => transform.translation.x += 2.0 * dir,
         }
 
         if timer.just_finished() {

@@ -23,8 +23,8 @@ pub fn player_spawn(
     let camera = camera_query.get_single().unwrap();
 
     let texture_handle = match player_char.0 {
-        PlayerCharacter::Male => asset_server.load("sprites/farmer_male.png"),
         PlayerCharacter::Female => asset_server.load("sprites/farmer_female.png"),
+        PlayerCharacter::Male => asset_server.load("sprites/farmer_male.png"),
     };
     let texture_atlas =
         TextureAtlas::from_grid(texture_handle, Vec2::new(64.0, 128.0), 2, 1, None, None);
@@ -69,11 +69,14 @@ pub fn player_animate(
     player_animation: Res<State<PlayerAnimationState>>,
     player_orientation: Res<State<PlayerOrientationState>>,
     time: Res<Time>,
-    mut query: Query<(
-        &AnimationIndices,
-        &mut AnimationTimer,
-        &mut TextureAtlasSprite,
-    )>,
+    mut query: Query<
+        (
+            &AnimationIndices,
+            &mut AnimationTimer,
+            &mut TextureAtlasSprite,
+        ),
+        With<Player>,
+    >,
 ) {
     if player_animation.0 == PlayerAnimationState::Running {
         for (indices, mut timer, mut sprite) in &mut query {

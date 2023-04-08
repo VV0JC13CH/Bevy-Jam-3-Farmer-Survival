@@ -49,8 +49,8 @@ pub fn change_state(
         && app_state.0 != AppState::GameOver
         && debug_state.0 == DebugState::Develop
     {
-        app_state_next_state.set(AppState::GameOver);
-        println!("State changed: gameover");
+        app_state_next_state.set(AppState::LevelUp);
+        println!("State changed: LevelUp");
     }
 }
 

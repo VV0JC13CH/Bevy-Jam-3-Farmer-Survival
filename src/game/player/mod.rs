@@ -2,7 +2,7 @@ pub mod components;
 pub mod states;
 mod systems;
 
-use states::*;
+pub use states::*;
 use systems::*;
 
 use super::SimulationState;

@@ -5,7 +5,7 @@ pub enum AppState {
     #[default]
     Intro,
     Menu,
-    NewGame,
+    LevelUp,
     Game,
     GameOver,
 }

@@ -20,7 +20,6 @@ impl Plugin for MenuPlugin {
             .add_system(intro_spawn.in_schedule(OnEnter(AppState::Intro)))
             .add_system(menu_spawn.in_schedule(OnEnter(AppState::Menu)))
             .add_system(item_spawn.in_schedule(OnEnter(AppState::LevelUp)))
-            // Systems
             .add_system(
                 (
                     play_intro

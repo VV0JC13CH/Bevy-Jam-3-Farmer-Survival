@@ -75,6 +75,8 @@ pub struct Item {
     pub targeting_friend: FriendType,
     pub current_animation: AnimationType,
     pub direction: PlayerOrientationState,
+    pub spawn_position_x: f32,
+    pub spawn_position_y: f32,
 }
 
 #[derive(Default, Component)]
