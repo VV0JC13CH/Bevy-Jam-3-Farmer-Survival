@@ -24,10 +24,9 @@ impl Plugin for GamePlugin {
             .add_plugin(PlayerPlugin)
             .add_plugin(FriendsPlugin)
             .add_plugin(TerrainPlugin)
-            .add_plugin(MenuPlugin)
-            .add_system(pause_simulation.in_schedule(OnEnter(AppState::Game)))
-            .add_system(toggle_simulation.in_set(OnUpdate(AppState::Game)))
-            .add_system(resume_simulation.in_schedule(OnExit(AppState::Game)));
+            .add_plugin(MenuPlugin);
+     //       .add_system(toggle_simulation.in_set(OnUpdate(AppState::Game)))
+ //           .add_system(resume_simulation.in_schedule(OnExit(AppState::Game)));
     }
 }
 

@@ -113,6 +113,7 @@ pub fn choose_character(
     app_state: Res<State<AppState>>,
     mut app_state_next_state: ResMut<NextState<AppState>>,
     mut choosen_character: ResMut<NextState<PlayerCharacter>>,
+    mut simulation_next_state: ResMut<NextState<SimulationState>>,
 
     mut query: Query<&mut TextureAtlasSprite, With<MenuElement>>,
 ) {
@@ -132,6 +133,7 @@ pub fn choose_character(
         if keyboard_input.any_just_pressed([KeyCode::Space, KeyCode::Return])
             && app_state.0 == AppState::Menu
         {
+            simulation_next_state.set(SimulationState::Running);
             app_state_next_state.set(AppState::Game);
             println!("Going to game from menu.");
         }
