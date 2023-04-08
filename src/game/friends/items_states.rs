@@ -3,79 +3,69 @@ use bevy::prelude::*;
 #[derive(States, Debug, Clone, Copy, Eq, PartialEq, Hash, Default)]
 pub enum UnlockedWaterCan {
     #[default]
-    Enabled,
-
     Blocked,
+    Enabled,
 }
 
 #[derive(States, Debug, Clone, Copy, Eq, PartialEq, Hash, Default)]
 pub enum UnlockedHoe {
     #[default]
-    Enabled,
-
     Blocked,
+    Enabled,
 }
 
 #[derive(States, Debug, Clone, Copy, Eq, PartialEq, Hash, Default)]
 pub enum UnlockedAxe {
     #[default]
-    Enabled,
     Blocked,
+    Enabled,
 }
 
 #[derive(States, Debug, Clone, Copy, Eq, PartialEq, Hash, Default)]
 pub enum UnlockedCatItem {
     #[default]
-    Enabled,
-
     Blocked,
+    Enabled,
 }
 #[derive(States, Debug, Clone, Copy, Eq, PartialEq, Hash, Default)]
 pub enum UnlockedHoney {
     #[default]
-    Enabled,
-
     Blocked,
+    Enabled,
 }
 #[derive(States, Debug, Clone, Copy, Eq, PartialEq, Hash, Default)]
 pub enum UnlockedMilk {
     #[default]
-    Enabled,
-
     Blocked,
+    Enabled,
 }
 #[derive(States, Debug, Clone, Copy, Eq, PartialEq, Hash, Default)]
 pub enum UnlockedBugNet {
     #[default]
-    Enabled,
-
     Blocked,
+    Enabled,
 }
 #[derive(States, Debug, Clone, Copy, Eq, PartialEq, Hash, Default)]
 pub enum UnlockedRod {
     #[default]
-    Enabled,
-
     Blocked,
+    Enabled,
 }
 #[derive(States, Debug, Clone, Copy, Eq, PartialEq, Hash, Default)]
 pub enum UnlockedApple {
     #[default]
-    Enabled,
-
     Blocked,
+    Enabled,
 }
 #[derive(States, Debug, Clone, Copy, Eq, PartialEq, Hash, Default)]
 pub enum UnlockedBone {
     #[default]
-    Enabled,
-
     Blocked,
+    Enabled,
 }
 #[derive(States, Debug, Clone, Copy, Eq, PartialEq, Hash, Default)]
 pub enum UnlockedDogItem {
     #[default]
-    Enabled,
-
     Blocked,
+    Enabled,
 }

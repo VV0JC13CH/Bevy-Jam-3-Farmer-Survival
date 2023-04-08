@@ -32,6 +32,7 @@ impl Plugin for FriendsPlugin {
             .add_state::<UnlockedCow>()
             .add_state::<UnlockedFlower>()
             .add_state::<UnlockedBee>()
+            .add_state::<UnlockedSheep>()
             .add_state::<UnlockedButterfly>()
             .add_state::<UnlockedSpider>()
             .add_state::<UnlockedBeaver>()
@@ -53,7 +54,10 @@ impl Plugin for FriendsPlugin {
             .add_state::<UnlockedDogItem>()
             // On Enter State
             .add_system(adjust_states_to_character.in_schedule(OnEnter(AppState::Game)))
-            .add_system(friends_target_target)
+            .add_system(friends_target_target
+                                .in_set(OnUpdate(AppState::Game))
+                    .in_set(OnUpdate(SimulationState::Running)),
+            )
             // Systems
             .add_systems(
                 (
