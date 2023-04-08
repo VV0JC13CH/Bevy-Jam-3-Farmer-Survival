@@ -43,16 +43,171 @@ pub fn toggle_simulation(
     }
 }
 
-pub fn detect_waterflowers(current_mission: Res<State<CurrentMission>>) {}
-pub fn detect_getworms(current_mission: Res<State<CurrentMission>>) {}
-pub fn detect_catchmouses(current_mission: Res<State<CurrentMission>>) {}
-pub fn detect_catchfishes(current_mission: Res<State<CurrentMission>>) {}
-pub fn detect_feedfishes(current_mission: Res<State<CurrentMission>>) {}
-pub fn detect_feedthebears(current_mission: Res<State<CurrentMission>>) {}
-pub fn detect_choptrees(current_mission: Res<State<CurrentMission>>) {}
-pub fn detect_catchbutterflies(current_mission: Res<State<CurrentMission>>) {}
-pub fn detect_feeddonkeys(current_mission: Res<State<CurrentMission>>) {}
-pub fn detect_givebonestodogs(current_mission: Res<State<CurrentMission>>) {}
-pub fn detect_takesheepsback(current_mission: Res<State<CurrentMission>>) {}
-pub fn detect_takehoney(current_mission: Res<State<CurrentMission>>) {}
-pub fn detect_milkthecow(current_mission: Res<State<CurrentMission>>) {}
+pub fn detect_waterflowers(
+    current_mission: Res<State<CurrentMission>>,
+    mut default_tool_next_state: ResMut<NextState<UnlockedWaterCan>>,
+    mut default_friend_next_state: ResMut<NextState<UnlockedFlower>>,
+) {
+    if current_mission.0 == CurrentMission::WaterFlowers {
+        default_tool_next_state.set(UnlockedWaterCan::Enabled);
+        default_friend_next_state.set(UnlockedFlower::Spawn);
+    } else {
+        default_tool_next_state.set(UnlockedWaterCan::Blocked);
+    }
+}
+pub fn detect_getworms(
+    current_mission: Res<State<CurrentMission>>,
+    mut default_tool_next_state: ResMut<NextState<UnlockedHoe>>,
+    mut default_friend_next_state: ResMut<NextState<UnlockedWorm>>,
+) {
+    if current_mission.0 == CurrentMission::GetWorms {
+        default_tool_next_state.set(UnlockedHoe::Enabled);
+        default_friend_next_state.set(UnlockedWorm::Spawn);
+    } else {
+        default_tool_next_state.set(UnlockedHoe::Blocked);
+    }
+}
+
+pub fn detect_catchmouses(
+    current_mission: Res<State<CurrentMission>>,
+
+    mut default_tool_next_state: ResMut<NextState<UnlockedCatItem>>,
+    mut default_friend_next_state: ResMut<NextState<UnlockedMouse>>,
+) {
+    if current_mission.0 == CurrentMission::CatchMouses {
+        default_tool_next_state.set(UnlockedCatItem::Enabled);
+        default_friend_next_state.set(UnlockedMouse::Spawn);
+    } else {
+        default_tool_next_state.set(UnlockedCatItem::Blocked);
+    }
+}
+pub fn detect_catchfishes(
+    current_mission: Res<State<CurrentMission>>,
+
+    mut default_tool_next_state: ResMut<NextState<UnlockedRod>>,
+    mut default_friend_next_state: ResMut<NextState<UnlockedFish>>,
+) {
+    if current_mission.0 == CurrentMission::CatchFishes {
+        default_tool_next_state.set(UnlockedRod::Enabled);
+        default_friend_next_state.set(UnlockedFish::Spawn);
+    } else {
+        default_tool_next_state.set(UnlockedRod::Blocked);
+    }
+}
+pub fn detect_feedfishes(
+    current_mission: Res<State<CurrentMission>>,
+
+    mut default_tool_next_state: ResMut<NextState<UnlockedWormItem>>,
+    mut default_friend_next_state: ResMut<NextState<UnlockedFish>>,
+) {
+    if current_mission.0 == CurrentMission::FeedFishes {
+        default_tool_next_state.set(UnlockedWormItem::Enabled);
+        default_friend_next_state.set(UnlockedFish::Spawn);
+    } else {
+        default_tool_next_state.set(UnlockedWormItem::Blocked);
+    }
+}
+pub fn detect_feedthebears(
+    current_mission: Res<State<CurrentMission>>,
+
+    mut default_tool_next_state: ResMut<NextState<UnlockedHoney>>,
+    mut default_friend_next_state: ResMut<NextState<UnlockedBear>>,
+) {
+    if current_mission.0 == CurrentMission::FeedTheBears {
+        default_tool_next_state.set(UnlockedHoney::Enabled);
+        default_friend_next_state.set(UnlockedBear::Spawn);
+    } else {
+        default_tool_next_state.set(UnlockedHoney::Blocked);
+    }
+}
+pub fn detect_choptrees(
+    current_mission: Res<State<CurrentMission>>,
+
+    mut default_tool_next_state: ResMut<NextState<UnlockedAxe>>,
+    mut default_friend_next_state: ResMut<NextState<UnlockedTree>>,
+) {
+    if current_mission.0 == CurrentMission::ChopTrees {
+        default_tool_next_state.set(UnlockedAxe::Enabled);
+        default_friend_next_state.set(UnlockedTree::Spawn);
+    } else {
+        default_tool_next_state.set(UnlockedAxe::Blocked);
+    }
+}
+pub fn detect_catchbutterflies(
+    current_mission: Res<State<CurrentMission>>,
+
+    mut default_tool_next_state: ResMut<NextState<UnlockedWaterCan>>,
+    mut default_friend_next_state: ResMut<NextState<UnlockedFlower>>,
+) {
+    if current_mission.0 == CurrentMission::WaterFlowers {
+        default_tool_next_state.set(UnlockedWaterCan::Enabled);
+        default_friend_next_state.set(UnlockedFlower::Spawn);
+    } else {
+        default_tool_next_state.set(UnlockedWaterCan::Blocked);
+    }
+}
+pub fn detect_feeddonkeys(
+    current_mission: Res<State<CurrentMission>>,
+
+    mut default_tool_next_state: ResMut<NextState<UnlockedWaterCan>>,
+    mut default_friend_next_state: ResMut<NextState<UnlockedFlower>>,
+) {
+    if current_mission.0 == CurrentMission::WaterFlowers {
+        default_tool_next_state.set(UnlockedWaterCan::Enabled);
+        default_friend_next_state.set(UnlockedFlower::Spawn);
+    } else {
+        default_tool_next_state.set(UnlockedWaterCan::Blocked);
+    }
+}
+pub fn detect_givebonestodogs(
+    current_mission: Res<State<CurrentMission>>,
+
+    mut default_tool_next_state: ResMut<NextState<UnlockedWaterCan>>,
+    mut default_friend_next_state: ResMut<NextState<UnlockedFlower>>,
+) {
+    if current_mission.0 == CurrentMission::WaterFlowers {
+        default_tool_next_state.set(UnlockedWaterCan::Enabled);
+        default_friend_next_state.set(UnlockedFlower::Spawn);
+    } else {
+        default_tool_next_state.set(UnlockedWaterCan::Blocked);
+    }
+}
+pub fn detect_takesheepsback(
+    current_mission: Res<State<CurrentMission>>,
+
+    mut default_tool_next_state: ResMut<NextState<UnlockedWaterCan>>,
+    mut default_friend_next_state: ResMut<NextState<UnlockedFlower>>,
+) {
+    if current_mission.0 == CurrentMission::WaterFlowers {
+        default_tool_next_state.set(UnlockedWaterCan::Enabled);
+        default_friend_next_state.set(UnlockedFlower::Spawn);
+    } else {
+        default_tool_next_state.set(UnlockedWaterCan::Blocked);
+    }
+}
+pub fn detect_takehoney(
+    current_mission: Res<State<CurrentMission>>,
+
+    mut default_tool_next_state: ResMut<NextState<UnlockedWaterCan>>,
+    mut default_friend_next_state: ResMut<NextState<UnlockedFlower>>,
+) {
+    if current_mission.0 == CurrentMission::WaterFlowers {
+        default_tool_next_state.set(UnlockedWaterCan::Enabled);
+        default_friend_next_state.set(UnlockedFlower::Spawn);
+    } else {
+        default_tool_next_state.set(UnlockedWaterCan::Blocked);
+    }
+}
+pub fn detect_milkthecow(
+    current_mission: Res<State<CurrentMission>>,
+
+    mut default_tool_next_state: ResMut<NextState<UnlockedWaterCan>>,
+    mut default_friend_next_state: ResMut<NextState<UnlockedFlower>>,
+) {
+    if current_mission.0 == CurrentMission::WaterFlowers {
+        default_tool_next_state.set(UnlockedWaterCan::Enabled);
+        default_friend_next_state.set(UnlockedFlower::Spawn);
+    } else {
+        default_tool_next_state.set(UnlockedWaterCan::Blocked);
+    }
+}

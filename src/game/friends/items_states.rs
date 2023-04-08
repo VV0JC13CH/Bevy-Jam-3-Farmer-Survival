@@ -69,3 +69,9 @@ pub enum UnlockedDogItem {
     Blocked,
     Enabled,
 }
+#[derive(States, Debug, Clone, Copy, Eq, PartialEq, Hash, Default)]
+pub enum UnlockedWormItem {
+    #[default]
+    Blocked,
+    Enabled,
+}

@@ -7,6 +7,7 @@ use crate::game::AppState;
 use crate::game::SimulationState;
 
 use crate::game::CurrentMission;
+use crate::game::PreviousMission;
 pub fn intro_spawn(
     audio: Res<Audio>,
     mut commands: Commands,
@@ -152,6 +153,8 @@ pub fn choose_item(
     mut app_state_next_state: ResMut<NextState<AppState>>,
     mut simulation_next_state: ResMut<NextState<SimulationState>>,
     chosen_item: Res<State<ItemChoice>>,
+    current_mission: Res<State<CurrentMission>>,
+    mut next_previous_mission: ResMut<NextState<PreviousMission>>,
     mut chosen_item_next_state: ResMut<NextState<ItemChoice>>,
     mut next_mission: ResMut<NextState<CurrentMission>>,
     mut query: Query<(&mut TextureAtlasSprite, &LevelUpElement), With<LevelUpElement>>,
@@ -181,6 +184,23 @@ pub fn choose_item(
         if keyboard_input.any_just_pressed([KeyCode::Space, KeyCode::Return])
             && app_state.0 == AppState::LevelUp
         {
+            next_previous_mission.set(match current_mission.0 {
+                CurrentMission::WaterFlowers => PreviousMission::WaterFlowers,
+                CurrentMission::GetWorms => PreviousMission::GetWorms,
+                CurrentMission::ChopTrees => PreviousMission::ChopTrees,
+                CurrentMission::CatchMouses => PreviousMission::CatchMouses,
+                CurrentMission::CatchFishes => PreviousMission::CatchFishes,
+                CurrentMission::FeedFishes => PreviousMission::FeedFishes,
+                CurrentMission::FeedTheBears => PreviousMission::FeedTheBears,
+                CurrentMission::ChopTrees => PreviousMission::ChopTrees,
+                CurrentMission::CatchButterflies => PreviousMission::CatchButterflies,
+                CurrentMission::FeedDonkeys => PreviousMission::FeedDonkeys,
+                CurrentMission::GiveBonesToDogs => PreviousMission::GiveBonesToDogs,
+                CurrentMission::TakeSheepsBack => PreviousMission::TakeSheepsBack,
+                CurrentMission::TakeHoney => PreviousMission::TakeHoney,
+                CurrentMission::MilkTheCow => PreviousMission::MilkTheCow,
+            });
+
             match chosen_item.0 {
                 ItemChoice::ItemOnLeft => {
                     if level_up_element._id == 1 {

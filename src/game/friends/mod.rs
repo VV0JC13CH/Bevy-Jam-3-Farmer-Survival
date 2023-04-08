@@ -52,6 +52,7 @@ impl Plugin for FriendsPlugin {
             .add_state::<UnlockedApple>()
             .add_state::<UnlockedBone>()
             .add_state::<UnlockedDogItem>()
+            .add_state::<UnlockedWormItem>()
             // On Enter State
             .add_system(adjust_states_to_character.in_schedule(OnEnter(AppState::Game)))
             .add_system(friends_target_target

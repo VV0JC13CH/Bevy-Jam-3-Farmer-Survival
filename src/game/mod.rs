@@ -21,6 +21,7 @@ impl Plugin for GamePlugin {
     fn build(&self, app: &mut App) {
         app.add_state::<SimulationState>()
             .add_state::<CurrentMission>()
+            .add_state::<PreviousMission>()
             // OnEnter Systems
             .add_startup_system(spawn_camera)
             .add_plugin(PlayerPlugin)
