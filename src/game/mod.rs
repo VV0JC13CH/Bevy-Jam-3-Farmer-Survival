@@ -24,7 +24,7 @@ impl Plugin for GamePlugin {
             .add_state::<PreviousMission>()
             // OnEnter Systems
             .add_startup_system(spawn_camera)
-           // .add_startup_system(setup_music)
+            // .add_startup_system(setup_music)
             .add_plugin(PlayerPlugin)
             .add_plugin(FriendsPlugin)
             .add_plugin(TerrainPlugin)
@@ -42,9 +42,12 @@ impl Plugin for GamePlugin {
             .add_system(detect_takesheepsback)
             .add_system(detect_takehoney)
             .add_system(detect_milkthecow)
-            .add_system(setup_music.in_schedule(OnEnter(AppState::Game)))
+            .add_state::<CurrentSong>()
+            .add_system(setup_music.in_schedule(OnEnter(AppState::Menu)))
             .add_system(toggle_simulation.in_set(OnUpdate(AppState::Game)))
-            .add_system(resume_simulation.in_schedule(OnExit(AppState::Game)));
+            .add_system(resume_simulation.in_schedule(OnExit(AppState::Game)))
+            .add_system(music_change.in_schedule(OnExit(AppState::LevelUp)))
+            .add_system(music_stop.in_schedule(OnEnter(AppState::GameOver)));
     }
 }
 

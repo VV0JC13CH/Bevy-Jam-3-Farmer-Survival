@@ -224,19 +224,30 @@ pub fn detect_milkthecow(
     }
 }
 
-
+#[derive(States, Debug, Clone, Copy, Eq, PartialEq, Hash, Default)]
+pub enum CurrentSong {
+    #[default]
+    TrackOne,
+    TrackTwo,
+    TrackThree,
+    TrackFour,
+    TrackFive,
+    TrackSix,
+}
 #[derive(Resource)]
 pub struct BeautifulMusic(Handle<AudioSink>);
 
 pub fn setup_music(
     asset_server: Res<AssetServer>,
-    audio: Res<Audio>,
+    mut audio: Res<Audio>,
     audio_sinks: Res<Assets<AudioSink>>,
     mut commands: Commands,
 ) {
     let music = asset_server.load("audio/music_tier1.ogg");
     // play audio and upgrade to a strong handle
-    let sink_handle = audio_sinks.get_handle(audio.play(music));
+    let sink_handle = audio_sinks
+        .get_handle(audio.play_with_settings(music, PlaybackSettings::LOOP.with_volume(0.75)));
+
     commands.insert_resource(BeautifulMusic(sink_handle));
 }
 
@@ -246,13 +257,47 @@ pub fn music_stop(music: Res<BeautifulMusic>, mut audio_sinks: ResMut<Assets<Aud
         sink.pause();
     }
 }
-pub fn music_play(music: Res<BeautifulMusic>, mut audio_sinks: ResMut<Assets<AudioSink>>) {
+pub fn music_change(
+    asset_server: Res<AssetServer>,
+    mut audio: Res<Audio>,
+    mut commands: Commands,
+    music: Res<BeautifulMusic>,
+    mut audio_sinks: ResMut<Assets<AudioSink>>,
+    current_track: Res<State<CurrentSong>>,
+    mut next_track: ResMut<NextState<CurrentSong>>,
+) {
+    let current_song = asset_server.get_handle_path(&music.0);
     if let Some(sink) = audio_sinks.get(&music.0) {
         // pause playback
-        sink.play();
+        sink.pause();
     }
-}
 
+    let next_song = match current_track.0 {
+        CurrentSong::TrackOne => CurrentSong::TrackTwo,
+        CurrentSong::TrackTwo => CurrentSong::TrackThree,
+        CurrentSong::TrackThree => CurrentSong::TrackFour,
+        CurrentSong::TrackFour => CurrentSong::TrackFive,
+        CurrentSong::TrackFive => CurrentSong::TrackSix,
+        _ => CurrentSong::TrackSix
+};
+    next_track.set(next_song);
+    let track = match current_track.0 {
+        CurrentSong::TrackOne => {"audio/music_tier1.ogg".to_string()},
+        CurrentSong::TrackTwo => {"audio/music_tier2.ogg".to_string()},
+        CurrentSong::TrackThree => {"audio/music_tier3.ogg".to_string()},
+        CurrentSong::TrackFour => {"audio/music_tier4.ogg".to_string()},
+        CurrentSong::TrackFive => {"audio/music_tier5.ogg".to_string()},
+        CurrentSong::TrackSix => {"audio/music_tier6.ogg".to_string()},
+    };
+    let music = asset_server.load(track);
+
+    //    let music = asset_server.load(song.to_string());
+    // play audio and upgrade to a strong handle
+    let sink_handle = audio_sinks
+        .get_handle(audio.play_with_settings(music, PlaybackSettings::LOOP.with_volume(0.75)));
+
+    commands.insert_resource(BeautifulMusic(sink_handle));
+}
 
 // later in another system
 pub fn adjust_music(music: Res<BeautifulMusic>, mut audio_sinks: ResMut<Assets<AudioSink>>) {
