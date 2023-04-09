@@ -29,7 +29,7 @@ fn main() {
                 .set(WindowPlugin {
                     primary_window: Some(Window {
                         title: "Farmer Survival".into(),
-                        resolution: (800., 600.).into(),
+                     //   resolution: (800., 600.).into(),
                         present_mode: PresentMode::AutoNoVsync,
                         ..default()
                     }),
