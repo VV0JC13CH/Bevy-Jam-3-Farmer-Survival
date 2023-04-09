@@ -223,3 +223,47 @@ pub fn detect_milkthecow(
         default_tool_next_state.set(UnlockedMilk::Blocked);
     }
 }
+
+
+#[derive(Resource)]
+pub struct BeautifulMusic(Handle<AudioSink>);
+
+pub fn setup_music(
+    asset_server: Res<AssetServer>,
+    audio: Res<Audio>,
+    audio_sinks: Res<Assets<AudioSink>>,
+    mut commands: Commands,
+) {
+    let music = asset_server.load("audio/music_tier1.ogg");
+    // play audio and upgrade to a strong handle
+    let sink_handle = audio_sinks.get_handle(audio.play(music));
+    commands.insert_resource(BeautifulMusic(sink_handle));
+}
+
+pub fn music_stop(music: Res<BeautifulMusic>, mut audio_sinks: ResMut<Assets<AudioSink>>) {
+    if let Some(sink) = audio_sinks.get(&music.0) {
+        // pause playback
+        sink.pause();
+    }
+}
+pub fn music_play(music: Res<BeautifulMusic>, mut audio_sinks: ResMut<Assets<AudioSink>>) {
+    if let Some(sink) = audio_sinks.get(&music.0) {
+        // pause playback
+        sink.play();
+    }
+}
+
+
+// later in another system
+pub fn adjust_music(music: Res<BeautifulMusic>, mut audio_sinks: ResMut<Assets<AudioSink>>) {
+    if let Some(sink) = audio_sinks.get(&music.0) {
+        // pause playback
+        sink.pause();
+        // start playback again
+        sink.play();
+        // increase the volume
+        sink.set_volume(sink.volume() + 0.1);
+        // slow down playback
+        sink.set_speed(0.5);
+    }
+}
