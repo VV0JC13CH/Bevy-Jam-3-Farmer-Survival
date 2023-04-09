@@ -6,6 +6,7 @@ use crate::game::player::PlayerCharacter;
 use crate::game::AppState;
 use crate::game::SimulationState;
 
+use crate::game::score::resources::Lives;
 use crate::game::CurrentMission;
 use crate::game::PreviousMission;
 pub fn intro_spawn(
@@ -75,7 +76,6 @@ pub fn item_spawn(
     mut texture_atlases: ResMut<Assets<TextureAtlas>>,
     camera_query: Query<&Transform, With<Camera>>,
 ) {
-    println!("Im levelup");
     let camera = camera_query.get_single().unwrap();
 
     let texture_handle = asset_server.load("sprites/choose_item.png");
@@ -321,6 +321,7 @@ pub fn choose_character(
     app_state: Res<State<AppState>>,
     mut app_state_next_state: ResMut<NextState<AppState>>,
     mut choosen_character: ResMut<NextState<PlayerCharacter>>,
+
     mut simulation_next_state: ResMut<NextState<SimulationState>>,
 
     mut query: Query<&mut TextureAtlasSprite, With<MenuElement>>,
@@ -360,5 +361,291 @@ pub fn menu_despawn(mut commands: Commands, intro_query: Query<Entity, With<Menu
 pub fn item_despawn(mut commands: Commands, intro_query: Query<Entity, With<LevelUpElement>>) {
     for menu_element in intro_query.iter() {
         commands.entity(menu_element).despawn();
+    }
+}
+
+use bevy::window::PrimaryWindow;
+pub fn setup_lives_icons(
+    mut commands: Commands,
+    player_char: Res<State<PlayerCharacter>>,
+    asset_server: Res<AssetServer>,
+    mut texture_atlases: ResMut<Assets<TextureAtlas>>,
+    camera_query: Query<&Transform, With<Camera>>,
+    window_query: Query<&Window, With<PrimaryWindow>>,
+) {
+    let camera = camera_query.get_single().unwrap();
+    let window = window_query.get_single().unwrap();
+
+    let texture_handle_1 = match player_char.0 {
+        PlayerCharacter::Female => asset_server.load("sprites/lives_female.png"),
+        PlayerCharacter::Male => asset_server.load("sprites/lives_male.png"),
+    };
+    let texture_handle_2 = match player_char.0 {
+        PlayerCharacter::Female => asset_server.load("sprites/lives_female.png"),
+        PlayerCharacter::Male => asset_server.load("sprites/lives_male.png"),
+    };
+    let texture_handle_3 = match player_char.0 {
+        PlayerCharacter::Female => asset_server.load("sprites/lives_female.png"),
+        PlayerCharacter::Male => asset_server.load("sprites/lives_male.png"),
+    };
+    let texture_atlas_1 =
+        TextureAtlas::from_grid(texture_handle_1, Vec2::new(64.0, 64.0), 1, 1, None, None);
+    let texture_atlas_2 =
+        TextureAtlas::from_grid(texture_handle_2, Vec2::new(64.0, 64.0), 1, 1, None, None);
+    let texture_atlas_3 =
+        TextureAtlas::from_grid(texture_handle_3, Vec2::new(64.0, 64.0), 1, 1, None, None);
+    let texture_atlas_handle_1 = texture_atlases.add(texture_atlas_1);
+    let texture_atlas_handle_2 = texture_atlases.add(texture_atlas_2);
+    let texture_atlas_handle_3 = texture_atlases.add(texture_atlas_3);
+    // Use only the subset of sprites in the sheet that make up the run animation
+    const HEIGHT: f32 = 64.0;
+    commands.spawn((
+        SpriteSheetBundle {
+            texture_atlas: texture_atlas_handle_1,
+            sprite: TextureAtlasSprite::new(0),
+            // transform: Transform::from_scale(Vec3::splat(1.0)),
+            transform: Transform::from_xyz(
+                camera.translation.x - 256.0,
+                camera.translation.y + window.height() / 2.0 - HEIGHT,
+                -5.0,
+            ),
+            ..default()
+        },
+        GameElement { _id: 1 },
+    ));
+    commands.spawn((
+        SpriteSheetBundle {
+            texture_atlas: texture_atlas_handle_2,
+            sprite: TextureAtlasSprite::new(0),
+            // transform: Transform::from_scale(Vec3::splat(1.0)),
+            transform: Transform::from_xyz(
+                camera.translation.x,
+                camera.translation.y + window.height() / 2.0 - HEIGHT,
+                -5.0,
+            ),
+            ..default()
+        },
+        GameElement { _id: 2 },
+    ));
+    commands.spawn((
+        SpriteSheetBundle {
+            texture_atlas: texture_atlas_handle_3,
+            sprite: TextureAtlasSprite::new(0),
+            // transform: Transform::from_scale(Vec3::splat(1.0)),
+            transform: Transform::from_xyz(
+                camera.translation.x + 256.0,
+                camera.translation.y + window.height() / 2.0 - HEIGHT,
+                -5.0,
+            ),
+            ..default()
+        },
+        GameElement { _id: 3 },
+    ));
+    ///////////////////////////////////////////////////////////////////////////////////////////
+    let texture_item_1_handle = asset_server.load("sprites/items_tilemap.png");
+    let texture_item_2_handle = asset_server.load("sprites/entities_tilemap.png");
+    let texture_item_1_atlas = TextureAtlas::from_grid(
+        texture_item_1_handle,
+        Vec2::new(128.0, 128.0),
+        13,
+        4,
+        None,
+        None,
+    );
+
+    let texture_item_2_atlas = TextureAtlas::from_grid(
+        texture_item_2_handle,
+        Vec2::new(128.0, 128.0),
+        15,
+        4,
+        None,
+        None,
+    );
+    let texture_item_1_atlas_handle = texture_atlases.add(texture_item_1_atlas);
+    let texture_item_2_atlas_handle = texture_atlases.add(texture_item_2_atlas);
+    // Use only the subset of sprites in the sheet that make up the run animation
+    commands.spawn((
+        SpriteSheetBundle {
+            texture_atlas: texture_item_1_atlas_handle,
+            sprite: TextureAtlasSprite::new(0),
+            // transform: Transform::from_scale(Vec3::splat(1.0)),
+            transform: Transform::from_xyz(
+                camera.translation.x - 512.0,
+                camera.translation.y + window.height() / 2.0 - HEIGHT,
+                -5.0,
+            ),
+            ..default()
+        },
+        GameElement { _id: 4 },
+    ));
+    commands.spawn((
+        SpriteSheetBundle {
+            texture_atlas: texture_item_2_atlas_handle,
+            sprite: TextureAtlasSprite::new(0),
+            // transform: Transform::from_scale(Vec3::splat(1.0)),
+            transform: Transform::from_xyz(
+                camera.translation.x + 512.0,
+                camera.translation.y + window.height() / 2.0 - HEIGHT,
+                -5.0,
+            ),
+            ..default()
+        },
+        GameElement { _id: 5 },
+    ));
+    commands.spawn((
+        SpriteBundle {
+            transform: Transform::from_xyz(
+                camera.translation.x - 512.0,
+                camera.translation.y + window.height() / 2.0 - HEIGHT,
+                -4.0,
+            ),
+            texture: asset_server.load("sprites/game_ui_tool.png"),
+            ..default()
+        },
+        GameElement { _id: 6 },
+    ));
+    commands.spawn((
+        SpriteBundle {
+            transform: Transform::from_xyz(
+                camera.translation.x + 512.0,
+                camera.translation.y + window.height() / 2.0 - HEIGHT,
+                -4.0,
+            ),
+            texture: asset_server.load("sprites/game_ui_target.png"),
+            ..default()
+        },
+        GameElement { _id: 7 },
+    ));
+}
+pub fn show_game_icons(
+    lives: Res<Lives>,
+    mut icons_query: Query<
+        (
+            Entity,
+            &mut GameElement,
+            &mut Transform,
+            &mut TextureAtlasSprite,
+        ),
+        (With<GameElement>, Without<Camera>),
+    >,
+    mut bg_query: Query<
+        (Entity, &mut GameElement, &mut Transform),
+        (
+            With<GameElement>,
+            Without<Camera>,
+            Without<TextureAtlasSprite>,
+        ),
+    >,
+    camera_query: Query<&mut Transform, (With<Camera>, Without<IntroElement>)>,
+    current_mission: Res<State<CurrentMission>>,
+    mut commands: Commands,
+    window_query: Query<&Window, With<PrimaryWindow>>,
+) {
+    let camera = camera_query.get_single().unwrap();
+    let window = window_query.get_single().unwrap();
+
+    // Lives, item and target
+    const HEIGHT: f32 = 64.0;
+    for (entity, game_element, mut transform, mut sprite) in icons_query.iter_mut() {
+        if game_element._id == 3 {
+            let update_transform = Transform::from_xyz(
+                camera.translation.x + 256.0,
+                camera.translation.y + window.height() / 2.0 - HEIGHT,
+                -5.0,
+            );
+            transform.translation = update_transform.translation;
+            if lives.value == 2 {
+                commands.entity(entity).despawn()
+            }
+        } else if game_element._id == 2 {
+            let update_transform = Transform::from_xyz(
+                camera.translation.x,
+                camera.translation.y + window.height() / 2.0 - HEIGHT,
+                -5.0,
+            );
+            transform.translation = update_transform.translation;
+
+            if lives.value == 1 {
+                commands.entity(entity).despawn();
+            }
+        } else if game_element._id == 1 {
+            let update_transform = Transform::from_xyz(
+                camera.translation.x - 256.0,
+                camera.translation.y + window.height() / 2.0 - HEIGHT,
+                -5.0,
+            );
+            transform.translation = update_transform.translation;
+        } else if game_element._id == 4 {
+            let update_transform = Transform::from_xyz(
+                camera.translation.x - 512.0,
+                camera.translation.y + window.height() / 2.0 - HEIGHT,
+                -5.0,
+            );
+            transform.translation = update_transform.translation;
+
+            if game_element._id == 4 {
+                sprite.index = match current_mission.0 {
+                    CurrentMission::WaterFlowers => 0,
+                    CurrentMission::GetWorms => 1,
+                    CurrentMission::ChopTrees => 2,
+                    CurrentMission::CatchMouses => 3,
+                    CurrentMission::CatchFishes => 4,
+                    CurrentMission::FeedFishes => 5,
+                    CurrentMission::FeedTheBears => 6,
+                    CurrentMission::CatchButterflies => 7,
+                    CurrentMission::FeedDonkeys => 8,
+                    CurrentMission::GiveBonesToDogs => 9,
+                    CurrentMission::TakeSheepsBack => 10,
+                    CurrentMission::TakeHoney => 11,
+                    CurrentMission::MilkTheCow => 12,
+                };
+            }
+        } else if game_element._id == 5 {
+            let update_transform = Transform::from_xyz(
+                camera.translation.x + 512.0,
+                camera.translation.y + window.height() / 2.0 - HEIGHT,
+                -5.0,
+            );
+            transform.translation = update_transform.translation;
+
+            sprite.index = match current_mission.0 {
+                CurrentMission::WaterFlowers => 4,
+                CurrentMission::GetWorms => 6,
+                CurrentMission::ChopTrees => 11,
+                CurrentMission::CatchMouses => 0,
+                CurrentMission::CatchFishes => 9,
+                CurrentMission::FeedFishes => 9,
+                CurrentMission::FeedTheBears => 10,
+                CurrentMission::CatchButterflies => 6,
+                CurrentMission::FeedDonkeys => 12,
+                CurrentMission::GiveBonesToDogs => 2,
+                CurrentMission::TakeSheepsBack => 14,
+                CurrentMission::TakeHoney => 11,
+                CurrentMission::MilkTheCow => 3,
+            };
+        }
+        if lives.value == 0 {
+            commands.entity(entity).despawn();
+        }
+        for (entity, game_element, mut transform) in bg_query.iter_mut() {
+            if game_element._id == 6 {
+                let update_transform = Transform::from_xyz(
+                    camera.translation.x - 512.0,
+                    camera.translation.y + window.height() / 2.0 - HEIGHT,
+                    -5.0,
+                );
+                transform.translation = update_transform.translation;
+            } else if game_element._id == 7 {
+                let update_transform = Transform::from_xyz(
+                    camera.translation.x + 512.0,
+                    camera.translation.y + window.height() / 2.0 - HEIGHT,
+                    -5.0,
+                );
+                transform.translation = update_transform.translation;
+            }
+            if lives.value == 0 {
+                commands.entity(entity).despawn();
+            }
+        }
     }
 }

@@ -10,6 +10,10 @@ pub _id : usize
 }
 
 #[derive(Component)]
+pub struct GameElement {
+pub _id : usize
+}
+#[derive(Component)]
 pub struct IntroElement {}
 
 #[derive(Component)]
