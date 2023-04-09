@@ -16,7 +16,7 @@ impl Plugin for ScorePlugin {
             // Resources
             .init_resource::<HighScores>()
             // On Enter State
-            .add_system(insert_score.in_schedule(OnEnter(AppState::Game)))
+            .add_system(insert_score.in_schedule(OnEnter(AppState::Menu)))
             .add_system(insert_lives.in_schedule(OnEnter(AppState::Intro)))
             // Systems
             .add_system(update_score.run_if(in_state(AppState::Game)))

@@ -23,3 +23,7 @@ pub struct AnimationIndices {
 
 #[derive(Component, Deref, DerefMut)]
 pub struct AnimationTimer(pub Timer);
+
+#[derive(Component)]
+pub struct ScoreText;
+

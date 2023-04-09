@@ -6,6 +6,7 @@ use crate::game::player::PlayerCharacter;
 use crate::game::AppState;
 use crate::game::SimulationState;
 
+use crate::game::score::resources::*;
 use crate::game::score::resources::Lives;
 use crate::game::CurrentMission;
 use crate::game::PreviousMission;
@@ -701,3 +702,80 @@ pub fn show_game_icons(
         }
     }
 }
+
+pub fn score_spawn(mut commands: Commands, asset_server: Res<AssetServer>) {
+    let font = asset_server.load("fonts/EduNSWACTFoundation-Bold.ttf");
+    commands.spawn((
+        TextBundle::from_sections([
+            TextSection::new(
+                "Score:",
+                TextStyle {
+                    font: font.clone(),
+                    font_size: 30.0,
+                    color: Color::YELLOW,
+                },
+            ),
+            TextSection::new(
+                "0",
+                TextStyle {
+                    font: font.clone(),
+                    font_size: 30.0,
+                    color: Color::ORANGE,
+                },
+            ),
+            TextSection::new(
+                "\n",
+                TextStyle {
+                    font: font.clone(),
+                    font_size: 30.0,
+                    color: Color::YELLOW,
+                },
+            ),
+                        TextSection::new(
+                "Highscore:",
+                TextStyle {
+                    font: font.clone(),
+                    font_size: 30.0,
+                    color: Color::YELLOW,
+                },
+            ),
+            TextSection::new(
+                "",
+                TextStyle {
+                    font: font.clone(),
+                    font_size: 30.0,
+                    color: Color::ORANGE,
+                },
+            ),
+
+        ])
+        .with_style(Style {
+            position_type: PositionType::Absolute,
+            position: UiRect {
+                bottom: Val::Px(5.0),
+                left: Val::Px(15.0),
+                ..default()
+            },
+            ..default()
+        }),
+        ScoreText,
+    ));
+}
+
+
+pub fn show_score(
+    mut query: Query<&mut Text, With<ScoreText>>,
+    score: Res<Score>,
+    highscore: Res<HighScores>,
+) {
+    if (highscore.scores).len() > 0 {
+    for mut text in &mut query {
+        text.sections[1].value = score.value.to_string();
+        text.sections[4].value = highscore.scores.iter().max().unwrap().to_string();
+    }} else {
+    for mut text in &mut query {
+        text.sections[1].value = score.value.to_string();
+        text.sections[4].value = 0.to_string();
+
+    }
+}}

@@ -19,13 +19,15 @@ impl Plugin for MenuPlugin {
             // Configure System Sets
             // On Enter State
             .add_system(intro_spawn.in_schedule(OnEnter(AppState::Intro)))
+            .add_system(score_spawn.in_schedule(OnExit(AppState::Menu)))
             .add_system(menu_spawn.in_schedule(OnEnter(AppState::Menu)))
             .add_system(item_spawn.in_schedule(OnEnter(AppState::LevelUp)))
             .add_system(setup_lives_icons.in_schedule(OnEnter(AppState::Game)))
             .add_system(show_game_icons.in_set(OnUpdate(AppState::Game)))
-            .add_system(
+            .add_system(show_score.in_set(OnUpdate(AppState::Game)))
+            .add_systems(
                 (
-                    play_intro
+                    play_intro,
                 )
                     .in_set(OnUpdate(AppState::Intro))
                     .in_set(OnUpdate(SimulationState::Paused)),

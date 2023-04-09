@@ -13,7 +13,7 @@ impl Default for Score {
 
 #[derive(Resource, Debug)]
 pub struct HighScores {
-    pub scores: Vec<(String, u32)>,
+    pub scores: Vec<u32>,
 }
 
 impl Default for HighScores {

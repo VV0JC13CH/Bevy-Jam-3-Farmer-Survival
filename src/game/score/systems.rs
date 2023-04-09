@@ -22,7 +22,7 @@ pub fn update_high_scores(
     mut high_scores: ResMut<HighScores>,
 ) {
     for event in game_over_event_reader.iter() {
-        high_scores.scores.push(("Player".to_string(), event.score));
+        high_scores.scores.push(event.score);
     }
 }
 
