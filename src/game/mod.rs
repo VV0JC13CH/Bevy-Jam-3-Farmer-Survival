@@ -51,6 +51,7 @@ impl Plugin for GamePlugin {
             .add_state::<CurrentSong>()
             .add_system(setup_music.in_schedule(OnEnter(AppState::Menu)))
             .add_system(toggle_simulation.in_set(OnUpdate(AppState::Game)))
+            .add_system(levelup.in_set(OnUpdate(AppState::Game)))
             .add_system(resume_simulation.in_schedule(OnExit(AppState::Game)))
             .add_system(music_change.in_schedule(OnEnter(AppState::Game)));
         //    .add_system(music_stop.in_schedule(OnEnter(AppState::LevelUp)));

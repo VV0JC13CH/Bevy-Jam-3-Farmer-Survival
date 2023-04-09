@@ -1,12 +1,14 @@
 use bevy::prelude::*;
 use bevy::window::PrimaryWindow;
 
+use crate::game::AppState;
 use crate::game::SimulationState;
 use crate::DebugState;
 
 use super::states::{CurrentMission, PreviousMission};
 use crate::game::friends::friends_states::*;
 
+use crate::game::score::resources::Score;
 use crate::game::friends::items_states::*;
 pub fn spawn_camera(mut commands: Commands, window_query: Query<&Window, With<PrimaryWindow>>) {
     let window = window_query.get_single().unwrap();
@@ -42,6 +44,21 @@ pub fn toggle_simulation(
         }
     }
 }
+
+pub fn levelup(
+    score: Res<Score>,
+    mut app_next_state: ResMut<NextState<AppState>>,
+) {
+
+    if score.is_changed() {
+        if (score.value % 15) == 0 && score.value != 0 {
+        app_next_state.set(AppState::LevelUp);
+        }
+    }
+
+}
+
+
 
 pub fn detect_waterflowers(
     current_mission: Res<State<CurrentMission>>,
