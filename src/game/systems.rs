@@ -259,14 +259,13 @@ pub fn music_stop(music: Res<BeautifulMusic>, mut audio_sinks: ResMut<Assets<Aud
 }
 pub fn music_change(
     asset_server: Res<AssetServer>,
-    mut audio: Res<Audio>,
+    audio: Res<Audio>,
     mut commands: Commands,
     music: Res<BeautifulMusic>,
-    mut audio_sinks: ResMut<Assets<AudioSink>>,
+    audio_sinks: ResMut<Assets<AudioSink>>,
     current_track: Res<State<CurrentSong>>,
     mut next_track: ResMut<NextState<CurrentSong>>,
 ) {
-    let current_song = asset_server.get_handle_path(&music.0);
     if let Some(sink) = audio_sinks.get(&music.0) {
         // pause playback
         sink.pause();
@@ -297,18 +296,4 @@ pub fn music_change(
         .get_handle(audio.play_with_settings(music, PlaybackSettings::LOOP.with_volume(0.75)));
 
     commands.insert_resource(BeautifulMusic(sink_handle));
-}
-
-// later in another system
-pub fn adjust_music(music: Res<BeautifulMusic>, mut audio_sinks: ResMut<Assets<AudioSink>>) {
-    if let Some(sink) = audio_sinks.get(&music.0) {
-        // pause playback
-        sink.pause();
-        // start playback again
-        sink.play();
-        // increase the volume
-        sink.set_volume(sink.volume() + 0.1);
-        // slow down playback
-        sink.set_speed(0.5);
-    }
 }

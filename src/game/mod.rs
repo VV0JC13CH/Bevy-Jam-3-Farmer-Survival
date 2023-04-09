@@ -3,9 +3,11 @@ use bevy::prelude::*;
 mod friends;
 mod menu;
 mod player;
+mod score;
 pub mod states;
 mod systems;
 mod terrain;
+mod events;
 
 use crate::AppState;
 use friends::FriendsPlugin;
@@ -14,6 +16,8 @@ use player::PlayerPlugin;
 use states::*;
 use systems::*;
 use terrain::TerrainPlugin;
+use score::ScorePlugin;
+use events::*;
 
 pub struct GamePlugin;
 
@@ -22,12 +26,14 @@ impl Plugin for GamePlugin {
         app.add_state::<SimulationState>()
             .add_state::<CurrentMission>()
             .add_state::<PreviousMission>()
+            .add_event::<GameOver>()
             // OnEnter Systems
             .add_startup_system(spawn_camera)
             // .add_startup_system(setup_music)
             .add_plugin(PlayerPlugin)
             .add_plugin(FriendsPlugin)
             .add_plugin(TerrainPlugin)
+            .add_plugin(ScorePlugin)
             .add_plugin(MenuPlugin)
             .add_system(detect_waterflowers)
             .add_system(detect_getworms)

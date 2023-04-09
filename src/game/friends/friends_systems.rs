@@ -3,6 +3,9 @@ use rand::{thread_rng, Rng};
 
 use super::components::*;
 use crate::game::player::components::Player;
+use crate::game::score::resources::Lives;
+use crate::game::AppState;
+use crate::game::SimulationState;
 
 const MAX_SPECIES_OF_FRIENDS: usize = 15;
 
@@ -1558,3 +1561,37 @@ pub fn beebox_spawn(
         ));
     }
 }
+pub fn friend_hit_player(
+    mut commands: Commands,
+    //   mut game_over_event_writer: EventWriter<GameOver>,
+    mut friend_query: Query<(Entity, &Transform, &Friend), With<Friend>>,
+    player_query: Query<&Transform, With<Player>>,
+    asset_server: Res<AssetServer>,
+    audio: Res<Audio>,
+    mut lives: ResMut<Lives>,
+    mut simulation_state_next_state: ResMut<NextState<SimulationState>>,
+    mut app_next_state: ResMut<NextState<AppState>>
+) {
+
+    if lives.value == 0 {
+    simulation_state_next_state.set(SimulationState::Paused);
+    app_next_state.set(AppState::Intro);
+    } else {
+                    if let Ok(player_transform) = player_query.get_single() {
+
+    for (friend_entity, friend_transform, friend) in friend_query.iter_mut() {
+
+            let distance = player_transform
+                .translation
+                .distance(friend_transform.translation);
+            if distance < 5.0 {
+                println!("Player was hit by friend!");
+                lives.value -= 1;
+                let sound_effect = asset_server.load("audio/sound_3.ogg");
+                audio.play(sound_effect);
+                commands.entity(friend_entity).despawn();
+            }
+        }
+    }}
+}
+

@@ -7,6 +7,7 @@ use crate::game::player;
 use crate::game::player::components::Player;
 
 use crate::game::player::states::PlayerOrientationState;
+use crate::game::score::resources::Score;
 const MAX_TYPES_OF_ITEMS: usize = 13;
 
 pub fn action_water_can(
@@ -986,5 +987,29 @@ pub fn items_animate(
                 }
             }
         };
+    }
+}
+pub fn item_hit_friend(
+    mut commands: Commands,
+    //   mut game_over_event_writer: EventWriter<GameOver>,
+    mut friend_query: Query<(Entity, &Transform, &Friend), With<Friend>>,
+    item_query: Query<(&Transform, &Item), With<Item>>,
+    asset_server: Res<AssetServer>,
+    audio: Res<Audio>,
+    mut score: ResMut<Score>,
+) {
+    for (friend_entity, friend_transform, friend) in friend_query.iter_mut() {
+        for (item_transform, item) in item_query.iter() {
+            let distance = friend_transform
+                .translation
+                .distance(item_transform.translation);
+            if distance < 64.0 {
+                println!("Friend was hit by item!");
+                let sound_effect = asset_server.load("audio/sound_1.ogg");
+                audio.play(sound_effect);
+                commands.entity(friend_entity).despawn();
+                score.value += 1;
+            }
+        }
     }
 }
