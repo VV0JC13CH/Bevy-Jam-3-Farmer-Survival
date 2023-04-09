@@ -232,6 +232,30 @@ pub fn choose_item(
                                 next_mission.set(CurrentMission::CatchButterflies);
                                 println!("Next mission: CatchButterflies!")
                             }
+                            7 => {
+                                next_mission.set(CurrentMission::CatchFishes);
+                                println!("Next mission: Catch Fishes!")
+                            }
+                            8 => {
+                                next_mission.set(CurrentMission::FeedDonkeys);
+                                println!("Next mission: Feed Donkeys!")
+                            }
+                            9 => {
+                                next_mission.set(CurrentMission::GiveBonesToDogs);
+                                println!("Next mission: Give bones to dogs!")
+                            }
+                            10 => {
+                                next_mission.set(CurrentMission::TakeSheepsBack);
+                                println!("Next mission: Take Sheeps Back!")
+                            }
+                            11 => {
+                                next_mission.set(CurrentMission::FeedFishes);
+                                println!("Next mission: FeedFishes!")
+                            }
+                            12 => {
+                                next_mission.set(CurrentMission::TakeHoney);
+                                println!("Next mission: Gather honey!")
+                            }
                             _ => {
                                 next_mission.set(CurrentMission::WaterFlowers);
                                 println!("Next mission: Water Flowers!")
@@ -242,6 +266,34 @@ pub fn choose_item(
                 ItemChoice::ItemOnRight => {
                     if level_up_element._id == 2 {
                         match sprite.index {
+                            0 => {
+                                next_mission.set(CurrentMission::WaterFlowers);
+                                println!("Next mission: Water Flowers!")
+                            }
+                            1 => {
+                                next_mission.set(CurrentMission::GetWorms);
+                                println!("Next mission: Get Worms!")
+                            }
+                            2 => {
+                                next_mission.set(CurrentMission::ChopTrees);
+                                println!("Next mission: Chop Trees!")
+                            }
+                            3 => {
+                                next_mission.set(CurrentMission::CatchMouses);
+                                println!("Next mission: Catch Mouses!")
+                            }
+                            4 => {
+                                next_mission.set(CurrentMission::FeedTheBears);
+                                println!("Next mission: Feed The Bears!")
+                            }
+                            5 => {
+                                next_mission.set(CurrentMission::MilkTheCow);
+                                println!("Next mission: Milk the Cow!")
+                            }
+                            6 => {
+                                next_mission.set(CurrentMission::CatchButterflies);
+                                println!("Next mission: CatchButterflies!")
+                            }
                             7 => {
                                 next_mission.set(CurrentMission::CatchFishes);
                                 println!("Next mission: Catch Fishes!")
@@ -589,15 +641,15 @@ pub fn show_game_icons(
                     CurrentMission::GetWorms => 1,
                     CurrentMission::ChopTrees => 2,
                     CurrentMission::CatchMouses => 3,
-                    CurrentMission::CatchFishes => 4,
-                    CurrentMission::FeedFishes => 5,
-                    CurrentMission::FeedTheBears => 6,
-                    CurrentMission::CatchButterflies => 7,
+                    CurrentMission::FeedTheBears => 4,
+                    CurrentMission::MilkTheCow => 5,
+                    CurrentMission::CatchButterflies => 6,
+                    CurrentMission::CatchFishes => 7,
                     CurrentMission::FeedDonkeys => 8,
                     CurrentMission::GiveBonesToDogs => 9,
                     CurrentMission::TakeSheepsBack => 10,
-                    CurrentMission::TakeHoney => 11,
-                    CurrentMission::MilkTheCow => 12,
+                    CurrentMission::FeedFishes => 11,
+                    CurrentMission::TakeHoney => 12,
                 };
             }
         } else if game_element._id == 5 {
@@ -610,7 +662,7 @@ pub fn show_game_icons(
 
             sprite.index = match current_mission.0 {
                 CurrentMission::WaterFlowers => 4,
-                CurrentMission::GetWorms => 6,
+                CurrentMission::GetWorms => 13,
                 CurrentMission::ChopTrees => 11,
                 CurrentMission::CatchMouses => 0,
                 CurrentMission::CatchFishes => 9,

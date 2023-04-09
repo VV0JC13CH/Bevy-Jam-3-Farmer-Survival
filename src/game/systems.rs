@@ -227,6 +227,7 @@ pub fn detect_milkthecow(
 #[derive(States, Debug, Clone, Copy, Eq, PartialEq, Hash, Default)]
 pub enum CurrentSong {
     #[default]
+    TrackZero,
     TrackOne,
     TrackTwo,
     TrackThree,
@@ -242,19 +243,22 @@ pub fn setup_music(
     mut audio: Res<Audio>,
     audio_sinks: Res<Assets<AudioSink>>,
     mut commands: Commands,
+    current_track: Res<State<CurrentSong>>,
+
 ) {
+    if current_track.0 == CurrentSong::TrackZero {
+
     let music = asset_server.load("audio/music_tier1.ogg");
     // play audio and upgrade to a strong handle
     let sink_handle = audio_sinks
         .get_handle(audio.play_with_settings(music, PlaybackSettings::LOOP.with_volume(0.75)));
 
-    commands.insert_resource(BeautifulMusic(sink_handle));
+    commands.insert_resource(BeautifulMusic(sink_handle));}
 }
 
-pub fn music_stop(music: Res<BeautifulMusic>, mut audio_sinks: ResMut<Assets<AudioSink>>) {
+pub fn music_stop(music: Res<BeautifulMusic>, mut audio_sinks: ResMut<Assets<AudioSink>>, mut commands: Commands) {
     if let Some(sink) = audio_sinks.get(&music.0) {
-        // pause playback
-        sink.pause();
+    commands.remove_resource::<BeautifulMusic>();
     }
 }
 pub fn music_change(
@@ -272,6 +276,7 @@ pub fn music_change(
     }
 
     let next_song = match current_track.0 {
+        CurrentSong::TrackZero => CurrentSong::TrackOne,
         CurrentSong::TrackOne => CurrentSong::TrackTwo,
         CurrentSong::TrackTwo => CurrentSong::TrackThree,
         CurrentSong::TrackThree => CurrentSong::TrackFour,
@@ -281,6 +286,7 @@ pub fn music_change(
 };
     next_track.set(next_song);
     let track = match current_track.0 {
+        CurrentSong::TrackZero => {"audio/music_tier1.ogg".to_string()},
         CurrentSong::TrackOne => {"audio/music_tier1.ogg".to_string()},
         CurrentSong::TrackTwo => {"audio/music_tier2.ogg".to_string()},
         CurrentSong::TrackThree => {"audio/music_tier3.ogg".to_string()},

@@ -46,3 +46,5 @@ pub fn update_lives(lives: Res<Lives>) {
         println!("Current health of player: {}/3", lives.value.to_string());
     }
 }
+
+
