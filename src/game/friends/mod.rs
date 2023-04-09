@@ -32,6 +32,7 @@ impl Plugin for FriendsPlugin {
             .add_state::<UnlockedCow>()
             .add_state::<UnlockedFlower>()
             .add_state::<UnlockedBee>()
+            .add_state::<UnlockedBeeBox>()
             .add_state::<UnlockedSheep>()
             .add_state::<UnlockedButterfly>()
             .add_state::<UnlockedSpider>()
@@ -86,6 +87,9 @@ impl Plugin for FriendsPlugin {
                     bee_spawn
                         .in_set(FriendsSpawnSystemSet)
                         .in_set(OnUpdate(UnlockedBee::Spawn)),
+                    beebox_spawn
+                        .in_set(FriendsSpawnSystemSet)
+                        .in_set(OnUpdate(UnlockedBeeBox::Spawn)),
                     butterfly_spawn
                         .in_set(FriendsSpawnSystemSet)
                         .in_set(OnUpdate(UnlockedButterfly::Spawn)),

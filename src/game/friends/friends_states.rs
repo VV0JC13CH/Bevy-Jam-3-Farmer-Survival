@@ -46,6 +46,13 @@ pub enum UnlockedBee {
     Spawn,
 }
 #[derive(States, Debug, Clone, Copy, Eq, PartialEq, Hash, Default)]
+pub enum UnlockedBeeBox {
+    #[default]
+    Blocked,
+    Wave,
+    Spawn,
+}
+#[derive(States, Debug, Clone, Copy, Eq, PartialEq, Hash, Default)]
 pub enum UnlockedButterfly {
     #[default]
     Blocked,

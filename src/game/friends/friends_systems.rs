@@ -1468,3 +1468,93 @@ pub fn friends_target_target(
         transform.translation += direction * friend.speed * time.delta_seconds();
     }
 }
+
+pub fn beebox_spawn(
+    mut commands: Commands,
+    asset_server: Res<AssetServer>,
+    mut texture_atlases: ResMut<Assets<TextureAtlas>>,
+    time: ResMut<Time>,
+    camera_query: Query<&Transform, With<Camera>>,
+    spawn_timers: Query<&SpawnTimeStamp, With<Friend>>,
+) {
+    let index_of_friend = 12;
+    let mut spawn_friend: bool = true;
+    let current_time = time.elapsed_seconds_f64();
+    for timer in spawn_timers.iter() {
+        if (current_time - timer.value) > 5.0 {
+            spawn_friend = true
+        } else {
+            spawn_friend = false
+        }
+    }
+    if spawn_friend {
+        let camera = camera_query.get_single().unwrap();
+        let texture_handle = asset_server.load("sprites/items_tilemap.png");
+        let texture_atlas = TextureAtlas::from_grid(
+            texture_handle,
+            Vec2::new(128.0, 128.0),
+            13,
+            4,
+            None,
+            None,
+        );
+        let texture_atlas_handle = texture_atlases.add(texture_atlas);
+        let animation_indices_idle = AnimationIndicesIdle {
+            first: index_of_friend,
+            second: MAX_SPECIES_OF_FRIENDS + index_of_friend,
+        };
+        let animation_indices_running = AnimationIndicesRunning {
+            first: MAX_SPECIES_OF_FRIENDS * 2 + index_of_friend,
+            second: MAX_SPECIES_OF_FRIENDS * 3 + index_of_friend,
+        };
+        let mut random = thread_rng();
+        let rand_x: f32;
+        let rand_y: f32;
+        const DISTANCE_CLOSE: f32 = 400.0;
+        const DISTANCE_LONG: f32 = 1500.0;
+        let rand_placement = random.gen_range(0..4);
+        if rand_placement == 0 {
+            rand_x = random.gen_range(DISTANCE_CLOSE..DISTANCE_LONG);
+            rand_y = random.gen_range(DISTANCE_CLOSE..DISTANCE_LONG);
+        } else if rand_placement == 1 {
+            rand_x = random.gen_range(-DISTANCE_LONG..-DISTANCE_CLOSE);
+            rand_y = random.gen_range(-DISTANCE_LONG..-DISTANCE_CLOSE);
+        } else if rand_placement == 2 {
+            rand_x = random.gen_range(DISTANCE_CLOSE..DISTANCE_LONG);
+            rand_y = random.gen_range(-DISTANCE_LONG..-DISTANCE_CLOSE);
+        } else {
+            rand_x = random.gen_range(-DISTANCE_LONG..-DISTANCE_CLOSE);
+            rand_y = random.gen_range(DISTANCE_CLOSE..DISTANCE_LONG);
+        }
+
+        commands.spawn((
+            SpriteSheetBundle {
+                texture_atlas: texture_atlas_handle,
+                sprite: TextureAtlasSprite::new(animation_indices_idle.first),
+                // transform: Transform::from_scale(Vec3::splat(1.0)),
+                transform: Transform::from_xyz(
+                    camera.translation.x + rand_x,
+                    camera.translation.y + rand_y,
+                    0.0,
+                ),
+                ..default()
+            },
+            animation_indices_idle,
+            animation_indices_running,
+            AnimationTimer(Timer::from_seconds(0.3, TimerMode::Repeating)),
+            SpawnTimeStamp {
+                value: current_time,
+            },
+            Health { value: 1.0 },
+            Friend {
+                kind: FriendType::BeeBox,
+                targeting_friend: FriendType::None,
+                targeting_item: ItemType::None,
+                current_animation: AnimationType::Idle,
+                last_position_x: camera.translation.x + rand_x,
+                last_position_y: camera.translation.y + rand_y,
+                speed: 0.0,
+            },
+        ));
+    }
+}

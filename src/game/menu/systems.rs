@@ -192,7 +192,6 @@ pub fn choose_item(
                 CurrentMission::CatchFishes => PreviousMission::CatchFishes,
                 CurrentMission::FeedFishes => PreviousMission::FeedFishes,
                 CurrentMission::FeedTheBears => PreviousMission::FeedTheBears,
-                CurrentMission::ChopTrees => PreviousMission::ChopTrees,
                 CurrentMission::CatchButterflies => PreviousMission::CatchButterflies,
                 CurrentMission::FeedDonkeys => PreviousMission::FeedDonkeys,
                 CurrentMission::GiveBonesToDogs => PreviousMission::GiveBonesToDogs,

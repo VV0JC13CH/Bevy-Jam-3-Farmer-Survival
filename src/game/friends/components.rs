@@ -15,6 +15,7 @@ pub enum FriendType {
     Beaver,
     Fish,
     Bear,
+    BeeBox,
     Tree,
     Donkey,
     Worm,
