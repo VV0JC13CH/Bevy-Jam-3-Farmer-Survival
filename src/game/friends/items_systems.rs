@@ -512,7 +512,7 @@ pub fn action_rod(
     let mut spawn_item: bool = true;
     let current_time = time.elapsed_seconds_f64();
     for timer in spawn_timers.iter() {
-        if (current_time - timer.value) > 1.0 {
+        if (current_time - timer.value) > 5.0 {
             spawn_item = true
         } else {
             spawn_item = false
@@ -536,12 +536,19 @@ pub fn action_rod(
             second: MAX_TYPES_OF_ITEMS * 2 + index_of_item,
             third: MAX_TYPES_OF_ITEMS * 3 + index_of_item,
         };
+        let mut random = thread_rng();
+        let rand_placement = random.gen_range(-20.0..20.0);
+
         commands.spawn((
             SpriteSheetBundle {
                 texture_atlas: texture_atlas_handle,
                 sprite: TextureAtlasSprite::new(animation_indices_item.first),
                 // transform: Transform::from_scale(Vec3::splat(1.0)),
-                transform: Transform::from_xyz(camera.translation.x, camera.translation.y, 0.0),
+                transform: Transform::from_xyz(
+                    camera.translation.x + rand_placement,
+                    camera.translation.y + rand_placement,
+                    0.0,
+                ),
                 ..default()
             },
             animation_indices_item,
@@ -908,6 +915,7 @@ pub fn items_animate(
         ),
         (With<Item>, Without<Camera>),
     >,
+    friend_query: Query<(Entity, &Transform, &Friend), (With<Friend>, Without<Item>)>,
 ) {
     let camera = camera_query.get_single().unwrap();
 
@@ -969,6 +977,35 @@ pub fn items_animate(
                     transform.translation.y += 5.0;
                 }
             },
+            ItemType::Rod => {
+                for (friend_entity, friend_transform, friend) in friend_query.iter() {
+                    if friend.kind == FriendType::Fish {
+                        let mut direction = Vec3::ZERO;
+                        if transform.translation.x > friend_transform.translation.x {
+                            direction += Vec3::new(-1.0, 0.0, 0.0)
+                        } else if transform.translation.x < friend_transform.translation.x {
+                            direction += Vec3::new(1.0, 0.0, 0.0)
+                        } else {
+                            direction += Vec3::new(0.0, 0.0, 0.0)
+                        }
+                        if transform.translation.y < friend_transform.translation.y {
+                            direction += Vec3::new(0.0, 1.0, 0.0);
+                        } else if transform.translation.y > friend_transform.translation.y {
+                            direction += Vec3::new(0.0, -1.0, 0.0);
+                        } else {
+                            direction += Vec3::new(0.0, 0.0, 0.0);
+                        }
+
+                        if direction.length() > 0.0 {
+                            direction = direction.normalize();
+                        }
+
+                        transform.translation += direction * friend.speed * time.delta_seconds();
+                    }
+                }
+                let current_time = time.elapsed_seconds_f64();
+
+            },
             _ => transform.translation.x += 2.0 * dir,
         }
 
@@ -1017,6 +1054,14 @@ pub fn item_hit_friend(
                 .translation
                 .distance(item_transform.translation);
             if distance < 64.0 {
+                if friend.kind == FriendType::Fish && item.kind == ItemType::Rod {
+                    println!("Fish catched!");
+                    commands.entity(friend_entity).despawn();
+                    let sound_effect = asset_server.load("audio/sound_3.ogg");
+                    audio.play(sound_effect);
+                    score.value += 1;
+                }
+
                 if friend.kind == FriendType::Donkey && item.kind == ItemType::Apple {
                     println!("Donkey is happy!");
                     item.current_animation = AnimationType::OneTime;

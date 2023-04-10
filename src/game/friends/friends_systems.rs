@@ -891,7 +891,7 @@ pub fn fish_spawn(
     let mut spawn_friend: bool = true;
     let current_time = time.elapsed_seconds_f64();
     for timer in spawn_timers.iter() {
-        if (current_time - timer.value) > 5.0 {
+        if (current_time - timer.value) > 3.0 {
             spawn_friend = true
         } else {
             spawn_friend = false
