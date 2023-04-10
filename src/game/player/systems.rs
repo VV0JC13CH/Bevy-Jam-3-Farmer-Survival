@@ -5,11 +5,11 @@ use bevy::{
     render::camera::Camera,
 };
 
+use super::components::*;
 use super::states::PlayerAnimationState;
 use super::states::PlayerCharacter;
 use super::states::PlayerOrientationState;
-
-use super::components::*;
+use crate::game::menu::components::GameElement;
 
 pub const PLAYER_SPEED: f32 = 300.0;
 
@@ -161,37 +161,37 @@ pub fn move_camera(
     mut scroll_evr: EventReader<MouseWheel>,
     mut camera_query: Query<(&mut Transform, &mut OrthographicProjection), With<Camera>>,
 ) {
-    for (mut transform, mut ortho) in camera_query.iter_mut() {
-        let mut direction = Vec3::ZERO;
+        for (mut transform, mut ortho) in camera_query.iter_mut() {
+            let mut direction = Vec3::ZERO;
 
-        if keyboard_input.pressed(KeyCode::Left) || keyboard_input.pressed(KeyCode::A) {
-            direction += Vec3::new(-1.0, 0.0, 0.0);
-        }
-        if keyboard_input.pressed(KeyCode::Right) || keyboard_input.pressed(KeyCode::D) {
-            direction += Vec3::new(1.0, 0.0, 0.0);
-        }
-        if keyboard_input.pressed(KeyCode::Up) || keyboard_input.pressed(KeyCode::W) {
-            direction += Vec3::new(0.0, 1.0, 0.0);
-        }
-        if keyboard_input.pressed(KeyCode::Down) || keyboard_input.pressed(KeyCode::S) {
-            direction += Vec3::new(0.0, -1.0, 0.0);
-        }
-        if direction.length() > 0.0 {
-            direction = direction.normalize();
-        }
-
-        for event in scroll_evr.iter() {
-            if event.y < 0.0 {
-                ortho.scale += 0.2
+            if keyboard_input.pressed(KeyCode::Left) || keyboard_input.pressed(KeyCode::A) {
+                direction += Vec3::new(-1.0, 0.0, 0.0);
             }
-            if event.y > 0.0 {
-                ortho.scale -= 0.2
+            if keyboard_input.pressed(KeyCode::Right) || keyboard_input.pressed(KeyCode::D) {
+                direction += Vec3::new(1.0, 0.0, 0.0);
             }
-        }
+            if keyboard_input.pressed(KeyCode::Up) || keyboard_input.pressed(KeyCode::W) {
+                direction += Vec3::new(0.0, 1.0, 0.0);
+            }
+            if keyboard_input.pressed(KeyCode::Down) || keyboard_input.pressed(KeyCode::S) {
+                direction += Vec3::new(0.0, -1.0, 0.0);
+            }
+            if direction.length() > 0.0 {
+                direction = direction.normalize();
+            }
 
-        transform.translation += direction * PLAYER_SPEED * time.delta_seconds();
+            for event in scroll_evr.iter() {
+                if event.y < 0.0 {
+                    ortho.scale += 0.2
+                }
+                if event.y > 0.0 {
+                    ortho.scale -= 0.2
+                }
+            }
+
+            transform.translation += direction * PLAYER_SPEED * time.delta_seconds();
+        }
     }
-}
 
 use crate::DebugState;
 

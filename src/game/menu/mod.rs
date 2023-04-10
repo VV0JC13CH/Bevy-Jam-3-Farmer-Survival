@@ -1,4 +1,4 @@
-mod components;
+pub mod components;
 mod states;
 mod systems;
 
@@ -23,6 +23,7 @@ impl Plugin for MenuPlugin {
             .add_system(menu_spawn.in_schedule(OnEnter(AppState::Menu)))
             .add_system(item_spawn.in_schedule(OnEnter(AppState::LevelUp)))
             .add_system(setup_lives_icons.in_schedule(OnEnter(AppState::Game)))
+            .add_system(link_game_icons_to_camera.after(setup_lives_icons).in_schedule(OnEnter(AppState::Game)))
             .add_system(show_game_icons.in_set(OnUpdate(AppState::Game)))
             .add_system(show_score.in_set(OnUpdate(AppState::Game)))
             .add_systems(
@@ -51,3 +52,4 @@ impl Plugin for MenuPlugin {
             .add_system(item_despawn.in_schedule(OnExit(AppState::LevelUp)));
     }
 }
+
