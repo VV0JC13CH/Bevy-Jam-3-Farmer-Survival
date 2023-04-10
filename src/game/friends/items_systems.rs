@@ -1013,3 +1013,24 @@ pub fn item_hit_friend(
         }
     }
 }
+
+pub fn item_outside_of_range(
+    mut commands: Commands,
+    mut item_query: Query<(Entity, &Transform), With<Item>>,
+    camera_query: Query<&Transform, (With<Camera>, Without<Item>)>,
+
+) {
+        let camera = camera_query.get_single().unwrap();
+
+    for (item_entity, item_transform) in item_query.iter_mut() {
+            let distance = item_transform
+                .translation
+                .distance(camera.translation);
+            if distance > 1000.0 {
+                println!("Despawn of item!");
+                commands.entity(item_entity).despawn();
+        }
+    }
+}
+
+

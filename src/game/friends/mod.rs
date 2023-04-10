@@ -185,6 +185,7 @@ impl Plugin for FriendsPlugin {
             .add_system(friend_hit_player.in_set(OnUpdate(AppState::Game)))
             // On Exit State
             .add_system(friends_despawn.in_schedule(OnExit(AppState::Game)))
-            .add_system(reset_states.in_schedule(OnExit(AppState::Game)));
+            .add_system(reset_states.in_schedule(OnExit(AppState::Game)))
+            .add_system(item_outside_of_range);
     }
 }
