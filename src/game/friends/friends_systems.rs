@@ -623,13 +623,14 @@ pub fn butterfly_spawn(
     let mut spawn_friend: bool = true;
     let current_time = time.elapsed_seconds_f64();
     for timer in spawn_timers.iter() {
-        if (current_time - timer.value) > 5.0 {
+        if (current_time - timer.value) > 3.0 {
             spawn_friend = true
         } else {
             spawn_friend = false
         }
     }
     if spawn_friend {
+        println!("Butterfly spawned");
         let camera = camera_query.get_single().unwrap();
         let texture_handle = asset_server.load("sprites/entities_tilemap.png");
         let texture_atlas = TextureAtlas::from_grid(
@@ -1760,6 +1761,20 @@ pub fn setup_spawns(
         },
         Friend {
             kind: FriendType::Donkey,
+            targeting_friend: FriendType::None,
+            targeting_item: ItemType::None,
+            current_animation: AnimationType::Idle,
+            last_position_x: 0.0,
+            last_position_y: 0.0,
+            speed: 0.0,
+        },
+    ));
+     commands.spawn((
+        SpawnTimeStamp {
+            value: current_time,
+        },
+        Friend {
+            kind: FriendType::Butterfly,
             targeting_friend: FriendType::None,
             targeting_item: ItemType::None,
             current_animation: AnimationType::Idle,

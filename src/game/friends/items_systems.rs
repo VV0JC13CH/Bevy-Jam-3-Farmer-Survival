@@ -1004,8 +1004,7 @@ pub fn items_animate(
                     }
                 }
                 let current_time = time.elapsed_seconds_f64();
-
-            },
+            }
             _ => transform.translation.x += 2.0 * dir,
         }
 
@@ -1054,6 +1053,13 @@ pub fn item_hit_friend(
                 .translation
                 .distance(item_transform.translation);
             if distance < 64.0 {
+                if friend.kind == FriendType::Butterfly && item.kind == ItemType::BugNet {
+                    println!("Butterfly catched!");
+                    commands.entity(friend_entity).despawn();
+                    let sound_effect = asset_server.load("audio/sound_1.ogg");
+                    audio.play(sound_effect);
+                    score.value += 1;
+                }
                 if friend.kind == FriendType::Fish && item.kind == ItemType::Rod {
                     println!("Fish catched!");
                     commands.entity(friend_entity).despawn();
