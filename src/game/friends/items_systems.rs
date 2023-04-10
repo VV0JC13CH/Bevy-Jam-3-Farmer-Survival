@@ -958,6 +958,12 @@ pub fn items_animate(
                 transform.translation.x += 5.0 * dir;
                 transform.rotate(Quat::from_rotation_z((-dir * 10.0_f32).to_radians()))
             }
+            ItemType::Bone => {
+                transform.translation.x += 5.0 * dir;
+                transform.translation.y += 5.0;
+                transform.rotate(Quat::from_rotation_z((-dir * 5.0_f32).to_radians()))
+            }
+
             ItemType::CatItem => {
                 transform.translation.x += 5.0;
             }
@@ -1042,15 +1048,32 @@ pub fn item_hit_friend(
     audio: Res<Audio>,
     mut score: ResMut<Score>,
     time: Res<Time>,
+    camera_query: Query<&Transform, (With<Camera>, Without<Item>, Without<Friend>)>,
 ) {
     let current_time = time.elapsed_seconds_f64();
 
+    let camera = camera_query.get_single().unwrap();
     for (friend_entity, mut friend_transform, friend) in friend_query.iter_mut() {
+        let distance_to_camera = friend_transform.translation.distance(camera.translation);
+        if friend.kind == FriendType::BeeBox && distance_to_camera < 64.0 {
+            println!("You found beebox!");
+            commands.entity(friend_entity).despawn();
+            let sound_effect = asset_server.load("audio/sound_3.ogg");
+            audio.play(sound_effect);
+            score.value += 1;
+        }
         for (item_entity, mut item_transform, mut item, item_spawn_time) in item_query.iter_mut() {
             let distance = friend_transform
                 .translation
                 .distance(item_transform.translation);
             if distance < 64.0 {
+                if friend.kind == FriendType::Dog && item.kind == ItemType::Bone {
+                    println!("Dog likes bones!");
+                    commands.entity(friend_entity).despawn();
+                    let sound_effect = asset_server.load("audio/sound_4.ogg");
+                    audio.play(sound_effect);
+                    score.value += 1;
+                }
                 if friend.kind == FriendType::Bear && item.kind == ItemType::Honey {
                     println!("Bear likes honey!");
                     item.current_animation = AnimationType::OneTime;
