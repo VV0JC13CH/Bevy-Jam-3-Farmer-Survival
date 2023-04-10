@@ -31,8 +31,7 @@ pub fn block_friends_1(
     mut mouse_friend_next_state: ResMut<NextState<UnlockedMouse>>,
     mut fish_friend_next_state: ResMut<NextState<UnlockedFish>>,
     mut cat_friend_next_state: ResMut<NextState<UnlockedCat>>,
-)
-{
+) {
     flower_friend_next_state.set(UnlockedFlower::Blocked);
     worm_friend_next_state.set(UnlockedWorm::Blocked);
     mouse_friend_next_state.set(UnlockedMouse::Blocked);
@@ -45,8 +44,7 @@ pub fn block_friends_2(
     mut bee_friend_next_state: ResMut<NextState<UnlockedBee>>,
     mut beebox_friend_next_state: ResMut<NextState<UnlockedBeeBox>>,
     mut butterfly_friend_next_state: ResMut<NextState<UnlockedButterfly>>,
-)
-{
+) {
     dog_friend_next_state.set(UnlockedDog::Blocked);
     cow_friend_next_state.set(UnlockedCow::Blocked);
     bee_friend_next_state.set(UnlockedBee::Blocked);
@@ -60,14 +58,32 @@ pub fn block_friends_3(
     mut tree_friend_next_state: ResMut<NextState<UnlockedTree>>,
     mut donkey_friend_next_state: ResMut<NextState<UnlockedDonkey>>,
     mut sheep_friend_next_state: ResMut<NextState<UnlockedSheep>>,
-)
-{
+) {
     spider_friend_next_state.set(UnlockedSpider::Blocked);
     beaver_friend_next_state.set(UnlockedBeaver::Blocked);
     bear_friend_next_state.set(UnlockedBear::Blocked);
     tree_friend_next_state.set(UnlockedTree::Blocked);
     donkey_friend_next_state.set(UnlockedDonkey::Blocked);
     sheep_friend_next_state.set(UnlockedSheep::Blocked);
+}
+
+pub fn setup_spawns(mut commands: Commands, time: ResMut<Time>) {
+    let current_time = time.elapsed_seconds_f64();
+    println!("setup_spawns");
+    commands.spawn((
+        SpawnTimeStamp {
+            value: current_time,
+        },
+        Friend {
+            kind: FriendType::Flower,
+            targeting_friend: FriendType::None,
+            targeting_item: ItemType::None,
+            current_animation: AnimationType::Idle,
+            last_position_x: 0.0,
+            last_position_y: 0.0,
+            speed: 0.0,
+        },
+    ));
 }
 
 pub fn mouse_spawn(
@@ -436,19 +452,24 @@ pub fn flower_spawn(
     mut texture_atlases: ResMut<Assets<TextureAtlas>>,
     time: ResMut<Time>,
     camera_query: Query<&Transform, With<Camera>>,
-    spawn_timers: Query<&SpawnTimeStamp, With<Friend>>,
+    spawn_timers: Query<(&SpawnTimeStamp, &Friend), With<Friend>>,
 ) {
     let index_of_friend = 4;
     let mut spawn_friend: bool = true;
     let current_time = time.elapsed_seconds_f64();
-    for timer in spawn_timers.iter() {
-        if (current_time - timer.value) > 5.0 {
-            spawn_friend = true
+    for (timer, friend) in spawn_timers.iter() {
+        if friend.kind == FriendType::Flower {
+            if (current_time - timer.value) > 2.0 {
+                spawn_friend = true
+            } else {
+                spawn_friend = false
+            }
         } else {
             spawn_friend = false
         }
     }
     if spawn_friend {
+        println!("Spawn flower!");
         let camera = camera_query.get_single().unwrap();
         let texture_handle = asset_server.load("sprites/entities_tilemap.png");
         let texture_atlas = TextureAtlas::from_grid(
@@ -472,7 +493,7 @@ pub fn flower_spawn(
         let rand_x: f32;
         let rand_y: f32;
         const DISTANCE_CLOSE: f32 = 400.0;
-        const DISTANCE_LONG: f32 = 1500.0;
+        const DISTANCE_LONG: f32 = 800.0;
         let rand_placement = random.gen_range(0..4);
         if rand_placement == 0 {
             rand_x = random.gen_range(DISTANCE_CLOSE..DISTANCE_LONG);
@@ -1626,7 +1647,12 @@ pub fn friend_hit_player(
                 let distance = player_transform
                     .translation
                     .distance(friend_transform.translation);
-                if distance < 5.0 {
+                if distance < 5.0
+                    && friend.kind != FriendType::Flower
+                    && friend.kind != FriendType::BeeBox
+                    && friend.kind != FriendType::Tree
+                    && friend.kind != FriendType::Butterfly
+                {
                     println!("Player was hit by friend!");
                     lives.value -= 1;
                     let sound_effect = asset_server.load("audio/sound_3.ogg");

@@ -24,6 +24,7 @@ pub enum FriendType {
     None,
 }
 
+#[derive(PartialEq)]
 pub enum ItemType {
     Honey,
     Axe,

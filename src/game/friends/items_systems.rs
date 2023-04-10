@@ -126,7 +126,7 @@ pub fn action_hoe(
                 // transform: Transform::from_scale(Vec3::splat(1.0)),
                 transform: Transform::from_xyz(
                     camera.translation.x + random.gen_range(-400.0..400.0),
-                    camera.translation.y + 300.0,
+                    camera.translation.y + 400.0,
                     0.0,
                 ),
                 ..default()
@@ -992,23 +992,39 @@ pub fn items_animate(
 pub fn item_hit_friend(
     mut commands: Commands,
     //   mut game_over_event_writer: EventWriter<GameOver>,
-    mut friend_query: Query<(Entity, &Transform, &Friend), With<Friend>>,
-    item_query: Query<(&Transform, &Item), With<Item>>,
+    mut friend_query: Query<(Entity, &mut Transform, &Friend), (With<Friend>, Without<Item>)>,
+    mut item_query: Query<(Entity, &mut Transform, &Item), (With<Item>, Without<Friend>)>,
     asset_server: Res<AssetServer>,
     audio: Res<Audio>,
     mut score: ResMut<Score>,
 ) {
-    for (friend_entity, friend_transform, friend) in friend_query.iter_mut() {
-        for (item_transform, item) in item_query.iter() {
+    for (friend_entity, mut friend_transform, friend) in friend_query.iter_mut() {
+        for (item_entity, item_transform, item) in item_query.iter_mut() {
             let distance = friend_transform
                 .translation
                 .distance(item_transform.translation);
             if distance < 64.0 {
-                println!("Friend was hit by item!");
-                let sound_effect = asset_server.load("audio/sound_1.ogg");
-                audio.play(sound_effect);
-                commands.entity(friend_entity).despawn();
-                score.value += 1;
+                if friend.kind == FriendType::Flower && item.kind == ItemType::Water{
+                    println!("Flowers like water!");
+                    commands.entity(friend_entity).despawn();
+                    let sound_effect = asset_server.load("audio/sound_2.ogg");
+                    audio.play(sound_effect);
+                    score.value += 1;
+                } 
+                if friend.kind == FriendType::Worm && item.kind == ItemType::Hoe{
+                    println!("Worm collected!");
+                    commands.entity(friend_entity).despawn();
+                    let sound_effect = asset_server.load("audio/sound_3.ogg");
+                    audio.play(sound_effect);
+                    score.value += 1;
+                }
+                else {
+                    println!("Friend was hit by item!");
+                    let sound_effect = asset_server.load("audio/sound_1.ogg");
+                    audio.play(sound_effect);
+                    commands.entity(friend_entity).despawn();
+                    score.value += 1;
+                }
             }
         }
     }
@@ -1018,19 +1034,14 @@ pub fn item_outside_of_range(
     mut commands: Commands,
     mut item_query: Query<(Entity, &Transform), With<Item>>,
     camera_query: Query<&Transform, (With<Camera>, Without<Item>)>,
-
 ) {
-        let camera = camera_query.get_single().unwrap();
+    let camera = camera_query.get_single().unwrap();
 
     for (item_entity, item_transform) in item_query.iter_mut() {
-            let distance = item_transform
-                .translation
-                .distance(camera.translation);
-            if distance > 1000.0 {
-                println!("Despawn of item!");
-                commands.entity(item_entity).despawn();
+        let distance = item_transform.translation.distance(camera.translation);
+        if distance > 1000.0 {
+            println!("Despawn of item!");
+            commands.entity(item_entity).despawn();
         }
     }
 }
-
-
