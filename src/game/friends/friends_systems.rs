@@ -67,25 +67,6 @@ pub fn block_friends_3(
     sheep_friend_next_state.set(UnlockedSheep::Blocked);
 }
 
-pub fn setup_spawns(mut commands: Commands, time: ResMut<Time>) {
-    let current_time = time.elapsed_seconds_f64();
-    println!("setup_spawns");
-    commands.spawn((
-        SpawnTimeStamp {
-            value: current_time,
-        },
-        Friend {
-            kind: FriendType::Flower,
-            targeting_friend: FriendType::None,
-            targeting_item: ItemType::None,
-            current_animation: AnimationType::Idle,
-            last_position_x: 0.0,
-            last_position_y: 0.0,
-            speed: 0.0,
-        },
-    ));
-}
-
 pub fn mouse_spawn(
     mut commands: Commands,
     asset_server: Res<AssetServer>,
@@ -452,22 +433,19 @@ pub fn flower_spawn(
     mut texture_atlases: ResMut<Assets<TextureAtlas>>,
     time: ResMut<Time>,
     camera_query: Query<&Transform, With<Camera>>,
-    spawn_timers: Query<(&SpawnTimeStamp, &Friend), With<Friend>>,
+    spawn_timers: Query<&SpawnTimeStamp, With<Friend>>,
 ) {
     let index_of_friend = 4;
     let mut spawn_friend: bool = true;
     let current_time = time.elapsed_seconds_f64();
-    for (timer, friend) in spawn_timers.iter() {
-        if friend.kind == FriendType::Flower {
-            if (current_time - timer.value) > 2.0 {
-                spawn_friend = true
-            } else {
-                spawn_friend = false
-            }
+    for timer in spawn_timers.iter() {
+        if (current_time - timer.value) > 5.0 {
+            spawn_friend = true
         } else {
             spawn_friend = false
         }
     }
+
     if spawn_friend {
         println!("Spawn flower!");
         let camera = camera_query.get_single().unwrap();
@@ -1089,13 +1067,14 @@ pub fn tree_spawn(
     let mut spawn_friend: bool = true;
     let current_time = time.elapsed_seconds_f64();
     for timer in spawn_timers.iter() {
-        if (current_time - timer.value) > 5.0 {
+        if (current_time - timer.value) > 3.0 {
             spawn_friend = true
         } else {
             spawn_friend = false
         }
     }
     if spawn_friend {
+        println!("Tree spawned");
         let camera = camera_query.get_single().unwrap();
         let texture_handle = asset_server.load("sprites/entities_tilemap.png");
         let texture_atlas = TextureAtlas::from_grid(
@@ -1297,8 +1276,9 @@ pub fn worm_spawn(
         let rand_x: f32;
         let rand_y: f32;
         const DISTANCE_CLOSE: f32 = 400.0;
-        const DISTANCE_LONG: f32 = 1500.0;
+        const DISTANCE_LONG: f32 = 700.0;
         let rand_placement = random.gen_range(0..4);
+        let speed_variant = random.gen_range(0..4);
         if rand_placement == 0 {
             rand_x = random.gen_range(DISTANCE_CLOSE..DISTANCE_LONG);
             rand_y = random.gen_range(DISTANCE_CLOSE..DISTANCE_LONG);
@@ -1312,36 +1292,67 @@ pub fn worm_spawn(
             rand_x = random.gen_range(-DISTANCE_LONG..-DISTANCE_CLOSE);
             rand_y = random.gen_range(DISTANCE_CLOSE..DISTANCE_LONG);
         }
-
-        commands.spawn((
-            SpriteSheetBundle {
-                texture_atlas: texture_atlas_handle,
-                sprite: TextureAtlasSprite::new(animation_indices_idle.first),
-                // transform: Transform::from_scale(Vec3::splat(1.0)),
-                transform: Transform::from_xyz(
-                    camera.translation.x + rand_x,
-                    camera.translation.y + rand_y,
-                    0.0,
-                ),
-                ..default()
-            },
-            animation_indices_idle,
-            animation_indices_running,
-            AnimationTimer(Timer::from_seconds(0.3, TimerMode::Repeating)),
-            SpawnTimeStamp {
-                value: current_time,
-            },
-            Health { value: 1.0 },
-            Friend {
-                kind: FriendType::Worm,
-                targeting_friend: FriendType::None,
-                targeting_item: ItemType::Apple,
-                current_animation: AnimationType::Idle,
-                last_position_x: camera.translation.x + rand_x,
-                last_position_y: camera.translation.y + rand_y,
-                speed: 100.0,
-            },
-        ));
+        if speed_variant > 1 {
+            commands.spawn((
+                SpriteSheetBundle {
+                    texture_atlas: texture_atlas_handle,
+                    sprite: TextureAtlasSprite::new(animation_indices_idle.first),
+                    // transform: Transform::from_scale(Vec3::splat(1.0)),
+                    transform: Transform::from_xyz(
+                        camera.translation.x + rand_x,
+                        camera.translation.y + rand_y,
+                        0.0,
+                    ),
+                    ..default()
+                },
+                animation_indices_idle,
+                animation_indices_running,
+                AnimationTimer(Timer::from_seconds(0.3, TimerMode::Repeating)),
+                SpawnTimeStamp {
+                    value: current_time,
+                },
+                Health { value: 1.0 },
+                Friend {
+                    kind: FriendType::Worm,
+                    targeting_friend: FriendType::None,
+                    targeting_item: ItemType::Apple,
+                    current_animation: AnimationType::Idle,
+                    last_position_x: camera.translation.x + rand_x,
+                    last_position_y: camera.translation.y + rand_y,
+                    speed: 200.0,
+                },
+            ));
+        } else {
+            commands.spawn((
+                SpriteSheetBundle {
+                    texture_atlas: texture_atlas_handle,
+                    sprite: TextureAtlasSprite::new(animation_indices_idle.first),
+                    // transform: Transform::from_scale(Vec3::splat(1.0)),
+                    transform: Transform::from_xyz(
+                        camera.translation.x + rand_x,
+                        camera.translation.y + rand_y,
+                        0.0,
+                    ),
+                    ..default()
+                },
+                animation_indices_idle,
+                animation_indices_running,
+                AnimationTimer(Timer::from_seconds(0.3, TimerMode::Repeating)),
+                SpawnTimeStamp {
+                    value: current_time,
+                },
+                Health { value: 1.0 },
+                Friend {
+                    kind: FriendType::Worm,
+                    targeting_friend: FriendType::None,
+                    targeting_item: ItemType::Apple,
+                    current_animation: AnimationType::Idle,
+                    last_position_x: camera.translation.x + rand_x,
+                    last_position_y: camera.translation.y + rand_y,
+                    speed: 0.0,
+                },
+            ));
+        }
     }
 }
 pub fn sheep_spawn(
@@ -1652,6 +1663,7 @@ pub fn friend_hit_player(
                     && friend.kind != FriendType::BeeBox
                     && friend.kind != FriendType::Tree
                     && friend.kind != FriendType::Butterfly
+                    && friend.kind != FriendType::Worm
                 {
                     println!("Player was hit by friend!");
                     lives.value -= 1;
@@ -1667,12 +1679,67 @@ pub fn friend_hit_player(
 pub fn despawn_friends(
     mut commands: Commands,
     mut friend_query: Query<(Entity, &Transform), With<Friend>>,
-    camera_query: Query<&Transform, (With<Camera>, Without<Item>)>,
 ) {
-    let camera = camera_query.get_single().unwrap();
 
     for (item_entity, item_transform) in friend_query.iter_mut() {
         println!("Despawn of item!");
         commands.entity(item_entity).despawn();
     }
+
 }
+
+pub fn setup_spawns(
+    mut commands: Commands,
+    mut friend_query: Query<(Entity, &Transform), With<Friend>>,
+    camera_query: Query<&Transform, (With<Camera>, Without<Item>)>,
+    time: ResMut<Time>,
+) {
+
+
+    let current_time : f64 = 0.0;
+    println!("setup_spawns");
+    commands.spawn((
+        SpawnTimeStamp {
+            value: current_time,
+        },
+        Friend {
+            kind: FriendType::Flower,
+            targeting_friend: FriendType::None,
+            targeting_item: ItemType::None,
+            current_animation: AnimationType::Idle,
+            last_position_x: 0.0,
+            last_position_y: 0.0,
+            speed: 0.0,
+        },
+    ));
+    commands.spawn((
+        SpawnTimeStamp {
+            value: current_time,
+        },
+        Friend {
+            kind: FriendType::Tree,
+            targeting_friend: FriendType::None,
+            targeting_item: ItemType::None,
+            current_animation: AnimationType::Idle,
+            last_position_x: 0.0,
+            last_position_y: 0.0,
+            speed: 0.0,
+        },
+    ));
+
+    commands.spawn((
+        SpawnTimeStamp {
+            value: current_time,
+        },
+        Friend {
+            kind: FriendType::Worm,
+            targeting_friend: FriendType::None,
+            targeting_item: ItemType::None,
+            current_animation: AnimationType::Idle,
+            last_position_x: 0.0,
+            last_position_y: 0.0,
+            speed: 0.0,
+        },
+    ));
+}
+

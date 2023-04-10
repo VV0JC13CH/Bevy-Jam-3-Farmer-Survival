@@ -77,8 +77,6 @@ pub fn detect_waterflowers(
         default_friend_next_state.set(UnlockedFlower::Spawn);
     } else {
         default_tool_next_state.set(UnlockedWaterCan::Blocked);
-        // too much fps
-        default_friend_next_state.set(UnlockedFlower::Blocked);
     }
 }
 pub fn detect_getworms(

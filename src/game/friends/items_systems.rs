@@ -900,6 +900,7 @@ pub fn items_animate(
             &mut Transform,
             &AnimationIndicesItem,
             &mut AnimationTimer,
+            &SpawnTimeStamp,
             &mut TextureAtlasSprite,
             &Item,
         ),
@@ -908,7 +909,7 @@ pub fn items_animate(
 ) {
     let camera = camera_query.get_single().unwrap();
 
-    for (mut transform, indices_item, mut timer, mut sprite, item) in &mut query {
+    for (mut transform, indices_item, mut timer, spawn_timer, mut sprite, item) in &mut query {
         timer.tick(time.delta());
         match item.kind {
             ItemType::CatItem => sprite.flip_x = true,
@@ -934,15 +935,19 @@ pub fn items_animate(
                 if transform.translation.y > (camera.translation.y + random.gen_range(-10.0..10.0))
                 {
                     // has to be quicker than player
-                    transform.translation.y -= 10.0
+                    let current_time = time.elapsed_seconds_f64();
+                    if (current_time - spawn_timer.value) < 1.0 {
+                        transform.translation.y -= 10.0
+                    } else {
+                    }
                 } else {
                     transform.translation.y += 0.0
                 }
             }
-            ItemType::Axe => {
-                transform.translation.x += 5.0 * dir;
-                transform.rotate(Quat::from_rotation_z((-dir * 10.0_f32).to_radians()))
-            }
+             ItemType::Axe => {
+                 transform.translation.x += 5.0 * dir;
+                 transform.rotate(Quat::from_rotation_z((-dir * 10.0_f32).to_radians()))
+             }
             ItemType::CatItem => {
                 transform.translation.x += 15.0;
             }
@@ -993,37 +998,49 @@ pub fn item_hit_friend(
     mut commands: Commands,
     //   mut game_over_event_writer: EventWriter<GameOver>,
     mut friend_query: Query<(Entity, &mut Transform, &Friend), (With<Friend>, Without<Item>)>,
-    mut item_query: Query<(Entity, &mut Transform, &Item), (With<Item>, Without<Friend>)>,
+    mut item_query: Query<
+        (Entity, &mut Transform, &Item, &SpawnTimeStamp),
+        (With<Item>, Without<Friend>),
+    >,
     asset_server: Res<AssetServer>,
     audio: Res<Audio>,
     mut score: ResMut<Score>,
+    time: Res<Time>,
 ) {
+    let current_time = time.elapsed_seconds_f64();
+
     for (friend_entity, mut friend_transform, friend) in friend_query.iter_mut() {
-        for (item_entity, item_transform, item) in item_query.iter_mut() {
+        for (item_entity, item_transform, item, item_spawn_time) in item_query.iter_mut() {
             let distance = friend_transform
                 .translation
                 .distance(item_transform.translation);
             if distance < 64.0 {
-                if friend.kind == FriendType::Flower && item.kind == ItemType::Water{
+                if friend.kind == FriendType::Tree && item.kind == ItemType::Axe {
+                    println!("Tree targeted!");
+                    commands.entity(friend_entity).despawn();
+                    let sound_effect = asset_server.load("audio/sound_4.ogg");
+                    audio.play(sound_effect);
+                    score.value += 1;
+                }
+
+                if friend.kind == FriendType::Flower && item.kind == ItemType::Water {
                     println!("Flowers like water!");
                     commands.entity(friend_entity).despawn();
                     let sound_effect = asset_server.load("audio/sound_2.ogg");
                     audio.play(sound_effect);
                     score.value += 1;
-                } 
-                if friend.kind == FriendType::Worm && item.kind == ItemType::Hoe{
-                    println!("Worm collected!");
-                    commands.entity(friend_entity).despawn();
-                    let sound_effect = asset_server.load("audio/sound_3.ogg");
-                    audio.play(sound_effect);
-                    score.value += 1;
                 }
-                else {
-                    println!("Friend was hit by item!");
-                    let sound_effect = asset_server.load("audio/sound_1.ogg");
-                    audio.play(sound_effect);
-                    commands.entity(friend_entity).despawn();
-                    score.value += 1;
+                if distance < 32.0 && friend.kind == FriendType::Worm && item.kind == ItemType::Hoe
+                {
+                    if (current_time - item_spawn_time.value) < 0.8 {
+                        println!("Worm collected!");
+                        commands.entity(friend_entity).despawn();
+                        let sound_effect = asset_server.load("audio/sound_3.ogg");
+                        audio.play(sound_effect);
+                        score.value += 1;
+                    }
+                } else {
+                    println!("Collision without score")
                 }
             }
         }
