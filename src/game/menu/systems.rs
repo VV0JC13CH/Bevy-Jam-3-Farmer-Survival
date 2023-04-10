@@ -597,8 +597,6 @@ pub fn setup_lives_icons(
     ));
 }
 
-
-
 pub fn show_game_icons(
     lives: Res<Lives>,
     mut icons_query: Query<
@@ -710,7 +708,7 @@ pub fn show_game_icons(
             if lives.value == 0 {
                 commands.entity(entity).despawn();
             }
-        } else { 
+        } else {
             const HEIGHT: f32 = 64.0;
             if game_element._id == 3 {
                 let update_transform = Transform::from_xyz(
@@ -816,6 +814,30 @@ pub fn score_spawn(mut commands: Commands, asset_server: Res<AssetServer>) {
     commands.spawn((
         TextBundle::from_sections([
             TextSection::new(
+                "Stage:",
+                TextStyle {
+                    font: font.clone(),
+                    font_size: 30.0,
+                    color: Color::YELLOW,
+                },
+            ),
+            TextSection::new(
+                "0",
+                TextStyle {
+                    font: font.clone(),
+                    font_size: 30.0,
+                    color: Color::ORANGE,
+                },
+            ),
+            TextSection::new(
+                "\n",
+                TextStyle {
+                    font: font.clone(),
+                    font_size: 30.0,
+                    color: Color::YELLOW,
+                },
+            ),
+            TextSection::new(
                 "Score:",
                 TextStyle {
                     font: font.clone(),
@@ -872,17 +894,20 @@ pub fn score_spawn(mut commands: Commands, asset_server: Res<AssetServer>) {
 pub fn show_score(
     mut query: Query<&mut Text, With<ScoreText>>,
     score: Res<Score>,
+    stage: Res<Stage>,
     highscore: Res<HighScores>,
 ) {
     if (highscore.scores).len() > 0 {
         for mut text in &mut query {
-            text.sections[1].value = score.value.to_string();
-            text.sections[4].value = highscore.scores.iter().max().unwrap().to_string();
+            text.sections[1].value = stage.value.to_string();
+            text.sections[4].value = score.value.to_string();
+            text.sections[7].value = highscore.scores.iter().max().unwrap().to_string();
         }
     } else {
         for mut text in &mut query {
-            text.sections[1].value = score.value.to_string();
-            text.sections[4].value = 0.to_string();
+            text.sections[1].value = stage.value.to_string();
+            text.sections[4].value = score.value.to_string();
+            text.sections[7].value = 0.to_string();
         }
     }
 }

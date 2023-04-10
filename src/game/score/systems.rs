@@ -48,3 +48,19 @@ pub fn update_lives(lives: Res<Lives>) {
 }
 
 
+
+pub fn insert_stage(mut commands: Commands) {
+    commands.insert_resource(Stage::default())
+}
+
+pub fn remove_stage(mut commands: Commands) {
+    commands.remove_resource::<Stage>();
+}
+
+pub fn update_stage(stage: Res<Stage>) {
+   if stage.is_changed() {
+        println!("Current stage: {}", stage.value.to_string());
+    }
+}
+
+

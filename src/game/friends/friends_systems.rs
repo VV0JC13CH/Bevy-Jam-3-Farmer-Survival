@@ -1451,7 +1451,7 @@ pub fn friends_animate(
     for (mut transform, indices_idle, indices_running, mut timer, mut sprite, friend) in &mut query
     {
         timer.tick(time.delta());
-        if camera.translation.x > transform.translation.x {
+        if camera.translation.x > transform.translation.x + 1.0 {
             sprite.flip_x = true
         } else {
             sprite.flip_x = false

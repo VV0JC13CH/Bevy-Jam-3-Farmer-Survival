@@ -10,6 +10,7 @@ use crate::game::friends::friends_states::*;
 
 use crate::game::friends::items_states::*;
 use crate::game::score::resources::Score;
+use crate::game::score::resources::Stage;
 pub fn spawn_camera(mut commands: Commands, window_query: Query<&Window, With<PrimaryWindow>>) {
     let window = window_query.get_single().unwrap();
 
@@ -45,15 +46,22 @@ pub fn toggle_simulation(
     }
 }
 
-pub fn levelup(score: Res<Score>, mut app_next_state: ResMut<NextState<AppState>>) {
+pub fn levelup(score: Res<Score>, mut app_next_state: ResMut<NextState<AppState>>,
+    mut stage: ResMut<Stage>,
+
+
+    ) {
     if score.is_changed() {
         if score.value <= 12 {
             if (score.value % 3) == 0 && score.value != 0 {
                 app_next_state.set(AppState::LevelUp);
+                stage.value += 1;
             };
         } else {
             if (score.value % 6) == 0 && score.value != 0 {
                 app_next_state.set(AppState::LevelUp);
+                stage.value += 1;
+
             };
         }
     }

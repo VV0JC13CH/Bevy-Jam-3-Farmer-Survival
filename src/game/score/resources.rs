@@ -33,3 +33,13 @@ impl Default for Lives {
     }
 }
 
+#[derive(Resource)]
+pub struct Stage {
+    pub value: u32,
+}
+
+impl Default for Stage {
+    fn default() -> Stage {
+        Stage { value: 0 }
+    }
+}
