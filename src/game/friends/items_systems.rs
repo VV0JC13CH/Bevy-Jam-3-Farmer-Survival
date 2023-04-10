@@ -305,7 +305,7 @@ pub fn action_honey(
     let mut spawn_item: bool = true;
     let current_time = time.elapsed_seconds_f64();
     for timer in spawn_timers.iter() {
-        if (current_time - timer.value) > 1.0 {
+        if (current_time - timer.value) > 2.0 {
             spawn_item = true
         } else {
             spawn_item = false
@@ -355,7 +355,7 @@ pub fn action_honey(
             Item {
                 kind: ItemType::Honey,
                 targeting_friend: FriendType::Bear,
-                current_animation: AnimationType::OneTime,
+                current_animation: AnimationType::Idle,
                 direction: match player_orientation.0 {
                     PlayerOrientationState::Right => PlayerOrientationState::Right,
                     PlayerOrientationState::Left => PlayerOrientationState::Left,
@@ -380,7 +380,7 @@ pub fn action_milk(
     let mut spawn_item: bool = true;
     let current_time = time.elapsed_seconds_f64();
     for timer in spawn_timers.iter() {
-        if (current_time - timer.value) > 1.0 {
+        if (current_time - timer.value) > 2.0 {
             spawn_item = true
         } else {
             spawn_item = false
@@ -421,7 +421,7 @@ pub fn action_milk(
             Item {
                 kind: ItemType::Milk,
                 targeting_friend: FriendType::Cow,
-                current_animation: AnimationType::OneTime,
+                current_animation: AnimationType::Idle,
                 direction: match player_orientation.0 {
                     PlayerOrientationState::Right => PlayerOrientationState::Right,
                     PlayerOrientationState::Left => PlayerOrientationState::Left,
@@ -961,21 +961,19 @@ pub fn items_animate(
             ItemType::CatItem => {
                 transform.translation.x += 5.0;
             }
-            ItemType::Honey => match item.direction {
-                PlayerOrientationState::Left => {
-                    if transform.translation.x - item.spawn_position_x > -60.0 {
-                        transform.translation.x -= 5.0;
-                        transform.translation.y += 5.0;
-                    } else if transform.translation.x - item.spawn_position_x > -120.0 {
-                        transform.translation.y -= 5.0;
-                    } else {
-                    }
+            ItemType::Honey => match item.current_animation {
+                AnimationType::Idle => {
+                    transform.translation.x += 2.0 * dir;
+                    transform.rotate(Quat::from_rotation_z((-dir * 10.0_f32).to_radians()))
                 }
-
-                PlayerOrientationState::Right => {
-                    transform.translation.x += 5.0;
-                    transform.translation.y += 5.0;
+                _ => {}
+            },
+            ItemType::Milk => match item.current_animation {
+                AnimationType::Idle => {
+                    transform.translation.x += 2.0 * dir;
+                    transform.rotate(Quat::from_rotation_z((-dir * 25.0_f32).to_radians()))
                 }
+                _ => {}
             },
             ItemType::Rod => {
                 for (friend_entity, friend_transform, friend) in friend_query.iter() {
@@ -1048,11 +1046,28 @@ pub fn item_hit_friend(
     let current_time = time.elapsed_seconds_f64();
 
     for (friend_entity, mut friend_transform, friend) in friend_query.iter_mut() {
-        for (item_entity, item_transform, mut item, item_spawn_time) in item_query.iter_mut() {
+        for (item_entity, mut item_transform, mut item, item_spawn_time) in item_query.iter_mut() {
             let distance = friend_transform
                 .translation
                 .distance(item_transform.translation);
             if distance < 64.0 {
+                if friend.kind == FriendType::Bear && item.kind == ItemType::Honey {
+                    println!("Bear likes honey!");
+                    item.current_animation = AnimationType::OneTime;
+                    commands.entity(friend_entity).despawn();
+                    let sound_effect = asset_server.load("audio/sound_5.ogg");
+                    audio.play(sound_effect);
+                    score.value += 1;
+                }
+                if friend.kind == FriendType::Cow && item.kind == ItemType::Milk {
+                    println!("Cow likes milk!");
+                    item.current_animation = AnimationType::OneTime;
+                    commands.entity(friend_entity).despawn();
+                    let sound_effect = asset_server.load("audio/sound_4.ogg");
+                    audio.play(sound_effect);
+                    score.value += 1;
+                }
+
                 if friend.kind == FriendType::Butterfly && item.kind == ItemType::BugNet {
                     println!("Butterfly catched!");
                     commands.entity(friend_entity).despawn();
@@ -1108,7 +1123,7 @@ pub fn item_hit_friend(
                         score.value += 1;
                     }
                 } else {
-                    println!("Collision without score")
+                    //println!("Collision without score")
                 }
             }
         }
