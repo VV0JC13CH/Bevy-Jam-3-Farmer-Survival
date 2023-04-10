@@ -17,7 +17,7 @@ pub fn action_water_can(
     mut texture_atlases: ResMut<Assets<TextureAtlas>>,
     time: ResMut<Time>,
     camera_query: Query<&Transform, With<Camera>>,
-    spawn_timers: Query<&SpawnTimeStamp, With<Item>>,
+   spawn_timers: Query<&SpawnTimeStamp, With<Item>>,
     player_orientation: Res<State<PlayerOrientationState>>,
 ) {
     let index_of_item = 0;
@@ -717,13 +717,14 @@ pub fn action_dog_item(
     let mut spawn_item: bool = true;
     let current_time = time.elapsed_seconds_f64();
     for timer in spawn_timers.iter() {
-        if (current_time - timer.value) > 1.0 {
+        if (current_time - timer.value) > 5.0 {
             spawn_item = true
         } else {
             spawn_item = false
         }
     }
     if spawn_item {
+        println!("spawning pet cat!");
         let camera = camera_query.get_single().unwrap();
         let texture_handle = asset_server.load("sprites/items_tilemap.png");
         let texture_atlas = TextureAtlas::from_grid(
@@ -741,12 +742,18 @@ pub fn action_dog_item(
             second: MAX_TYPES_OF_ITEMS * 2 + index_of_item,
             third: MAX_TYPES_OF_ITEMS * 3 + index_of_item,
         };
+        let mut random = thread_rng();
+
         commands.spawn((
             SpriteSheetBundle {
                 texture_atlas: texture_atlas_handle,
                 sprite: TextureAtlasSprite::new(animation_indices_item.first),
                 // transform: Transform::from_scale(Vec3::splat(1.0)),
-                transform: Transform::from_xyz(camera.translation.x, camera.translation.y, 0.0),
+                transform: Transform::from_xyz(
+                    camera.translation.x + random.gen_range(550.0..750.0),
+                    camera.translation.y + random.gen_range(-150.0..150.0),
+                    0.0,
+                ),
                 ..default()
             },
             animation_indices_item,
@@ -757,7 +764,7 @@ pub fn action_dog_item(
             Damage { value: 1.0 },
             Item {
                 kind: ItemType::DogItem,
-                targeting_friend: FriendType::Cat,
+                targeting_friend: FriendType::Mouse,
                 current_animation: AnimationType::Running,
                 direction: match player_orientation.0 {
                     PlayerOrientationState::Right => PlayerOrientationState::Right,
@@ -967,6 +974,10 @@ pub fn items_animate(
             ItemType::CatItem => {
                 transform.translation.x += 5.0;
             }
+            ItemType::DogItem => {
+                sprite.flip_x = true;
+                transform.translation.x -= 8.0;
+            }
             ItemType::Honey => match item.current_animation {
                 AnimationType::Idle => {
                     transform.translation.x += 2.0 * dir;
@@ -1007,7 +1018,6 @@ pub fn items_animate(
                         transform.translation += direction * friend.speed * time.delta_seconds();
                     }
                 }
-                let current_time = time.elapsed_seconds_f64();
             }
             _ => transform.translation.x += 2.0 * dir,
         }
@@ -1067,6 +1077,13 @@ pub fn item_hit_friend(
                 .translation
                 .distance(item_transform.translation);
             if distance < 64.0 {
+                if friend.kind == FriendType::Sheep && item.kind == ItemType::DogItem {
+                    println!("Sheep is at home!");
+                    commands.entity(friend_entity).despawn();
+                    let sound_effect = asset_server.load("audio/sound_2.ogg");
+                    audio.play(sound_effect);
+                    score.value += 1;
+                }
                 if friend.kind == FriendType::Dog && item.kind == ItemType::Bone {
                     println!("Dog likes bones!");
                     commands.entity(friend_entity).despawn();
