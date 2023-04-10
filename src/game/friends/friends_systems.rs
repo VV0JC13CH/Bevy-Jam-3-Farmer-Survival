@@ -79,7 +79,7 @@ pub fn mouse_spawn(
     let mut spawn_friend: bool = true;
     let current_time = time.elapsed_seconds_f64();
     for timer in spawn_timers.iter() {
-        if (current_time - timer.value) > 5.0 {
+        if (current_time - timer.value) > 3.0 {
             spawn_friend = true
         } else {
             spawn_friend = false
@@ -439,7 +439,7 @@ pub fn flower_spawn(
     let mut spawn_friend: bool = true;
     let current_time = time.elapsed_seconds_f64();
     for timer in spawn_timers.iter() {
-        if (current_time - timer.value) > 5.0 {
+        if (current_time - timer.value) > 3.0 {
             spawn_friend = true
         } else {
             spawn_friend = false
@@ -1246,7 +1246,7 @@ pub fn worm_spawn(
     let mut spawn_friend: bool = true;
     let current_time = time.elapsed_seconds_f64();
     for timer in spawn_timers.iter() {
-        if (current_time - timer.value) > 5.0 {
+        if (current_time - timer.value) > 3.0 {
             spawn_friend = true
         } else {
             spawn_friend = false
@@ -1741,5 +1741,20 @@ pub fn setup_spawns(
             speed: 0.0,
         },
     ));
+    commands.spawn((
+        SpawnTimeStamp {
+            value: current_time,
+        },
+        Friend {
+            kind: FriendType::Mouse,
+            targeting_friend: FriendType::None,
+            targeting_item: ItemType::None,
+            current_animation: AnimationType::Idle,
+            last_position_x: 0.0,
+            last_position_y: 0.0,
+            speed: 0.0,
+        },
+    ));
+
 }
 

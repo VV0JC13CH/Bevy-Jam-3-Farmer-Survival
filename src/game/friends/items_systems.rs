@@ -231,13 +231,14 @@ pub fn action_cat_item(
     let mut spawn_item: bool = true;
     let current_time = time.elapsed_seconds_f64();
     for timer in spawn_timers.iter() {
-        if (current_time - timer.value) > 1.0 {
+        if (current_time - timer.value) > 5.0 {
             spawn_item = true
         } else {
             spawn_item = false
         }
     }
     if spawn_item {
+        println!("spawning pet cat!");
         let camera = camera_query.get_single().unwrap();
         let texture_handle = asset_server.load("sprites/items_tilemap.png");
         let texture_atlas = TextureAtlas::from_grid(
@@ -263,8 +264,8 @@ pub fn action_cat_item(
                 sprite: TextureAtlasSprite::new(animation_indices_item.first),
                 // transform: Transform::from_scale(Vec3::splat(1.0)),
                 transform: Transform::from_xyz(
-                    camera.translation.x + random.gen_range(-1000.0..-800.0),
-                    camera.translation.y + random.gen_range(-600.0..600.0),
+                    camera.translation.x + random.gen_range(-650.0..-450.0),
+                    camera.translation.y + random.gen_range(-150.0..150.0),
                     0.0,
                 ),
                 ..default()
@@ -944,12 +945,12 @@ pub fn items_animate(
                     transform.translation.y += 0.0
                 }
             }
-             ItemType::Axe => {
-                 transform.translation.x += 5.0 * dir;
-                 transform.rotate(Quat::from_rotation_z((-dir * 10.0_f32).to_radians()))
-             }
+            ItemType::Axe => {
+                transform.translation.x += 5.0 * dir;
+                transform.rotate(Quat::from_rotation_z((-dir * 10.0_f32).to_radians()))
+            }
             ItemType::CatItem => {
-                transform.translation.x += 15.0;
+                transform.translation.x += 5.0;
             }
             ItemType::Honey => match item.direction {
                 PlayerOrientationState::Left => {
@@ -1019,6 +1020,13 @@ pub fn item_hit_friend(
                     println!("Tree targeted!");
                     commands.entity(friend_entity).despawn();
                     let sound_effect = asset_server.load("audio/sound_4.ogg");
+                    audio.play(sound_effect);
+                    score.value += 1;
+                }
+                if friend.kind == FriendType::Mouse && item.kind == ItemType::CatItem {
+                    println!("Mouse targeted!");
+                    commands.entity(friend_entity).despawn();
+                    let sound_effect = asset_server.load("audio/sound_5.ogg");
                     audio.play(sound_effect);
                     score.value += 1;
                 }

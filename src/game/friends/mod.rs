@@ -174,10 +174,10 @@ impl Plugin for FriendsPlugin {
                 (
                     action_dog_item
                         .in_set(FriendsSpawnSystemSet)
-                        .in_set(OnUpdate(UnlockedMilk::Enabled)),
+                        .in_set(OnUpdate(UnlockedDogItem::Enabled)),
                     action_cat_item
                         .in_set(FriendsSpawnSystemSet)
-                        .in_set(OnUpdate(UnlockedBugNet::Enabled)),
+                        .in_set(OnUpdate(UnlockedCatItem::Enabled)),
                     items_animate,
                 )
                     .in_set(OnUpdate(AppState::Game))
