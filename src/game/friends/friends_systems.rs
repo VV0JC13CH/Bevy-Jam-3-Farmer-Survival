@@ -1919,4 +1919,18 @@ pub fn setup_spawns(
             speed: 0.0,
         },
     ));
+    commands.spawn((
+        SpawnTimeStamp {
+            value: current_time,
+        },
+        Friend {
+            kind: FriendType::Fish,
+            targeting_friend: FriendType::None,
+            targeting_item: ItemType::None,
+            current_animation: AnimationType::Idle,
+            last_position_x: 0.0,
+            last_position_y: 0.0,
+            speed: 0.0,
+        },
+    ));
 }

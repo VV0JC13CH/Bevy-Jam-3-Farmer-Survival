@@ -831,7 +831,7 @@ pub fn action_worms_item(
             Item {
                 kind: ItemType::Worm,
                 targeting_friend: FriendType::Bear,
-                current_animation: AnimationType::Running,
+                current_animation: AnimationType::OneTime,
                 direction: match player_orientation.0 {
                     PlayerOrientationState::Right => PlayerOrientationState::Right,
                     PlayerOrientationState::Left => PlayerOrientationState::Left,
@@ -1018,6 +1018,9 @@ pub fn items_animate(
                         transform.translation += direction * friend.speed * time.delta_seconds();
                     }
                 }
+            },
+            ItemType::Worm => {
+            transform.translation.x += 10.0 * dir
             }
             _ => transform.translation.x += 2.0 * dir,
         }
@@ -1077,6 +1080,13 @@ pub fn item_hit_friend(
                 .translation
                 .distance(item_transform.translation);
             if distance < 64.0 {
+                if friend.kind == FriendType::Fish && item.kind == ItemType::Worm {
+                    println!("Fish likes worms!");
+                    commands.entity(friend_entity).despawn();
+                    let sound_effect = asset_server.load("audio/sound_3.ogg");
+                    audio.play(sound_effect);
+                    score.value += 1;
+                }
                 if friend.kind == FriendType::Sheep && item.kind == ItemType::DogItem {
                     println!("Sheep is at home!");
                     commands.entity(friend_entity).despawn();

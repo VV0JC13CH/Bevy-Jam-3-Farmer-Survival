@@ -175,6 +175,9 @@ impl Plugin for FriendsPlugin {
                     action_dog_item
                         .in_set(FriendsSpawnSystemSet)
                         .in_set(OnUpdate(UnlockedDogItem::Enabled)),
+                    action_worms_item
+                        .in_set(FriendsSpawnSystemSet)
+                        .in_set(OnUpdate(UnlockedWormItem::Enabled)),
                     action_cat_item
                         .in_set(FriendsSpawnSystemSet)
                         .in_set(OnUpdate(UnlockedCatItem::Enabled)),
