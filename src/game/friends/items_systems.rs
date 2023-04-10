@@ -6,6 +6,7 @@ use super::components::*;
 use crate::game::player;
 use crate::game::player::components::Player;
 
+use crate::game::friends::components::AnimationType;
 use crate::game::player::states::PlayerOrientationState;
 use crate::game::score::resources::Score;
 const MAX_TYPES_OF_ITEMS: usize = 13;
@@ -618,7 +619,7 @@ pub fn action_apple(
             Item {
                 kind: ItemType::Apple,
                 targeting_friend: FriendType::Donkey,
-                current_animation: AnimationType::OneTime,
+                current_animation: AnimationType::Idle,
                 direction: match player_orientation.0 {
                     PlayerOrientationState::Right => PlayerOrientationState::Right,
                     PlayerOrientationState::Left => PlayerOrientationState::Left,
@@ -1000,7 +1001,7 @@ pub fn item_hit_friend(
     //   mut game_over_event_writer: EventWriter<GameOver>,
     mut friend_query: Query<(Entity, &mut Transform, &Friend), (With<Friend>, Without<Item>)>,
     mut item_query: Query<
-        (Entity, &mut Transform, &Item, &SpawnTimeStamp),
+        (Entity, &mut Transform, &mut Item, &SpawnTimeStamp),
         (With<Item>, Without<Friend>),
     >,
     asset_server: Res<AssetServer>,
@@ -1011,11 +1012,19 @@ pub fn item_hit_friend(
     let current_time = time.elapsed_seconds_f64();
 
     for (friend_entity, mut friend_transform, friend) in friend_query.iter_mut() {
-        for (item_entity, item_transform, item, item_spawn_time) in item_query.iter_mut() {
+        for (item_entity, item_transform, mut item, item_spawn_time) in item_query.iter_mut() {
             let distance = friend_transform
                 .translation
                 .distance(item_transform.translation);
             if distance < 64.0 {
+                if friend.kind == FriendType::Donkey && item.kind == ItemType::Apple {
+                    println!("Donkey is happy!");
+                    item.current_animation = AnimationType::OneTime;
+                    commands.entity(friend_entity).despawn();
+                    let sound_effect = asset_server.load("audio/sound_1.ogg");
+                    audio.play(sound_effect);
+                    score.value += 1;
+                }
                 if friend.kind == FriendType::Tree && item.kind == ItemType::Axe {
                     println!("Tree targeted!");
                     commands.entity(friend_entity).despawn();

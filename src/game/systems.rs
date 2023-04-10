@@ -226,11 +226,12 @@ pub fn detect_takesheepsback(
 }
 pub fn detect_takehoney(
     current_mission: Res<State<CurrentMission>>,
-
     mut default_friend_next_state: ResMut<NextState<UnlockedBeeBox>>,
+    mut extra_friend_next_state: ResMut<NextState<UnlockedBee>>,
 ) {
     if current_mission.0 == CurrentMission::TakeHoney {
         default_friend_next_state.set(UnlockedBeeBox::Spawn);
+        extra_friend_next_state.set(UnlockedBee::Spawn);
     } else {
     }
 }

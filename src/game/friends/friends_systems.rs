@@ -86,6 +86,8 @@ pub fn mouse_spawn(
         }
     }
     if spawn_friend {
+        println!("Mouse spawned");
+
         let camera = camera_query.get_single().unwrap();
         let texture_handle = asset_server.load("sprites/entities_tilemap.png");
         let texture_atlas = TextureAtlas::from_grid(
@@ -1157,13 +1159,14 @@ pub fn donkey_spawn(
     let mut spawn_friend: bool = true;
     let current_time = time.elapsed_seconds_f64();
     for timer in spawn_timers.iter() {
-        if (current_time - timer.value) > 5.0 {
+        if (current_time - timer.value) > 3.0 {
             spawn_friend = true
         } else {
             spawn_friend = false
         }
     }
     if spawn_friend {
+        println!("Donkey spawned!");
         let camera = camera_query.get_single().unwrap();
         let texture_handle = asset_server.load("sprites/entities_tilemap.png");
         let texture_atlas = TextureAtlas::from_grid(
@@ -1680,12 +1683,10 @@ pub fn despawn_friends(
     mut commands: Commands,
     mut friend_query: Query<(Entity, &Transform), With<Friend>>,
 ) {
-
     for (item_entity, item_transform) in friend_query.iter_mut() {
         println!("Despawn of item!");
         commands.entity(item_entity).despawn();
     }
-
 }
 
 pub fn setup_spawns(
@@ -1694,9 +1695,7 @@ pub fn setup_spawns(
     camera_query: Query<&Transform, (With<Camera>, Without<Item>)>,
     time: ResMut<Time>,
 ) {
-
-
-    let current_time : f64 = 0.0;
+    let current_time: f64 = 0.0;
     println!("setup_spawns");
     commands.spawn((
         SpawnTimeStamp {
@@ -1755,6 +1754,18 @@ pub fn setup_spawns(
             speed: 0.0,
         },
     ));
-
+     commands.spawn((
+        SpawnTimeStamp {
+            value: current_time,
+        },
+        Friend {
+            kind: FriendType::Donkey,
+            targeting_friend: FriendType::None,
+            targeting_item: ItemType::None,
+            current_animation: AnimationType::Idle,
+            last_position_x: 0.0,
+            last_position_y: 0.0,
+            speed: 0.0,
+        },
+    ));
 }
-
