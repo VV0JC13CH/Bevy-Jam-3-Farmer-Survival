@@ -1672,7 +1672,7 @@ pub fn beebox_spawn(
             first: 13 * 2 + index_of_friend,
             second: 13 * 3 + index_of_friend,
         };
-        
+
         commands.spawn((
             SpriteSheetBundle {
                 texture_atlas: texture_atlas_handle,
@@ -1752,6 +1752,25 @@ pub fn despawn_friends(
     for (item_entity, item_transform) in friend_query.iter_mut() {
         println!("Despawn of item!");
         commands.entity(item_entity).despawn();
+    }
+}
+
+pub fn despawn_long_living_friends(
+    mut commands: Commands,
+    time: ResMut<Time>,
+    mut friend_query: Query<(Entity, &Transform, &SpawnTimeStamp), With<Friend>>,
+    camera_query: Query<&Transform, (With<Camera>, Without<Friend>)>,
+) {
+    let camera = camera_query.get_single().unwrap();
+
+    for (friend_entity, friend_transform, timer) in friend_query.iter_mut() {
+        let current_time = time.elapsed_seconds_f64();
+        let distance = friend_transform.translation.distance(camera.translation);
+        if (current_time - timer.value) > 20.0 && distance > 900.0 {
+            println!("Despawn of item!");
+            commands.entity(friend_entity).despawn();
+        } else {
+        }
     }
 }
 

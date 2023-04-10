@@ -192,6 +192,7 @@ impl Plugin for FriendsPlugin {
             // On Exit State
             .add_system(despawn_friends.in_schedule(OnExit(AppState::Intro)))
             .add_system(reset_states.in_schedule(OnExit(AppState::Game)))
-            .add_system(item_outside_of_range);
+            .add_system(item_outside_of_range)
+            .add_system(despawn_long_living_friends);
     }
 }

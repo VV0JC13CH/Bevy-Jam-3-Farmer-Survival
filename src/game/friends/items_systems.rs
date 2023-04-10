@@ -1,5 +1,4 @@
 use bevy::prelude::*;
-use bevy_rapier2d::parry::transformation::utils::transform;
 use rand::{thread_rng, Rng};
 
 use super::components::*;
