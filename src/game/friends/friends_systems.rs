@@ -2,13 +2,14 @@ use bevy::prelude::*;
 use rand::{thread_rng, Rng};
 
 use super::components::*;
+use crate::game::events::GameOver;
 use crate::game::player::components::Player;
 use crate::game::score::resources::Lives;
-use crate::game::events::GameOver;
 use crate::game::score::resources::Score;
 use crate::game::AppState;
 use crate::game::SimulationState;
 
+use crate::game::friends::friends_states::*;
 const MAX_SPECIES_OF_FRIENDS: usize = 15;
 
 pub fn adjust_states_to_character(
@@ -22,6 +23,51 @@ pub fn reset_states(
     mut commands: Commands,
     camera_query: Query<Entity, With<Camera>>,
 ) {
+}
+
+pub fn block_friends_1(
+    mut flower_friend_next_state: ResMut<NextState<UnlockedFlower>>,
+    mut worm_friend_next_state: ResMut<NextState<UnlockedWorm>>,
+    mut mouse_friend_next_state: ResMut<NextState<UnlockedMouse>>,
+    mut fish_friend_next_state: ResMut<NextState<UnlockedFish>>,
+    mut cat_friend_next_state: ResMut<NextState<UnlockedCat>>,
+)
+{
+    flower_friend_next_state.set(UnlockedFlower::Blocked);
+    worm_friend_next_state.set(UnlockedWorm::Blocked);
+    mouse_friend_next_state.set(UnlockedMouse::Blocked);
+    fish_friend_next_state.set(UnlockedFish::Blocked);
+    cat_friend_next_state.set(UnlockedCat::Blocked);
+}
+pub fn block_friends_2(
+    mut dog_friend_next_state: ResMut<NextState<UnlockedDog>>,
+    mut cow_friend_next_state: ResMut<NextState<UnlockedCow>>,
+    mut bee_friend_next_state: ResMut<NextState<UnlockedBee>>,
+    mut beebox_friend_next_state: ResMut<NextState<UnlockedBeeBox>>,
+    mut butterfly_friend_next_state: ResMut<NextState<UnlockedButterfly>>,
+)
+{
+    dog_friend_next_state.set(UnlockedDog::Blocked);
+    cow_friend_next_state.set(UnlockedCow::Blocked);
+    bee_friend_next_state.set(UnlockedBee::Blocked);
+    beebox_friend_next_state.set(UnlockedBeeBox::Blocked);
+    butterfly_friend_next_state.set(UnlockedButterfly::Blocked);
+}
+pub fn block_friends_3(
+    mut spider_friend_next_state: ResMut<NextState<UnlockedSpider>>,
+    mut beaver_friend_next_state: ResMut<NextState<UnlockedBeaver>>,
+    mut bear_friend_next_state: ResMut<NextState<UnlockedBear>>,
+    mut tree_friend_next_state: ResMut<NextState<UnlockedTree>>,
+    mut donkey_friend_next_state: ResMut<NextState<UnlockedDonkey>>,
+    mut sheep_friend_next_state: ResMut<NextState<UnlockedSheep>>,
+)
+{
+    spider_friend_next_state.set(UnlockedSpider::Blocked);
+    beaver_friend_next_state.set(UnlockedBeaver::Blocked);
+    bear_friend_next_state.set(UnlockedBear::Blocked);
+    tree_friend_next_state.set(UnlockedTree::Blocked);
+    donkey_friend_next_state.set(UnlockedDonkey::Blocked);
+    sheep_friend_next_state.set(UnlockedSheep::Blocked);
 }
 
 pub fn mouse_spawn(
@@ -1571,7 +1617,7 @@ pub fn friend_hit_player(
     mut app_next_state: ResMut<NextState<AppState>>,
 ) {
     if lives.value == 0 {
-                        game_over_event_writer.send(GameOver { score: score.value });
+        game_over_event_writer.send(GameOver { score: score.value });
         simulation_state_next_state.set(SimulationState::Paused);
         app_next_state.set(AppState::Intro);
     } else {
@@ -1589,5 +1635,18 @@ pub fn friend_hit_player(
                 }
             }
         }
+    }
+}
+
+pub fn despawn_friends(
+    mut commands: Commands,
+    mut friend_query: Query<(Entity, &Transform), With<Friend>>,
+    camera_query: Query<&Transform, (With<Camera>, Without<Item>)>,
+) {
+    let camera = camera_query.get_single().unwrap();
+
+    for (item_entity, item_transform) in friend_query.iter_mut() {
+        println!("Despawn of item!");
+        commands.entity(item_entity).despawn();
     }
 }

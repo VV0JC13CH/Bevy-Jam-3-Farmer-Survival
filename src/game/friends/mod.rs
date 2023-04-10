@@ -55,7 +55,9 @@ impl Plugin for FriendsPlugin {
             .add_state::<UnlockedDogItem>()
             .add_state::<UnlockedWormItem>()
             // On Enter State
-            .add_system(adjust_states_to_character.in_schedule(OnEnter(AppState::Game)))
+            .add_system(block_friends_1.in_schedule(OnEnter(AppState::Intro)))
+            .add_system(block_friends_2.in_schedule(OnEnter(AppState::Intro)))
+            .add_system(block_friends_3.in_schedule(OnEnter(AppState::Intro)))
             .add_system(friends_target_target
                                 .in_set(OnUpdate(AppState::Game))
                     .in_set(OnUpdate(SimulationState::Running)),
@@ -184,7 +186,7 @@ impl Plugin for FriendsPlugin {
             .add_system(item_hit_friend.in_set(OnUpdate(AppState::Game)))
             .add_system(friend_hit_player.in_set(OnUpdate(AppState::Game)))
             // On Exit State
-            .add_system(friends_despawn.in_schedule(OnExit(AppState::Game)))
+            .add_system(despawn_friends.in_schedule(OnExit(AppState::Menu)))
             .add_system(reset_states.in_schedule(OnExit(AppState::Game)))
             .add_system(item_outside_of_range);
     }

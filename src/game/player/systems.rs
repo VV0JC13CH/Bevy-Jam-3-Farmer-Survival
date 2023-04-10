@@ -1,3 +1,5 @@
+use std::thread::current;
+
 use bevy::{
     input::{mouse::MouseWheel, Input},
     math::Vec3,
@@ -10,15 +12,21 @@ use super::states::PlayerAnimationState;
 use super::states::PlayerCharacter;
 use super::states::PlayerOrientationState;
 use crate::game::menu::components::GameElement;
+use crate::game::score::resources::Score;
+use crate::game::states::{CurrentMission, PreviousMission};
 
 pub const PLAYER_SPEED: f32 = 300.0;
 
 pub fn player_spawn(
     mut commands: Commands,
     player_char: Res<State<PlayerCharacter>>,
+    debug_state: Res<State<DebugState>>,
+    mut next_mission: ResMut<NextState<CurrentMission>>,
+    mut previous_mission: ResMut<NextState<PreviousMission>>,
     asset_server: Res<AssetServer>,
     mut texture_atlases: ResMut<Assets<TextureAtlas>>,
     camera_query: Query<&Transform, With<Camera>>,
+    score: Res<Score>,
 ) {
     let camera = camera_query.get_single().unwrap();
 
@@ -46,9 +54,17 @@ pub fn player_spawn(
 
     if player_char.0 == PlayerCharacter::Male {
         println!("Starting game as a boy.");
+        if score.value == 0 && debug_state.0 != DebugState::Develop {
+            next_mission.set(CurrentMission::WaterFlowers);
+            previous_mission.set(PreviousMission::NewGame);
+        }
     }
     if player_char.0 == PlayerCharacter::Female {
         println!("Starting game as a girl.");
+        if score.value == 0 && debug_state.0 != DebugState::Develop {
+            next_mission.set(CurrentMission::GetWorms);
+            previous_mission.set(PreviousMission::NewGame);
+        }
     }
 }
 
@@ -161,37 +177,37 @@ pub fn move_camera(
     mut scroll_evr: EventReader<MouseWheel>,
     mut camera_query: Query<(&mut Transform, &mut OrthographicProjection), With<Camera>>,
 ) {
-        for (mut transform, mut ortho) in camera_query.iter_mut() {
-            let mut direction = Vec3::ZERO;
+    for (mut transform, mut ortho) in camera_query.iter_mut() {
+        let mut direction = Vec3::ZERO;
 
-            if keyboard_input.pressed(KeyCode::Left) || keyboard_input.pressed(KeyCode::A) {
-                direction += Vec3::new(-1.0, 0.0, 0.0);
-            }
-            if keyboard_input.pressed(KeyCode::Right) || keyboard_input.pressed(KeyCode::D) {
-                direction += Vec3::new(1.0, 0.0, 0.0);
-            }
-            if keyboard_input.pressed(KeyCode::Up) || keyboard_input.pressed(KeyCode::W) {
-                direction += Vec3::new(0.0, 1.0, 0.0);
-            }
-            if keyboard_input.pressed(KeyCode::Down) || keyboard_input.pressed(KeyCode::S) {
-                direction += Vec3::new(0.0, -1.0, 0.0);
-            }
-            if direction.length() > 0.0 {
-                direction = direction.normalize();
-            }
-
-            for event in scroll_evr.iter() {
-                if event.y < 0.0 {
-                    ortho.scale += 0.2
-                }
-                if event.y > 0.0 {
-                    ortho.scale -= 0.2
-                }
-            }
-
-            transform.translation += direction * PLAYER_SPEED * time.delta_seconds();
+        if keyboard_input.pressed(KeyCode::Left) || keyboard_input.pressed(KeyCode::A) {
+            direction += Vec3::new(-1.0, 0.0, 0.0);
         }
+        if keyboard_input.pressed(KeyCode::Right) || keyboard_input.pressed(KeyCode::D) {
+            direction += Vec3::new(1.0, 0.0, 0.0);
+        }
+        if keyboard_input.pressed(KeyCode::Up) || keyboard_input.pressed(KeyCode::W) {
+            direction += Vec3::new(0.0, 1.0, 0.0);
+        }
+        if keyboard_input.pressed(KeyCode::Down) || keyboard_input.pressed(KeyCode::S) {
+            direction += Vec3::new(0.0, -1.0, 0.0);
+        }
+        if direction.length() > 0.0 {
+            direction = direction.normalize();
+        }
+
+        for event in scroll_evr.iter() {
+            if event.y < 0.0 {
+                ortho.scale += 0.2
+            }
+            if event.y > 0.0 {
+                ortho.scale -= 0.2
+            }
+        }
+
+        transform.translation += direction * PLAYER_SPEED * time.delta_seconds();
     }
+}
 
 use crate::DebugState;
 
