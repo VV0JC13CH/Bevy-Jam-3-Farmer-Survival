@@ -597,18 +597,7 @@ pub fn setup_lives_icons(
     ));
 }
 
-pub fn link_game_icons_to_camera(
-    mut commands: Commands,
-    mut game_elements_query: Query<Entity, With<GameElement>>,
-    mut camera_query: Query<Entity, With<Camera>>,
-) {
-    for cam_entity in camera_query.iter_mut() {
-        for game_entity in game_elements_query.iter_mut() {
-            commands.entity(cam_entity).push_children(&[game_entity]);
-        }
-    }
-    println!("xxx");
-}
+
 
 pub fn show_game_icons(
     lives: Res<Lives>,
@@ -661,7 +650,6 @@ pub fn show_game_icons(
                 direction = direction.normalize();
             }
 
-            const HEIGHT: f32 = 64.0;
             if game_element._id == 3 {
                 transform.translation += direction * 300.0 * time.delta_seconds();
                 if lives.value == 2 {
@@ -722,16 +710,7 @@ pub fn show_game_icons(
             if lives.value == 0 {
                 commands.entity(entity).despawn();
             }
-        } else if keyboard_input.any_just_released([
-            KeyCode::Left,
-            KeyCode::A,
-            KeyCode::Right,
-            KeyCode::D,
-            KeyCode::Up,
-            KeyCode::W,
-            KeyCode::Down,
-            KeyCode::S,
-        ]) {
+        } else { 
             const HEIGHT: f32 = 64.0;
             if game_element._id == 3 {
                 let update_transform = Transform::from_xyz(

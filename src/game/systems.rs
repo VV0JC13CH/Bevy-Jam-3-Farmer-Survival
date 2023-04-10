@@ -8,8 +8,8 @@ use crate::DebugState;
 use super::states::{CurrentMission, PreviousMission};
 use crate::game::friends::friends_states::*;
 
-use crate::game::score::resources::Score;
 use crate::game::friends::items_states::*;
+use crate::game::score::resources::Score;
 pub fn spawn_camera(mut commands: Commands, window_query: Query<&Window, With<PrimaryWindow>>) {
     let window = window_query.get_single().unwrap();
 
@@ -45,20 +45,19 @@ pub fn toggle_simulation(
     }
 }
 
-pub fn levelup(
-    score: Res<Score>,
-    mut app_next_state: ResMut<NextState<AppState>>,
-) {
-
+pub fn levelup(score: Res<Score>, mut app_next_state: ResMut<NextState<AppState>>) {
     if score.is_changed() {
-        if (score.value % 15) == 0 && score.value != 0 {
-        app_next_state.set(AppState::LevelUp);
+        if score.value <= 12 {
+            if (score.value % 3) == 0 && score.value != 0 {
+                app_next_state.set(AppState::LevelUp);
+            };
+        } else {
+            if (score.value % 6) == 0 && score.value != 0 {
+                app_next_state.set(AppState::LevelUp);
+            };
         }
     }
-
 }
-
-
 
 pub fn detect_waterflowers(
     current_mission: Res<State<CurrentMission>>,
@@ -229,7 +228,6 @@ pub fn detect_takehoney(
 }
 pub fn detect_milkthecow(
     current_mission: Res<State<CurrentMission>>,
-
     mut default_tool_next_state: ResMut<NextState<UnlockedMilk>>,
     mut default_friend_next_state: ResMut<NextState<UnlockedCow>>,
 ) {
@@ -261,21 +259,24 @@ pub fn setup_music(
     audio_sinks: Res<Assets<AudioSink>>,
     mut commands: Commands,
     current_track: Res<State<CurrentSong>>,
-
 ) {
     if current_track.0 == CurrentSong::TrackZero {
+        let music = asset_server.load("audio/music_tier1.ogg");
+        // play audio and upgrade to a strong handle
+        let sink_handle = audio_sinks
+            .get_handle(audio.play_with_settings(music, PlaybackSettings::LOOP.with_volume(0.75)));
 
-    let music = asset_server.load("audio/music_tier1.ogg");
-    // play audio and upgrade to a strong handle
-    let sink_handle = audio_sinks
-        .get_handle(audio.play_with_settings(music, PlaybackSettings::LOOP.with_volume(0.75)));
-
-    commands.insert_resource(BeautifulMusic(sink_handle));}
+        commands.insert_resource(BeautifulMusic(sink_handle));
+    }
 }
 
-pub fn music_stop(music: Res<BeautifulMusic>, mut audio_sinks: ResMut<Assets<AudioSink>>, mut commands: Commands) {
+pub fn music_stop(
+    music: Res<BeautifulMusic>,
+    mut audio_sinks: ResMut<Assets<AudioSink>>,
+    mut commands: Commands,
+) {
     if let Some(sink) = audio_sinks.get(&music.0) {
-    commands.remove_resource::<BeautifulMusic>();
+        commands.remove_resource::<BeautifulMusic>();
     }
 }
 pub fn music_change(
@@ -299,17 +300,17 @@ pub fn music_change(
         CurrentSong::TrackThree => CurrentSong::TrackFour,
         CurrentSong::TrackFour => CurrentSong::TrackFive,
         CurrentSong::TrackFive => CurrentSong::TrackSix,
-        _ => CurrentSong::TrackSix
-};
+        _ => CurrentSong::TrackSix,
+    };
     next_track.set(next_song);
     let track = match current_track.0 {
-        CurrentSong::TrackZero => {"audio/music_tier1.ogg".to_string()},
-        CurrentSong::TrackOne => {"audio/music_tier1.ogg".to_string()},
-        CurrentSong::TrackTwo => {"audio/music_tier2.ogg".to_string()},
-        CurrentSong::TrackThree => {"audio/music_tier3.ogg".to_string()},
-        CurrentSong::TrackFour => {"audio/music_tier4.ogg".to_string()},
-        CurrentSong::TrackFive => {"audio/music_tier5.ogg".to_string()},
-        CurrentSong::TrackSix => {"audio/music_tier6.ogg".to_string()},
+        CurrentSong::TrackZero => "audio/music_tier1.ogg".to_string(),
+        CurrentSong::TrackOne => "audio/music_tier1.ogg".to_string(),
+        CurrentSong::TrackTwo => "audio/music_tier2.ogg".to_string(),
+        CurrentSong::TrackThree => "audio/music_tier3.ogg".to_string(),
+        CurrentSong::TrackFour => "audio/music_tier4.ogg".to_string(),
+        CurrentSong::TrackFive => "audio/music_tier5.ogg".to_string(),
+        CurrentSong::TrackSix => "audio/music_tier6.ogg".to_string(),
     };
     let music = asset_server.load(track);
 
